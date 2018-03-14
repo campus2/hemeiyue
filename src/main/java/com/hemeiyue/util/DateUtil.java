@@ -1,4 +1,4 @@
-package com.heimeiyue.util;
+package com.hemeiyue.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

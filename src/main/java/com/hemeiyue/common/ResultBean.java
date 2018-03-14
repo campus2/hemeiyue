@@ -1,4 +1,4 @@
-package com.heimeiyue.common;
+package com.hemeiyue.common;
 
 /**
  * 基础包

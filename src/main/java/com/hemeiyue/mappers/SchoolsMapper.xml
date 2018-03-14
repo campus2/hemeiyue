@@ -5,9 +5,9 @@
     <resultMap id="BaseResultMap" type="com.hemeiyue.entity.Schools" >
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="school" property="school" jdbcType="VARCHAR" />
-        <result column="ownerId" property="ownerid" jdbcType="INTEGER" />
         <result column="CDT" property="cdt" jdbcType="TIMESTAMP" />
         <result column="status" property="status" jdbcType="INTEGER" />
+        <association property="owner" column="ownerId" select="com.hemeiyue.Dao.AdminMapper.selectByPrimaryKey"/>
     </resultMap>
 
     <sql id="Base_Column_List" >

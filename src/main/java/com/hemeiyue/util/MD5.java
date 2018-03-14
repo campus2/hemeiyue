@@ -1,4 +1,4 @@
-package com.heimeiyue.util;
+package com.hemeiyue.util;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

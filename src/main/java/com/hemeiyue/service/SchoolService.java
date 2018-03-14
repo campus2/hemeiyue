@@ -1,4 +1,4 @@
-package com.heimeiyue.service;
+package com.hemeiyue.service;
 
 public interface SchoolService {
 
