@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hemeiyue.dao.PeriodsMapper" >
+
+    <resultMap id="BaseResultMap" type="com.hemeiyue.entity.Periods" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="period" property="period" jdbcType="VARCHAR" />
+        <result column="beginTime" property="begintime" jdbcType="TIMESTAMP" />
+        <result column="endTime" property="endtime" jdbcType="TIMESTAMP" />
+        <result column="adminId" property="adminid" jdbcType="INTEGER" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        id, period, beginTime, endTime, adminId
+    </sql>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select 
+        <include refid="Base_Column_List" />
+        from periods
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+        delete from periods
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insert" parameterType="com.hemeiyue.entity.Periods" >
+        insert into periods (id, period, beginTime, 
+            endTime, adminId)
+        values (#{id,jdbcType=INTEGER}, #{period,jdbcType=VARCHAR}, #{begintime,jdbcType=TIMESTAMP}, 
+            #{endtime,jdbcType=TIMESTAMP}, #{adminid,jdbcType=INTEGER})
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.hemeiyue.entity.Periods" >
+        insert into periods
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="period != null" >
+                period,
+            </if>
+            <if test="begintime != null" >
+                beginTime,
+            </if>
+            <if test="endtime != null" >
+                endTime,
+            </if>
+            <if test="adminid != null" >
+                adminId,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="period != null" >
+                #{period,jdbcType=VARCHAR},
+            </if>
+            <if test="begintime != null" >
+                #{begintime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="endtime != null" >
+                #{endtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="adminid != null" >
+                #{adminid,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.hemeiyue.entity.Periods" >
+        update periods
+        <set >
+            <if test="period != null" >
+                period = #{period,jdbcType=VARCHAR},
+            </if>
+            <if test="begintime != null" >
+                beginTime = #{begintime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="endtime != null" >
+                endTime = #{endtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="adminid != null" >
+                adminId = #{adminid,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.hemeiyue.entity.Periods" >
+        update periods
+        set period = #{period,jdbcType=VARCHAR},
+            beginTime = #{begintime,jdbcType=TIMESTAMP},
+            endTime = #{endtime,jdbcType=TIMESTAMP},
+            adminId = #{adminid,jdbcType=INTEGER}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+</mapper>

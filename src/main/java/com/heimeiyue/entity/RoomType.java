@@ -1,0 +1,50 @@
+package com.hemeiyue.entity;
+
+/**
+ * 
+ * 
+ * @author cedo
+ * 
+ * @date 2018-03-14
+ */
+public class RoomType {
+    private Integer id;
+
+    private String roomType;
+
+    private School school;
+
+    private Integer status;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getRoomType() {
+        return roomType;
+    }
+
+    public School getSchool() {
+		return school;
+	}
+
+	public void setSchool(School school) {
+		this.school = school;
+	}
+
+	public void setRoomType(String roomType) {
+		this.roomType = roomType == null ? null : roomType.trim();
+	}
+
+	public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+}

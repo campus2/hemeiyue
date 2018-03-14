@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hemeiyue.dao.RoomperiodsMapper" >
+
+    <resultMap id="BaseResultMap" type="com.hemeiyue.entity.Roomperiods" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="roomId" property="roomid" jdbcType="INTEGER" />
+        <result column="periodId" property="periodid" jdbcType="INTEGER" />
+        <result column="repeat" property="repeat" jdbcType="VARCHAR" />
+        <result column="expirDate" property="expirdate" jdbcType="TIMESTAMP" />
+        <result column="requiredConfirm" property="requiredconfirm" jdbcType="INTEGER" />
+        <result column="deadLine" property="deadline" jdbcType="TIMESTAMP" />
+        <result column="status" property="status" jdbcType="INTEGER" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        id, roomId, periodId, repeat, expirDate, requiredConfirm, deadLine, status
+    </sql>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select 
+        <include refid="Base_Column_List" />
+        from roomperiods
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+        delete from roomperiods
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insert" parameterType="com.hemeiyue.entity.Roomperiods" >
+        insert into roomperiods (id, roomId, periodId, 
+            repeat, expirDate, requiredConfirm, 
+            deadLine, status)
+        values (#{id,jdbcType=INTEGER}, #{roomid,jdbcType=INTEGER}, #{periodid,jdbcType=INTEGER}, 
+            #{repeat,jdbcType=VARCHAR}, #{expirdate,jdbcType=TIMESTAMP}, #{requiredconfirm,jdbcType=INTEGER}, 
+            #{deadline,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER})
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.hemeiyue.entity.Roomperiods" >
+        insert into roomperiods
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="roomid != null" >
+                roomId,
+            </if>
+            <if test="periodid != null" >
+                periodId,
+            </if>
+            <if test="repeat != null" >
+                repeat,
+            </if>
+            <if test="expirdate != null" >
+                expirDate,
+            </if>
+            <if test="requiredconfirm != null" >
+                requiredConfirm,
+            </if>
+            <if test="deadline != null" >
+                deadLine,
+            </if>
+            <if test="status != null" >
+                status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="roomid != null" >
+                #{roomid,jdbcType=INTEGER},
+            </if>
+            <if test="periodid != null" >
+                #{periodid,jdbcType=INTEGER},
+            </if>
+            <if test="repeat != null" >
+                #{repeat,jdbcType=VARCHAR},
+            </if>
+            <if test="expirdate != null" >
+                #{expirdate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="requiredconfirm != null" >
+                #{requiredconfirm,jdbcType=INTEGER},
+            </if>
+            <if test="deadline != null" >
+                #{deadline,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null" >
+                #{status,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.hemeiyue.entity.Roomperiods" >
+        update roomperiods
+        <set >
+            <if test="roomid != null" >
+                roomId = #{roomid,jdbcType=INTEGER},
+            </if>
+            <if test="periodid != null" >
+                periodId = #{periodid,jdbcType=INTEGER},
+            </if>
+            <if test="repeat != null" >
+                repeat = #{repeat,jdbcType=VARCHAR},
+            </if>
+            <if test="expirdate != null" >
+                expirDate = #{expirdate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="requiredconfirm != null" >
+                requiredConfirm = #{requiredconfirm,jdbcType=INTEGER},
+            </if>
+            <if test="deadline != null" >
+                deadLine = #{deadline,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null" >
+                status = #{status,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.hemeiyue.entity.Roomperiods" >
+        update roomperiods
+        set roomId = #{roomid,jdbcType=INTEGER},
+            periodId = #{periodid,jdbcType=INTEGER},
+            repeat = #{repeat,jdbcType=VARCHAR},
+            expirDate = #{expirdate,jdbcType=TIMESTAMP},
+            requiredConfirm = #{requiredconfirm,jdbcType=INTEGER},
+            deadLine = #{deadline,jdbcType=TIMESTAMP},
+            status = #{status,jdbcType=INTEGER}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+</mapper>
