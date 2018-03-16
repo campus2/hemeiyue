@@ -1,17 +1,17 @@
 package com.hemeiyue.dao;
 
-import com.hemeiyue.entity.Booking;
+import com.hemeiyue.entity.Bookings;
 
 public interface BookingsMapper {
     int deleteByPrimaryKey(Integer id);
 
-    int insert(Booking record);
+    int insert(Bookings record);
 
-    int insertSelective(Booking record);
+    int insertSelective(Bookings record);
 
-    Booking selectByPrimaryKey(Integer id);
+    Bookings selectByPrimaryKey(Integer id);
 
-    int updateByPrimaryKeySelective(Booking record);
+    int updateByPrimaryKeySelective(Bookings record);
 
-    int updateByPrimaryKey(Booking record);
+    int updateByPrimaryKey(Bookings record);
 }

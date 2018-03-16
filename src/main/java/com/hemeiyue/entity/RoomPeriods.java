@@ -9,12 +9,12 @@ import java.util.Date;
  * 
  * @date 2018-03-14
  */
-public class RoomPeriod {
+public class RoomPeriods {
     private Integer id;
 
-    private Room room;
+    private Rooms room;
 
-    private Period period;
+    private Periods period;
 
     private String repeat;
 
@@ -74,19 +74,19 @@ public class RoomPeriod {
         this.status = status;
     }
 
-	public Room getRoom() {
+	public Rooms getRoom() {
 		return room;
 	}
 
-	public void setRoom(Room room) {
+	public void setRoom(Rooms room) {
 		this.room = room;
 	}
 
-	public Period getPeriod() {
+	public Periods getPeriod() {
 		return period;
 	}
 
-	public void setPeriod(Period period) {
+	public void setPeriod(Periods period) {
 		this.period = period;
 	}
 }

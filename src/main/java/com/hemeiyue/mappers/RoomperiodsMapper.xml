@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.hemeiyue.dao.RoomperiodsMapper" >
 
-    <resultMap id="BaseResultMap" type="com.hemeiyue.entity.Roomperiods" >
+    <resultMap id="BaseResultMap" type="com.hemeiyue.entity.RoomPeriods" >
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="roomId" property="roomid" jdbcType="INTEGER" />
         <result column="periodId" property="periodid" jdbcType="INTEGER" />
@@ -29,7 +29,7 @@
         where id = #{id,jdbcType=INTEGER}
     </delete>
 
-    <insert id="insert" parameterType="com.hemeiyue.entity.Roomperiods" >
+    <insert id="insert" parameterType="com.hemeiyue.entity.RoomPeriods" >
         insert into roomperiods (id, roomId, periodId, 
             repeat, expirDate, requiredConfirm, 
             deadLine, status)
@@ -38,7 +38,7 @@
             #{deadline,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER})
     </insert>
 
-    <insert id="insertSelective" parameterType="com.hemeiyue.entity.Roomperiods" >
+    <insert id="insertSelective" parameterType="com.hemeiyue.entity.RoomPeriods" >
         insert into roomperiods
         <trim prefix="(" suffix=")" suffixOverrides="," >
             <if test="id != null" >
@@ -94,7 +94,7 @@
         </trim>
     </insert>
 
-    <update id="updateByPrimaryKeySelective" parameterType="com.hemeiyue.entity.Roomperiods" >
+    <update id="updateByPrimaryKeySelective" parameterType="com.hemeiyue.entity.RoomPeriods" >
         update roomperiods
         <set >
             <if test="roomid != null" >
@@ -122,7 +122,7 @@
         where id = #{id,jdbcType=INTEGER}
     </update>
 
-    <update id="updateByPrimaryKey" parameterType="com.hemeiyue.entity.Roomperiods" >
+    <update id="updateByPrimaryKey" parameterType="com.hemeiyue.entity.RoomPeriods" >
         update roomperiods
         set roomId = #{roomid,jdbcType=INTEGER},
             periodId = #{periodid,jdbcType=INTEGER},

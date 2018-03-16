@@ -9,10 +9,10 @@ import java.util.Date;
  * 
  * @date 2018-03-14
  */
-public class SchoolAdmin {
+public class SchoolAdmins {
     private Integer id;
 
-    private School school;
+    private Schools school;
 
     private Admin admin;
 
@@ -30,11 +30,11 @@ public class SchoolAdmin {
         this.id = id;
     }
     
-    public School getSchool() {
+    public Schools getSchool() {
 		return school;
 	}
 
-	public void setSchool(School school) {
+	public void setSchool(Schools school) {
 		this.school = school;
 	}
 

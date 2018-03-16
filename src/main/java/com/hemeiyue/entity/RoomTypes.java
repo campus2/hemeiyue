@@ -7,12 +7,12 @@ package com.hemeiyue.entity;
  * 
  * @date 2018-03-14
  */
-public class RoomType {
+public class RoomTypes {
     private Integer id;
 
     private String roomType;
 
-    private School school;
+    private Schools school;
 
     private Integer status;
 
@@ -28,11 +28,11 @@ public class RoomType {
         return roomType;
     }
 
-    public School getSchool() {
+    public Schools getSchool() {
 		return school;
 	}
 
-	public void setSchool(School school) {
+	public void setSchool(Schools school) {
 		this.school = school;
 	}
 

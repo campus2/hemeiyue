@@ -1,17 +1,14 @@
 package com.hemeiyue.dao;
 
-import com.hemeiyue.entity.School;
+import com.hemeiyue.entity.Schools;
 
 public interface SchoolsMapper {
-    int deleteByPrimaryKey(Integer id);
+    
+	public int deleteById(Integer id);
 
-    int insert(School record);
+    public int insert(Schools record);
 
-    int insertSelective(School record);
+    public Schools selectById(Integer id);
 
-    School selectByPrimaryKey(Integer id);
-
-    int updateByPrimaryKeySelective(School record);
-
-    int updateByPrimaryKey(School record);
+    public int update(Schools record);
 }

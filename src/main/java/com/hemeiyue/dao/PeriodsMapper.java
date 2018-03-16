@@ -1,17 +1,17 @@
 package com.hemeiyue.dao;
 
-import com.hemeiyue.entity.Period;
+import com.hemeiyue.entity.Periods;
 
 public interface PeriodsMapper {
     int deleteByPrimaryKey(Integer id);
 
-    int insert(Period record);
+    int insert(Periods record);
 
-    int insertSelective(Period record);
+    int insertSelective(Periods record);
 
-    Period selectByPrimaryKey(Integer id);
+    Periods selectByPrimaryKey(Integer id);
 
-    int updateByPrimaryKeySelective(Period record);
+    int updateByPrimaryKeySelective(Periods record);
 
-    int updateByPrimaryKey(Period record);
+    int updateByPrimaryKey(Periods record);
 }

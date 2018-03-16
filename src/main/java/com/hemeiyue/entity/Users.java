@@ -7,12 +7,12 @@ package com.hemeiyue.entity;
  * 
  * @date 2018-03-14
  */
-public class User {
+public class Users {
     private Integer id;
 
     private String openId;
 
-    private School school;
+    private Schools school;
 
     private String userName;
 
@@ -38,11 +38,11 @@ public class User {
 		this.openId = openId;
 	}
 
-	public School getSchool() {
+	public Schools getSchool() {
 		return school;
 	}
 
-	public void setSchool(School school) {
+	public void setSchool(Schools school) {
 		this.school = school;
 	}
 

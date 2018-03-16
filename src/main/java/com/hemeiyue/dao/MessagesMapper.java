@@ -1,17 +1,17 @@
 package com.hemeiyue.dao;
 
-import com.hemeiyue.entity.Message;
+import com.hemeiyue.entity.Messages;
 
 public interface MessagesMapper {
     int deleteByPrimaryKey(Integer id);
 
-    int insert(Message record);
+    int insert(Messages record);
 
-    int insertSelective(Message record);
+    int insertSelective(Messages record);
 
-    Message selectByPrimaryKey(Integer id);
+    Messages selectByPrimaryKey(Integer id);
 
-    int updateByPrimaryKeySelective(Message record);
+    int updateByPrimaryKeySelective(Messages record);
 
-    int updateByPrimaryKey(Message record);
+    int updateByPrimaryKey(Messages record);
 }

@@ -7,33 +7,26 @@
         <result column="school" property="school" jdbcType="VARCHAR" />
         <result column="CDT" property="cdt" jdbcType="TIMESTAMP" />
         <result column="status" property="status" jdbcType="INTEGER" />
-        <association property="owner" column="ownerId" select="com.hemeiyue.Dao.AdminMapper.selectByPrimaryKey"/>
+        <association property="owner" column="ownerId" select="com.hemeiyue.Dao.AdminMapper.selectById"/>
     </resultMap>
 
     <sql id="Base_Column_List" >
         id, school, ownerId, CDT, status
     </sql>
 
-    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
         select 
         <include refid="Base_Column_List" />
         from schools
         where id = #{id,jdbcType=INTEGER}
     </select>
 
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    <delete id="deleteById" parameterType="java.lang.Integer" >
         delete from schools
         where id = #{id,jdbcType=INTEGER}
     </delete>
 
     <insert id="insert" parameterType="com.hemeiyue.entity.Schools" >
-        insert into schools (id, school, ownerId, 
-            CDT, status)
-        values (#{id,jdbcType=INTEGER}, #{school,jdbcType=VARCHAR}, #{ownerid,jdbcType=INTEGER}, 
-            #{cdt,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER})
-    </insert>
-
-    <insert id="insertSelective" parameterType="com.hemeiyue.entity.Schools" >
         insert into schools
         <trim prefix="(" suffix=")" suffixOverrides="," >
             <if test="id != null" >
@@ -71,7 +64,7 @@
         </trim>
     </insert>
 
-    <update id="updateByPrimaryKeySelective" parameterType="com.hemeiyue.entity.Schools" >
+    <update id="update" parameterType="com.hemeiyue.entity.Schools" >
         update schools
         <set >
             <if test="school != null" >
@@ -87,15 +80,6 @@
                 status = #{status,jdbcType=INTEGER},
             </if>
         </set>
-        where id = #{id,jdbcType=INTEGER}
-    </update>
-
-    <update id="updateByPrimaryKey" parameterType="com.hemeiyue.entity.Schools" >
-        update schools
-        set school = #{school,jdbcType=VARCHAR},
-            ownerId = #{ownerid,jdbcType=INTEGER},
-            CDT = #{cdt,jdbcType=TIMESTAMP},
-            status = #{status,jdbcType=INTEGER}
         where id = #{id,jdbcType=INTEGER}
     </update>
 </mapper>

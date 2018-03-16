@@ -7,12 +7,12 @@ package com.hemeiyue.entity;
  * 
  * @date 2018-03-14
  */
-public class Department {
+public class Departments {
     private Integer id;
 
     private String department;
 
-    private School school;
+    private Schools school;
 
     private Integer parentId;
 
@@ -34,11 +34,11 @@ public class Department {
         this.department = department == null ? null : department.trim();
     }
 
-    public School getSchool() {
+    public Schools getSchool() {
 		return school;
 	}
 
-	public void setSchool(School school) {
+	public void setSchool(Schools school) {
 		this.school = school;
 	}
 

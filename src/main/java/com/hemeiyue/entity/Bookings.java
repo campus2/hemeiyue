@@ -9,12 +9,12 @@ import java.util.Date;
  * 
  * @date 2018-03-14
  */
-public class Booking {
+public class Bookings {
     private Integer id;
 
-    private RoomPeriod roomPeriod;
+    private RoomPeriods roomPeriod;
 
-    private User user;
+    private Users user;
 
     private Date CDT;
 
@@ -30,19 +30,19 @@ public class Booking {
         this.id = id;
     }
 
-    public RoomPeriod getRoomPeriod() {
+    public RoomPeriods getRoomPeriod() {
 		return roomPeriod;
 	}
 
-	public void setRoomPeriod(RoomPeriod roomPeriod) {
+	public void setRoomPeriod(RoomPeriods roomPeriod) {
 		this.roomPeriod = roomPeriod;
 	}
 
-	public User getUser() {
+	public Users getUser() {
 		return user;
 	}
 
-	public void setUser(User user) {
+	public void setUser(Users user) {
 		this.user = user;
 	}
 

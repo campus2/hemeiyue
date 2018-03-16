@@ -1,17 +1,17 @@
 package com.hemeiyue.dao;
 
-import com.hemeiyue.entity.Room;
+import com.hemeiyue.entity.Rooms;
 
 public interface RoomsMapper {
     int deleteByPrimaryKey(Integer id);
 
-    int insert(Room record);
+    int insert(Rooms record);
 
-    int insertSelective(Room record);
+    int insertSelective(Rooms record);
 
-    Room selectByPrimaryKey(Integer id);
+    Rooms selectByPrimaryKey(Integer id);
 
-    int updateByPrimaryKeySelective(Room record);
+    int updateByPrimaryKeySelective(Rooms record);
 
-    int updateByPrimaryKey(Room record);
+    int updateByPrimaryKey(Rooms record);
 }

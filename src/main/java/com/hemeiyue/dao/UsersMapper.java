@@ -1,17 +1,17 @@
 package com.hemeiyue.dao;
 
-import com.hemeiyue.entity.User;
+import com.hemeiyue.entity.Users;
 
 public interface UsersMapper {
     int deleteByPrimaryKey(Integer id);
 
-    int insert(User record);
+    int insert(Users record);
 
-    int insertSelective(User record);
+    int insertSelective(Users record);
 
-    User selectByPrimaryKey(Integer id);
+    Users selectByPrimaryKey(Integer id);
 
-    int updateByPrimaryKeySelective(User record);
+    int updateByPrimaryKeySelective(Users record);
 
-    int updateByPrimaryKey(User record);
+    int updateByPrimaryKey(Users record);
 }

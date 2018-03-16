@@ -7,7 +7,7 @@ package com.hemeiyue.entity;
  * 
  * @date 2018-03-14
  */
-public class Message {
+public class Messages {
     private Integer id;
 
     private String title;
@@ -18,7 +18,7 @@ public class Message {
 
     private Integer statusInSender;
 
-    private User recipient;
+    private Users recipient;
 
     private Integer statusInRecipient;
 
@@ -62,11 +62,11 @@ public class Message {
 		this.statusInSender = statusInSender;
 	}
 
-	public User getRecipient() {
+	public Users getRecipient() {
 		return recipient;
 	}
 
-	public void setRecipient(User recipient) {
+	public void setRecipient(Users recipient) {
 		this.recipient = recipient;
 	}
 

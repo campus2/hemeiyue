@@ -1,17 +1,17 @@
 package com.hemeiyue.dao;
 
-import com.hemeiyue.entity.SchoolAdmin;
+import com.hemeiyue.entity.SchoolAdmins;
 
 public interface SchooladminsMapper {
     int deleteByPrimaryKey(Integer id);
 
-    int insert(SchoolAdmin record);
+    int insert(SchoolAdmins record);
 
-    int insertSelective(SchoolAdmin record);
+    int insertSelective(SchoolAdmins record);
 
-    SchoolAdmin selectByPrimaryKey(Integer id);
+    SchoolAdmins selectByPrimaryKey(Integer id);
 
-    int updateByPrimaryKeySelective(SchoolAdmin record);
+    int updateByPrimaryKeySelective(SchoolAdmins record);
 
-    int updateByPrimaryKey(SchoolAdmin record);
+    int updateByPrimaryKey(SchoolAdmins record);
 }

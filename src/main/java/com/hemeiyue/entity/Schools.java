@@ -9,7 +9,7 @@ import java.util.Date;
  * 
  * @date 2018-03-14
  */
-public class School {
+public class Schools {
     private Integer id;
 
     private String school;
