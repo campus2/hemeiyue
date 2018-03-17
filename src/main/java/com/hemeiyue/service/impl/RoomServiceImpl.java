@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.hemeiyue.common.PeriodTime;
 import com.hemeiyue.common.ResultBean;
 import com.hemeiyue.common.RoomModel;
+import com.hemeiyue.common.UpdateRoom;
 import com.hemeiyue.dao.PeriodsMapper;
 import com.hemeiyue.dao.RoomperiodsMapper;
 import com.hemeiyue.dao.RoomsMapper;
@@ -47,8 +48,10 @@ public class RoomServiceImpl implements RoomService {
 		
 		Map<String, Object> map = new HashMap<>();
 		map.put("room", room.getRoom());
+		map.put("school", room.getSchool());
 		//如果已存在此课室号
-		if(this.find(map)!=null && this.find(map).size()>0) {
+		List<Rooms> list = roomMapper.find(map);
+		if(list!=null && list.size()>0) {
 			result.setResult(false);
 			result.setMessage("该课室已经存在");
 			return result;
@@ -73,11 +76,6 @@ public class RoomServiceImpl implements RoomService {
 		return result;
 	}
 
-	public List<Rooms> find(Map<String, Object> map) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	@Override
 	public String selectBySchoolId(int schoolId) {
 		List<Rooms> roomList = roomMapper.selectBySchool(schoolId);
@@ -89,14 +87,14 @@ public class RoomServiceImpl implements RoomService {
 		for(int i=0; i<typeList.size(); i++) {
 			List<Rooms> temp = new ArrayList<>();
 			String roomTypeName = typeList.get(i).getRoomType();
-			for(int j=0; j<roomList.size(); j++) {
-				Rooms room = roomList.get(i);
-				//找到对应类型的课室
-				if(roomTypeName.equals(room.getRoomType().getRoomType())) {
-					temp.add(roomList.get(i));
-					roomList.remove(room);
+			if(roomList!=null && roomList.size()>0)
+				for(int j=0; j<roomList.size(); j++) {
+					Rooms room = roomList.get(j);
+					//找到对应类型的课室
+					if(roomTypeName.equals(room.getRoomType().getRoomType())) {
+						temp.add(roomList.get(j));
+					}
 				}
-			}
 			roomMap.put(roomTypeName, temp);
 		}
 		//学校名称
@@ -133,10 +131,67 @@ public class RoomServiceImpl implements RoomService {
 	@Override
 	public ResultBean deleteById(int id) {
 		ResultBean result = null;
-		if(roomMapper.deleteById(id) > 0) {
+		if(roomMapper.updateById(id) > 0) {
 			result = new ResultBean(true, "删除成功");
 		}else {
 			result = new ResultBean(false);
+		}
+		return result;
+	}
+
+	@Override
+	public ResultBean deleteByTypeAndName(RoomTypes roomType, String roomName) {
+		//查询待删除课室的课室类型是否存在
+		Map<String, Object> map = new HashMap<>();
+		map.put("roomType", roomType.getRoomType());
+		map.put("school", roomType.getSchool());
+
+		List<RoomTypes> rtList = roomTypeMapper.find(map);
+		if(rtList==null | rtList.size()==0) return new ResultBean(false);
+		RoomTypes roomtype = rtList.get(0);
+		
+		//待删除课室是否存在
+		map.put("room", roomName);
+		map.put("roomType", roomtype);
+		System.out.println(map.get("roomType"));
+		List<Rooms> roomList = roomMapper.find(map);
+		if(roomList==null | roomList.size()==0) return new ResultBean(false);
+		
+		ResultBean result = new ResultBean();
+		if(roomMapper.updateById(roomList.get(0).getId()) > 0) {
+			result.setResult(true);
+		}else {
+			result.setResult(false);
+		}
+		return result;
+	}
+	
+	@Override
+	public ResultBean updateRoom(UpdateRoom updateRoom) {
+		ResultBean result = new ResultBean();
+		Map<String, Object> map = new HashMap<>();
+		//查询课室类型
+		map.put("roomType", updateRoom.getRoomType());
+		RoomTypes roomType = roomTypeMapper.find(map).get(0);
+		//查询课室是否存在
+		map.put("roomType", roomType);
+		map.put("room", updateRoom.getOldRoom());
+		List<Rooms> list = roomMapper.find(map);
+		if(list==null | list.size()==0) {
+			result.setResult(false);
+			result.setMessage("该课室不存在");
+			return result;
+		}
+		//更新课室
+		Rooms room = list.get(0);
+		room.setRoom(updateRoom.getNewRoom());
+		System.out.println(room.getRoomType().getId());
+		if(roomMapper.update(room) > 0) {
+			result.setResult(true);
+			result.setMessage("修改成功");
+		}else {
+			result.setResult(false);
+			result.setMessage("修改失败");
 		}
 		return result;
 	}

@@ -17,10 +17,10 @@
 		select *from roomtype
 		<where>
 			<if test="roomType!=null and roomType!=''">
-				and roomType = #{roomType}
+				and roomType = #{roomType,jdbcType=VARCHAR}
 			</if>
-			<if test="schoolId!=null and schoolId!=''">
-				and schoolId = #{schoolId}
+			<if test="school!=null">
+				and schoolId = #{school.id}
 			</if>
 		</where>
 	</select>
@@ -28,18 +28,19 @@
     <sql id="Base_Column_List" >
         id, roomType, schoolId, status
     </sql>
-
+	
     <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-        select roomType
+        select id,roomType
         
         from roomtype
         where id = #{id,jdbcType=INTEGER}
     </select>
 
-    <delete id="deleteById" parameterType="java.lang.Integer" >
-        delete from roomtype
+    <update id="updateById" parameterType="java.lang.Integer" >
+        update roomtype
+     	set status = -1
         where id = #{id,jdbcType=INTEGER}
-    </delete>
+    </update>
 
     <insert id="insert" parameterType="com.hemeiyue.entity.RoomTypes" >
         insert into roomtype

@@ -6,13 +6,12 @@
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="room" property="room" jdbcType="VARCHAR" />
         <!--  
-        <result column="schoolId" property="schoolid" jdbcType="INTEGER" />
         <result column="departmentId" property="departmentid" jdbcType="INTEGER" />
          <association property="department" column="departmentId" select="com.hemeiyue.dao.DepartmentsMapper.selectById"/>
         -->
         <result column="status" property="status" jdbcType="INTEGER" />
         <association property="roomType" column="roomTypeId" select="com.hemeiyue.dao.RoomtypeMapper.selectById"/>
-       
+        <association property="school" column="schoolId" select="com.hemeiyue.dao.SchoolsMapper.selectById" />
     </resultMap>
     
     <select id="find" parameterType="Map" resultMap="BaseResultMap">
@@ -21,14 +20,18 @@
     		<if test="room!=null and room!=''">
     			and room = #{room}
     		</if>
-    		<if test="school!=null and scholl!=''">
+    		<if test="roomType!=null">
+    			and roomTypeId = #{roomType.id}
+    		</if>
+    		<if test="school!=null">
     			and schoolId = #{school.id}
     		</if>
+    		and status>0
     	</where>
     </select>
     
     <select id="selectBySchool" parameterType="Integer" resultMap="BaseResultMap">
-    	select id,room,roomTypeId from rooms where schoolId=#{schoolId}
+    	select id,room,roomTypeId from rooms where schoolId=#{schoolId} and status>0
     </select>
 
     <sql id="Base_Column_List" >
@@ -39,13 +42,14 @@
         select 
         <include refid="Base_Column_List" />
         from rooms
-        where id = #{id,jdbcType=INTEGER}
+        where id = #{id,jdbcType=INTEGER} and status>0
     </select>
 
-    <delete id="deleteById" parameterType="java.lang.Integer" >
-        delete from rooms
+    <update id="updateById" parameterType="java.lang.Integer" >
+        update rooms
+        set status = -1
         where id = #{id,jdbcType=INTEGER}
-    </delete>
+    </update>
 	
 
     <insert id="insert" parameterType="com.hemeiyue.entity.Rooms" useGeneratedKeys="true" keyProperty="id">

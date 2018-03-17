@@ -1,10 +1,9 @@
 package com.hemeiyue.service;
 
-import java.util.List;
-import java.util.Map;
-
 import com.hemeiyue.common.ResultBean;
 import com.hemeiyue.common.RoomModel;
+import com.hemeiyue.common.UpdateRoom;
+import com.hemeiyue.entity.RoomTypes;
 import com.hemeiyue.entity.Rooms;
 
 public interface RoomService {
@@ -45,10 +44,18 @@ public interface RoomService {
 	public ResultBean insertRoomModel(RoomModel roomModel, Rooms room);
 	
 	/**
-	 * 根据指定条件返回数据
-	 * @param map
+	 * 根据updateRoomd的属性修改room
+	 * @param updateRoom
 	 * @return
 	 */
-	public List<Rooms> find(Map<String, Object> map);
+	public ResultBean updateRoom(UpdateRoom updateRoom);
+
+	/**
+	 * 删除指定的课室
+	 * @param roomtype 课室类型
+	 * @param roomName 课室名称
+	 * @return
+	 */
+	public ResultBean deleteByTypeAndName(RoomTypes roomtype, String roomName);
 
 }

@@ -17,7 +17,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.hemeiyue.common.PeriodTime;
+import com.hemeiyue.common.ResultBean;
 import com.hemeiyue.common.RoomModel;
+import com.hemeiyue.common.UpdateRoom;
 import com.hemeiyue.entity.Admin;
 import com.hemeiyue.entity.Departments;
 import com.hemeiyue.entity.Periods;
@@ -50,14 +52,37 @@ public class SchoolTest {
 	}
 	
 	@Test
+	public void roomDelete() {
+		RoomTypes roomType = new RoomTypes(1);
+		Schools school = new Schools(1);
+		roomType.setSchool(school);
+		
+		roomService.deleteByTypeAndName(roomType, "????");
+	}
+	
+	@Test
+	public void roomModifyTest() {
+		UpdateRoom updateRoom = new UpdateRoom();
+		updateRoom.setOldRoom("????");
+		updateRoom.setNewRoom("102");
+		
+		roomService.updateRoom(updateRoom);
+	}
+	
+	@Test
+	public void roomListTest() {
+		System.out.println(roomService.selectBySchoolId(1));
+	}
+	
+	@Test
 	public void roomAddTest() {
 		RoomModel roomModel = new RoomModel();
-		roomModel.setRoomName("测试添加课室101");
-		roomModel.setRoomType("课室");
+		roomModel.setRoomName("202");
+		roomModel.setRoomType("????????");
 		
 		Rooms room = new Rooms();
 		room.setRoom(roomModel.getRoomName());
-		room.setRoomType(new RoomTypes(1));
+		room.setRoomType(new RoomTypes(3));
 		room.setSchool(new Schools(1));
 		room.setDepartment(new Departments(1));
 		room.setStatus(1);
@@ -82,7 +107,8 @@ public class SchoolTest {
 		roomModel.setPeriod(ptList);
 		
 		
-		roomService.insertRoomModel(roomModel, room);
+		ResultBean result = roomService.insertRoomModel(roomModel, room);
+		System.out.println(result.isResult());
 	}
 
 	@Test

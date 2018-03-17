@@ -19,8 +19,20 @@ public class Rooms {
     private Departments department;
 
     private Integer status;
+    
+    public Rooms(String room, RoomTypes roomType, Schools school) {
+		super();
+		this.room = room;
+		this.roomType = roomType;
+		this.school = school;
+	}
 
-    public Integer getId() {
+	public Rooms() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public Integer getId() {
         return id;
     }
 

@@ -7,7 +7,12 @@ import com.hemeiyue.entity.Rooms;
 
 public interface RoomsMapper {
     
-	int deleteById(Integer id);
+	/**
+	 * 删除某个课室（将标志位-1)
+	 * @param id
+	 * @return
+	 */
+	public int updateById(Integer id);
 
     int insert(Rooms record);
 

@@ -16,8 +16,13 @@ public class RoomTypes {
 
     private Integer status = 1;
     
-    
-    public RoomTypes(Integer id) {
+    public RoomTypes(String roomType, Schools school) {
+		super();
+		this.roomType = roomType;
+		this.school = school;
+	}
+
+	public RoomTypes(Integer id) {
 		super();
 		this.id = id;
 	}
