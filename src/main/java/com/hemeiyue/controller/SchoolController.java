@@ -9,11 +9,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.hemeiyue.common.PageBean;
 import com.hemeiyue.common.ResultBean;
@@ -91,11 +91,11 @@ public class SchoolController {
 	 * @return
 	 */
 	@RequestMapping("/index")
-	public String index(HttpServletResponse response) {
+	@ResponseBody
+	public List<ResultBean> index(HttpServletResponse response) {
 		List<ResultBean> list = new ArrayList<>();
 		list.add(new ResultBean(true,"success"));
 		list.add(new ResultBean(true,"添加成功"));
-		ResponseUtil.write(response, list);
-		return null;
+		return list;
 	}
 }

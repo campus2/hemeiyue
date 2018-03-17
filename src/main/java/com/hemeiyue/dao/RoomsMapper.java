@@ -1,6 +1,7 @@
 package com.hemeiyue.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.hemeiyue.entity.Rooms;
 
@@ -11,6 +12,13 @@ public interface RoomsMapper {
     int insert(Rooms record);
 
     Rooms selectById(Integer id);
+    
+    /**
+	 * 根据指定条件返回数据
+	 * @param map
+	 * @return
+	 */
+	public List<Rooms> find(Map<String, Object> map);
 
     /**
      * 返回某个学校的课室

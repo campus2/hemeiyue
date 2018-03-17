@@ -1,6 +1,9 @@
 package hemeiyue;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -13,11 +16,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.hemeiyue.common.PeriodTime;
+import com.hemeiyue.common.RoomModel;
+import com.hemeiyue.entity.Admin;
 import com.hemeiyue.entity.Departments;
+import com.hemeiyue.entity.Periods;
 import com.hemeiyue.entity.RoomTypes;
 import com.hemeiyue.entity.Rooms;
 import com.hemeiyue.entity.Schools;
 import com.hemeiyue.service.RoomService;
+import com.hemeiyue.service.RoomTypeService;
 import com.hemeiyue.service.SchoolService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -30,6 +38,9 @@ public class SchoolTest {
 	@Autowired
 	private RoomService roomService;
 	
+	@Autowired
+	private RoomTypeService roomTypeService;
+	
 	@Before
 	public void setUp() throws Exception {
 	}
@@ -39,8 +50,39 @@ public class SchoolTest {
 	}
 	
 	@Test
-	public void roomListTest() {
-		System.out.println(roomService.selectBySchoolId(1));
+	public void roomAddTest() {
+		RoomModel roomModel = new RoomModel();
+		roomModel.setRoomName("测试添加课室101");
+		roomModel.setRoomType("课室");
+		
+		Rooms room = new Rooms();
+		room.setRoom(roomModel.getRoomName());
+		room.setRoomType(new RoomTypes(1));
+		room.setSchool(new Schools(1));
+		room.setDepartment(new Departments(1));
+		room.setStatus(1);
+		
+		Periods p = new Periods();
+		p.setBegintime(new Date());
+		p.setEndtime(new Date());
+		p.setPeriod("afternoon");
+		Admin admin = new Admin();
+		admin.setId(1);
+		p.setAdmin(admin);
+		
+		PeriodTime pt = new PeriodTime();
+		pt.setPeriod(p);
+		pt.setRoom(room);
+		pt.setStatus(1);
+		pt.setRoom(room);
+		
+		List<PeriodTime> ptList = new ArrayList<>();
+		ptList.add(pt);
+		ptList.add(pt);
+		roomModel.setPeriod(ptList);
+		
+		
+		roomService.insertRoomModel(roomModel, room);
 	}
 
 	@Test

@@ -12,6 +12,18 @@
 	<select id="selectBySchoolId" parameterType="Integer" resultMap="BaseResultMap">
 		select *from roomtype where schoolId=#{schoolId}
 	</select>
+	
+	<select id="find" parameterType="Map" resultMap="BaseResultMap">
+		select *from roomtype
+		<where>
+			<if test="roomType!=null and roomType!=''">
+				and roomType = #{roomType}
+			</if>
+			<if test="schoolId!=null and schoolId!=''">
+				and schoolId = #{schoolId}
+			</if>
+		</where>
+	</select>
 
     <sql id="Base_Column_List" >
         id, roomType, schoolId, status
@@ -35,10 +47,10 @@
             <if test="id != null" >
                 id,
             </if>
-            <if test="roomtype != null" >
+            <if test="roomType != null" >
                 roomType,
             </if>
-            <if test="schoolid != null" >
+            <if test="school != null" >
                 schoolId,
             </if>
             <if test="status != null" >
@@ -49,11 +61,11 @@
             <if test="id != null" >
                 #{id,jdbcType=INTEGER},
             </if>
-            <if test="roomtype != null" >
-                #{roomtype,jdbcType=VARCHAR},
+            <if test="roomType != null" >
+                #{roomType,jdbcType=VARCHAR},
             </if>
-            <if test="schoolid != null" >
-                #{schoolid,jdbcType=INTEGER},
+            <if test="school != null" >
+                #{school.id,jdbcType=INTEGER},
             </if>
             <if test="status != null" >
                 #{status,jdbcType=INTEGER},
@@ -64,11 +76,11 @@
     <update id="update" parameterType="com.hemeiyue.entity.RoomTypes" >
         update roomtype
         <set >
-            <if test="roomtype != null" >
-                roomType = #{roomtype,jdbcType=VARCHAR},
+            <if test="roomType != null" >
+                roomType = #{roomType,jdbcType=VARCHAR},
             </if>
-            <if test="schoolid != null" >
-                schoolId = #{schoolid,jdbcType=INTEGER},
+            <if test="school != null" >
+                schoolId = #{school.id,jdbcType=INTEGER},
             </if>
             <if test="status != null" >
                 status = #{status,jdbcType=INTEGER},

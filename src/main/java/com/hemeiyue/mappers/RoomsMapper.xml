@@ -15,6 +15,18 @@
        
     </resultMap>
     
+    <select id="find" parameterType="Map" resultMap="BaseResultMap">
+    	select *from rooms
+    	<where>
+    		<if test="room!=null and room!=''">
+    			and room = #{room}
+    		</if>
+    		<if test="school!=null and scholl!=''">
+    			and schoolId = #{school.id}
+    		</if>
+    	</where>
+    </select>
+    
     <select id="selectBySchool" parameterType="Integer" resultMap="BaseResultMap">
     	select id,room,roomTypeId from rooms where schoolId=#{schoolId}
     </select>
@@ -34,8 +46,9 @@
         delete from rooms
         where id = #{id,jdbcType=INTEGER}
     </delete>
+	
 
-    <insert id="insert" parameterType="com.hemeiyue.entity.Rooms" >
+    <insert id="insert" parameterType="com.hemeiyue.entity.Rooms" useGeneratedKeys="true" keyProperty="id">
         insert into rooms
         <trim prefix="(" suffix=")" suffixOverrides="," >
             <if test="id != null" >

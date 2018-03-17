@@ -10,7 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.hemeiyue.common.ResultBean;
+import com.hemeiyue.common.RoomModel;
+import com.hemeiyue.entity.RoomTypes;
 import com.hemeiyue.entity.Rooms;
+import com.hemeiyue.entity.Schools;
 import com.hemeiyue.service.RoomService;
 import com.hemeiyue.util.ResponseUtil;
 
@@ -39,23 +42,26 @@ public class RoomController {
 	}
 	
 	/**
-	 * 添加/修改课室信息
+	 * 添加课室信息
 	 * @param room
 	 * @param response
 	 * @return
 	 */
-	@RequestMapping("/save")
-	public String save(@RequestBody Rooms room,
-			HttpServletResponse response) {
-		ResultBean result = null;
-		if(room.getId() == null) {
-			result = roomService.insert(room);
-		}else {
-			result = roomService.update(room);
-		}
+	@RequestMapping("/addRoom")
+	public String addRoom(@RequestBody RoomModel roomModel,
+			HttpServletRequest request, HttpServletResponse response) {
+		int schoolId = (int)request.getSession().getAttribute("schoolId");
+		//构造待插入的数据
+		Rooms room = new Rooms();
+		room.setSchool(new Schools(schoolId));
+		room.setRoomType(new RoomTypes(roomModel.getRoomType()));
+		room.setRoom(roomModel.getRoomName());
+		
+		ResultBean result = roomService.insertRoomModel(roomModel,room);
 		ResponseUtil.write(response, result);
 		return null;
 	}
+	
 	
 	/**
 	 * 删除课室信息

@@ -1,6 +1,10 @@
 package com.hemeiyue.service;
 
+import java.util.List;
+import java.util.Map;
+
 import com.hemeiyue.common.ResultBean;
+import com.hemeiyue.common.RoomModel;
 import com.hemeiyue.entity.Rooms;
 
 public interface RoomService {
@@ -31,5 +35,20 @@ public interface RoomService {
 	 * @return
 	 */
 	public ResultBean deleteById(int id);
+
+	/**
+	 * 添加课室以及添加对应的时间段
+	 * @param roomModel
+	 * @param room 
+	 * @return
+	 */
+	public ResultBean insertRoomModel(RoomModel roomModel, Rooms room);
+	
+	/**
+	 * 根据指定条件返回数据
+	 * @param map
+	 * @return
+	 */
+	public List<Rooms> find(Map<String, Object> map);
 
 }

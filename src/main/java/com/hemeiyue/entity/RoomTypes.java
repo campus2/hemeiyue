@@ -14,9 +14,24 @@ public class RoomTypes {
 
     private Schools school;
 
-    private Integer status;
+    private Integer status = 1;
+    
+    
+    public RoomTypes(Integer id) {
+		super();
+		this.id = id;
+	}
 
-    public Integer getId() {
+	public RoomTypes(String roomType) {
+		super();
+		this.roomType = roomType;
+	}
+
+	public RoomTypes() {
+		super();
+	}
+
+	public Integer getId() {
         return id;
     }
 

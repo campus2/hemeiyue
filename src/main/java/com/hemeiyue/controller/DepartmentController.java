@@ -12,9 +12,9 @@ import com.hemeiyue.service.DepartmentService;
 @Controller
 @RequestMapping("/department")
 public class DepartmentController {
-
-	@Autowired
-	private DepartmentService departmentService;
+//
+//	@Autowired
+//	private DepartmentService departmentService;
 	
 	/**
 	 * 返回某个学校的部门信息

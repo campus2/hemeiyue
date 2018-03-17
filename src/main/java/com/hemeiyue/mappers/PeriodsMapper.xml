@@ -7,7 +7,6 @@
         <result column="period" property="period" jdbcType="VARCHAR" />
         <result column="beginTime" property="begintime" jdbcType="TIMESTAMP" />
         <result column="endTime" property="endtime" jdbcType="TIMESTAMP" />
-        <result column="adminId" property="adminid" jdbcType="INTEGER" />
     </resultMap>
 
     <sql id="Base_Column_List" >
@@ -26,14 +25,7 @@
         where id = #{id,jdbcType=INTEGER}
     </delete>
 
-    <insert id="insert" parameterType="com.hemeiyue.entity.Periods" >
-        insert into periods (id, period, beginTime, 
-            endTime, adminId)
-        values (#{id,jdbcType=INTEGER}, #{period,jdbcType=VARCHAR}, #{begintime,jdbcType=TIMESTAMP}, 
-            #{endtime,jdbcType=TIMESTAMP}, #{adminid,jdbcType=INTEGER})
-    </insert>
-
-    <insert id="insertSelective" parameterType="com.hemeiyue.entity.Periods" >
+    <insert id="insert" parameterType="com.hemeiyue.entity.Periods" useGeneratedKeys="true" keyProperty="id">
         insert into periods
         <trim prefix="(" suffix=")" suffixOverrides="," >
             <if test="id != null" >
@@ -48,7 +40,7 @@
             <if test="endtime != null" >
                 endTime,
             </if>
-            <if test="adminid != null" >
+            <if test="admin != null" >
                 adminId,
             </if>
         </trim>
@@ -65,8 +57,8 @@
             <if test="endtime != null" >
                 #{endtime,jdbcType=TIMESTAMP},
             </if>
-            <if test="adminid != null" >
-                #{adminid,jdbcType=INTEGER},
+            <if test="admin != null" >
+                #{admin.id,jdbcType=INTEGER},
             </if>
         </trim>
     </insert>
