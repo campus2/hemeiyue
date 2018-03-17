@@ -4,35 +4,32 @@
 
     <resultMap id="BaseResultMap" type="com.hemeiyue.entity.RoomTypes" >
         <id column="id" property="id" jdbcType="INTEGER" />
-        <result column="roomType" property="roomtype" jdbcType="VARCHAR" />
-        <result column="schoolId" property="schoolid" jdbcType="INTEGER" />
+        <result column="roomType" property="roomType" jdbcType="VARCHAR" />
         <result column="status" property="status" jdbcType="INTEGER" />
+        <association property="school" column="schoolId" select="com.hemeiyue.dao.SchoolsMapper.selectById" />
     </resultMap>
+
+	<select id="selectBySchoolId" parameterType="Integer" resultMap="BaseResultMap">
+		select *from roomtype where schoolId=#{schoolId}
+	</select>
 
     <sql id="Base_Column_List" >
         id, roomType, schoolId, status
     </sql>
 
-    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-        select 
-        <include refid="Base_Column_List" />
+    <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select roomType
+        
         from roomtype
         where id = #{id,jdbcType=INTEGER}
     </select>
 
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    <delete id="deleteById" parameterType="java.lang.Integer" >
         delete from roomtype
         where id = #{id,jdbcType=INTEGER}
     </delete>
 
     <insert id="insert" parameterType="com.hemeiyue.entity.RoomTypes" >
-        insert into roomtype (id, roomType, schoolId, 
-            status)
-        values (#{id,jdbcType=INTEGER}, #{roomtype,jdbcType=VARCHAR}, #{schoolid,jdbcType=INTEGER}, 
-            #{status,jdbcType=INTEGER})
-    </insert>
-
-    <insert id="insertSelective" parameterType="com.hemeiyue.entity.RoomTypes" >
         insert into roomtype
         <trim prefix="(" suffix=")" suffixOverrides="," >
             <if test="id != null" >
@@ -64,7 +61,7 @@
         </trim>
     </insert>
 
-    <update id="updateByPrimaryKeySelective" parameterType="com.hemeiyue.entity.RoomTypes" >
+    <update id="update" parameterType="com.hemeiyue.entity.RoomTypes" >
         update roomtype
         <set >
             <if test="roomtype != null" >
@@ -77,14 +74,6 @@
                 status = #{status,jdbcType=INTEGER},
             </if>
         </set>
-        where id = #{id,jdbcType=INTEGER}
-    </update>
-
-    <update id="updateByPrimaryKey" parameterType="com.hemeiyue.entity.RoomTypes" >
-        update roomtype
-        set roomType = #{roomtype,jdbcType=VARCHAR},
-            schoolId = #{schoolid,jdbcType=INTEGER},
-            status = #{status,jdbcType=INTEGER}
         where id = #{id,jdbcType=INTEGER}
     </update>
 </mapper>

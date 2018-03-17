@@ -28,6 +28,10 @@ public class RoomTypes {
         return roomType;
     }
 
+	public void setRoomType(String roomType) {
+		this.roomType = roomType == null ? null : roomType.trim();
+	}
+
     public Schools getSchool() {
 		return school;
 	}
@@ -36,9 +40,6 @@ public class RoomTypes {
 		this.school = school;
 	}
 
-	public void setRoomType(String roomType) {
-		this.roomType = roomType == null ? null : roomType.trim();
-	}
 
 	public Integer getStatus() {
         return status;
@@ -47,4 +48,5 @@ public class RoomTypes {
     public void setStatus(Integer status) {
         this.status = status;
     }
+    
 }

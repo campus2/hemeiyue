@@ -3,15 +3,11 @@ package com.hemeiyue.dao;
 import com.hemeiyue.entity.Departments;
 
 public interface DepartmentsMapper {
-    int deleteByPrimaryKey(Integer id);
+    int deleteById(Integer id);
 
     int insert(Departments record);
 
-    int insertSelective(Departments record);
+    Departments selectById(Integer id);
 
-    Departments selectByPrimaryKey(Integer id);
-
-    int updateByPrimaryKeySelective(Departments record);
-
-    int updateByPrimaryKey(Departments record);
+    int update(Departments record);
 }

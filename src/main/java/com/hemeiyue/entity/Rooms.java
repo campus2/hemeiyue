@@ -14,7 +14,7 @@ public class Rooms {
 
     private RoomTypes roomType;
 
-    private Schools schol;
+    private Schools school;
 
     private Departments department;
 
@@ -44,12 +44,12 @@ public class Rooms {
 		this.roomType = roomType;
 	}
 
-	public Schools getSchol() {
-		return schol;
+	public Schools getSchool() {
+		return school;
 	}
 
-	public void setSchol(Schools schol) {
-		this.schol = schol;
+	public void setSchool(Schools school) {
+		this.school = school;
 	}
 
 	public Departments getDepartment() {

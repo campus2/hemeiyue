@@ -5,10 +5,27 @@
     <resultMap id="BaseResultMap" type="com.hemeiyue.entity.Schools" >
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="school" property="school" jdbcType="VARCHAR" />
-        <result column="CDT" property="cdt" jdbcType="TIMESTAMP" />
+        <result column="CDT" property="CDT" jdbcType="TIMESTAMP" />
         <result column="status" property="status" jdbcType="INTEGER" />
+        <!-- 
         <association property="owner" column="ownerId" select="com.hemeiyue.Dao.AdminMapper.selectById"/>
+         -->
     </resultMap>
+    
+    <select id="find" parameterType="Map" resultMap="BaseResultMap">
+    	select *from schools
+    	<where>
+    		<if test="school!=null and school!=''">and school=#{school}</if>
+    	</where>
+    	<if test="start!=null and size!=null">limit #{start},#{size}</if>
+    </select>
+    
+    <select id="getTotal" parameterType="Map" resultType="Long">
+    	select count(*) from schools
+    	<where>
+    		<if test="school!=null and school!=''">and school=#{school}</if>
+    	</where>
+    </select>
 
     <sql id="Base_Column_List" >
         id, school, ownerId, CDT, status

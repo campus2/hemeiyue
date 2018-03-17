@@ -1,17 +1,24 @@
 package com.hemeiyue.dao;
 
+import java.util.List;
+
 import com.hemeiyue.entity.RoomTypes;
 
 public interface RoomtypeMapper {
-    int deleteByPrimaryKey(Integer id);
+    
+	int deleteById(Integer id);
 
     int insert(RoomTypes record);
 
-    int insertSelective(RoomTypes record);
+    public RoomTypes selectById(Integer id);
 
-    RoomTypes selectByPrimaryKey(Integer id);
+    int update(RoomTypes record);
 
-    int updateByPrimaryKeySelective(RoomTypes record);
+    /***
+     * 根据学校id查询课室类型
+     * @param schoolId
+     * @return
+     */
+	public List<RoomTypes> selectBySchoolId(int schoolId);
 
-    int updateByPrimaryKey(RoomTypes record);
 }
