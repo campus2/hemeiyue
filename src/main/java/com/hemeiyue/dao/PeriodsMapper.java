@@ -7,7 +7,7 @@ public interface PeriodsMapper {
 
     int insert(Periods record);
 
-    Periods selectByPrimaryKey(Integer id);
+    Periods selectById(Integer id);
 
     int updateByPrimaryKeySelective(Periods record);
 

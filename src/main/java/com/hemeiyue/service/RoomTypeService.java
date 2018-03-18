@@ -28,6 +28,14 @@ public interface RoomTypeService {
 	 * @return
 	 */
 	public ResultBean delete(RoomTypes roomType);
+	
+	/**
+	 * 返回指定学校的指定课室类型
+	 * @param school
+	 * @param roomType
+	 * @return
+	 */
+	public RoomTypes selectBySchoolAndRoomType(Schools school, String roomType);
 
 	
 }

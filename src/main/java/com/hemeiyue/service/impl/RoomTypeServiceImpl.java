@@ -94,4 +94,13 @@ public class RoomTypeServiceImpl implements RoomTypeService {
 		return result;
 	}
 
+	@Override
+	public RoomTypes selectBySchoolAndRoomType(Schools school, String roomType) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("school", school);
+		map.put("roomType", roomType);
+		
+		return roomsMapper.select(map);
+	}
+
 }

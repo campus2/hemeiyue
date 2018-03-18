@@ -4,14 +4,23 @@
 
     <resultMap id="BaseResultMap" type="com.hemeiyue.entity.RoomPeriods" >
         <id column="id" property="id" jdbcType="INTEGER" />
-        <result column="roomId" property="roomid" jdbcType="INTEGER" />
-        <result column="periodId" property="periodid" jdbcType="INTEGER" />
         <result column="repeat" property="repeat" jdbcType="VARCHAR" />
         <result column="expirDate" property="expirdate" jdbcType="TIMESTAMP" />
         <result column="requiredConfirm" property="requiredconfirm" jdbcType="INTEGER" />
         <result column="deadLine" property="deadline" jdbcType="TIMESTAMP" />
         <result column="status" property="status" jdbcType="INTEGER" />
+        <association property="period" column="periodId" select="com.hemeiyue.dao.PeriodsMapper.selectById"/>
     </resultMap>
+    
+    <select id="find" parameterType="Rooms" resultMap="BaseResultMap">
+    	select *from roomperiods
+    	<where>
+    		<if test="room!=null">
+    			and roomId = #{room.id}
+    		</if>
+    		and status > 0
+    	</where>
+    </select>
 
     <sql id="Base_Column_List" >
         id, roomId, periodId, repeat, expirDate, requiredConfirm, deadLine, status

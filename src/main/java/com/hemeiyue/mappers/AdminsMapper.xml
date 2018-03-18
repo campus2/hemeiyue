@@ -18,6 +18,32 @@
 		<association property="school" column="schoolId" select="com.hemeiyue.dao.SchoolsMapper.selectById" />
 	</resultMap>
 	
+	<!-- 陈冬添加部分 -->
+	<select id="find" parameterType="Map" resultMap="BaseResultMap">
+		select id,adminName,account,phone, email from admins
+		<where>
+			<if test="parentId!=null and parentId!=''"> and parentId = #{parentId}</if>
+			and status=1
+		</where>
+	</select>
+	
+	<update id="updateAdmin" parameterType="Admin">
+		update admins
+		<set>
+			<if test="password!=null and password!=''"> password=#{password},</if>
+			<if test="email!=null and eamil!=''"> email=#{admin.email},</if>
+			<if test="adminName!=null and adminName!=''"> adminName=#{adminName},</if>
+			<if test="phone!=null and phone!=''"> phone=#{phone},</if>
+		</set>
+		where id=#{id}
+	</update>
+	
+	<update id="deleteByPrimaryKey" parameterType="Integer">
+		update admins set status = 0
+		where id=#{id}
+	</update>
+	<!-- 陈冬添加部分结束 -->
+	
 	<sql id="Base_Column_List" >
 		id,account,password,adminName,signature,avatar,phone,email,parentId,schoolId,status,regStatus
 	</sql>

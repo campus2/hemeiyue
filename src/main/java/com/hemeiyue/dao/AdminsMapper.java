@@ -1,6 +1,7 @@
 package com.hemeiyue.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.hemeiyue.entity.Admin;
 
@@ -26,4 +27,18 @@ public interface AdminsMapper {
     List<Admin> selecTenant(Integer regStatus);
     
     int updateStatus(Integer id,Integer status);
+
+    /**
+     * 根据map中的条件返回指定的数据集
+     * @param map
+     * @return
+     */
+	public List<Admin> find(Map<String, Object> map);
+	
+	/**
+	 * 修改管理员信息
+	 * @param admin
+	 * @return
+	 */
+	public int updateAdmin(Admin admin);
 }

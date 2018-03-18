@@ -28,7 +28,7 @@ public class RoomTypeController {
 	@RequestMapping("/addRoomType")
 	public String addRoomType(@RequestParam("roomType")String roomType,
 			HttpServletRequest request, HttpServletResponse response) {
-		Schools school = (Schools)request.getSession().getAttribute("schoold");
+		Schools school = (Schools)request.getSession().getAttribute("school");
 		ResultBean result = roomTypeService.insertRoomType(school,roomType);
 		
 		ResponseUtil.write(response, result);

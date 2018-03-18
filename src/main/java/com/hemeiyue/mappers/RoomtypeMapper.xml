@@ -13,6 +13,19 @@
 		select *from roomtype where schoolId=#{schoolId}
 	</select>
 	
+	<select id="select" parameterType="Map" resultMap="BaseResultMap">
+		select id, roomType
+		<where>
+			<if test="school!=null">
+				and schoolId = #{schoolId}
+			</if>
+			<if test="roomType!=null and roomType!=''">
+				and roomType = #{roomType}
+			</if>
+		</where>
+		and status>0
+	</select>
+	
 	<select id="find" parameterType="Map" resultMap="BaseResultMap">
 		select *from roomtype
 		<where>
@@ -22,18 +35,20 @@
 			<if test="school!=null">
 				and schoolId = #{school.id}
 			</if>
+			and status>0
 		</where>
 	</select>
 
     <sql id="Base_Column_List" >
         id, roomType, schoolId, status
     </sql>
+    
 	
     <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
         select id,roomType
         
         from roomtype
-        where id = #{id,jdbcType=INTEGER}
+        where id = #{id,jdbcType=INTEGER} and status>0
     </select>
 
     <update id="updateById" parameterType="java.lang.Integer" >
