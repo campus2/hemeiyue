@@ -19,8 +19,18 @@ public class Schools {
     private Date CDT;
 
     private Integer status;
+    
+    public Schools(Integer id) {
+		super();
+		this.id = id;
+	}
 
-    public Integer getId() {
+	public Schools() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public Integer getId() {
         return id;
     }
 

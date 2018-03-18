@@ -2,6 +2,11 @@ package com.hemeiyue.entity;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.hemeiyue.util.DateHHmmJSONDeserializer;
+import com.hemeiyue.util.DateHHmmJSONSerializer;
+
 /**
  * 
  * 
@@ -14,8 +19,12 @@ public class Periods {
 
     private String period;
 
+    @JsonSerialize(using=DateHHmmJSONSerializer.class)
+    @JsonDeserialize(using=DateHHmmJSONDeserializer.class)
     private Date begintime;
-
+    
+    @JsonSerialize(using=DateHHmmJSONSerializer.class)
+    @JsonDeserialize(using=DateHHmmJSONDeserializer.class)
     private Date endtime;
 
     private Admin admin;
@@ -28,19 +37,19 @@ public class Periods {
         this.id = id;
     }
 
-    public String getPeriod() {
-        return period;
-    }
-
-    public void setPeriod(String period) {
-        this.period = period == null ? null : period.trim();
-    }
-
     public Date getBegintime() {
         return begintime;
     }
 
-    public void setBegintime(Date begintime) {
+    public String getPeriod() {
+		return period;
+	}
+
+	public void setPeriod(String period) {
+		this.period = period;
+	}
+
+	public void setBegintime(Date begintime) {
         this.begintime = begintime;
     }
 

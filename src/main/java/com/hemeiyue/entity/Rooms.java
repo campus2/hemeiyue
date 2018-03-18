@@ -14,13 +14,25 @@ public class Rooms {
 
     private RoomTypes roomType;
 
-    private Schools schol;
+    private Schools school;
 
     private Departments department;
 
     private Integer status;
+    
+    public Rooms(String room, RoomTypes roomType, Schools school) {
+		super();
+		this.room = room;
+		this.roomType = roomType;
+		this.school = school;
+	}
 
-    public Integer getId() {
+	public Rooms() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public Integer getId() {
         return id;
     }
 
@@ -44,12 +56,12 @@ public class Rooms {
 		this.roomType = roomType;
 	}
 
-	public Schools getSchol() {
-		return schol;
+	public Schools getSchool() {
+		return school;
 	}
 
-	public void setSchol(Schools schol) {
-		this.schol = schol;
+	public void setSchool(Schools school) {
+		this.school = school;
 	}
 
 	public Departments getDepartment() {

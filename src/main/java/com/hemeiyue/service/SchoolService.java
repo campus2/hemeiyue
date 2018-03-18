@@ -1,5 +1,7 @@
 package com.hemeiyue.service;
 
+import java.util.Map;
+
 import com.hemeiyue.common.ResultBean;
 import com.hemeiyue.entity.Schools;
 
@@ -19,7 +21,7 @@ public interface SchoolService {
 	 * @param id
 	 * @return
 	 */
-	public int deleteById(int id);
+	public ResultBean deleteById(int id);
 	
 	/**
 	 * 添加学校
@@ -33,8 +35,13 @@ public interface SchoolService {
 	 * @param school
 	 * @return
 	 */
-	public int update(Schools school);
-	
-	
+	public ResultBean update(Schools school);
+
+	/**
+	 * 根据指定的条件返回数据集合
+	 * @param map 
+	 * @return
+	 */
+	public String find(Map<String, Object> map);
 
 }

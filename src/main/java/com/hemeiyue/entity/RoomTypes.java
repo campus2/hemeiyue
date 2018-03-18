@@ -14,9 +14,29 @@ public class RoomTypes {
 
     private Schools school;
 
-    private Integer status;
+    private Integer status = 1;
+    
+    public RoomTypes(String roomType, Schools school) {
+		super();
+		this.roomType = roomType;
+		this.school = school;
+	}
 
-    public Integer getId() {
+	public RoomTypes(Integer id) {
+		super();
+		this.id = id;
+	}
+
+	public RoomTypes(String roomType) {
+		super();
+		this.roomType = roomType;
+	}
+
+	public RoomTypes() {
+		super();
+	}
+
+	public Integer getId() {
         return id;
     }
 
@@ -28,6 +48,10 @@ public class RoomTypes {
         return roomType;
     }
 
+	public void setRoomType(String roomType) {
+		this.roomType = roomType == null ? null : roomType.trim();
+	}
+
     public Schools getSchool() {
 		return school;
 	}
@@ -36,9 +60,6 @@ public class RoomTypes {
 		this.school = school;
 	}
 
-	public void setRoomType(String roomType) {
-		this.roomType = roomType == null ? null : roomType.trim();
-	}
 
 	public Integer getStatus() {
         return status;
@@ -47,4 +68,5 @@ public class RoomTypes {
     public void setStatus(Integer status) {
         this.status = status;
     }
+    
 }

@@ -17,8 +17,18 @@ public class Departments {
     private Integer parentId;
 
     private Integer status;
+    
+    public Departments(Integer id) {
+		super();
+		this.id = id;
+	}
 
-    public Integer getId() {
+	public Departments() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public Integer getId() {
         return id;
     }
 
