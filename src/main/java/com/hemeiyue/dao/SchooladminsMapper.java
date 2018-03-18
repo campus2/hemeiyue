@@ -1,5 +1,7 @@
 package com.hemeiyue.dao;
 
+import java.util.List;
+
 import com.hemeiyue.entity.SchoolAdmins;
 
 public interface SchooladminsMapper {
@@ -14,4 +16,8 @@ public interface SchooladminsMapper {
     int updateByPrimaryKeySelective(SchoolAdmins record);
 
     int updateByPrimaryKey(SchoolAdmins record);
+    
+    List<SchoolAdmins> selectBySchoolId(Integer id);
+    
+    List<SchoolAdmins> selectByParentId(Integer id);
 }

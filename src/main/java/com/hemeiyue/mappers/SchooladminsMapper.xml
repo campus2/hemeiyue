@@ -92,4 +92,18 @@
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
+    
+    <select id="selectBySchoolId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    	select 
+        <include refid="Base_Column_List" />
+        from schooladmins
+        where schoolId = #{schoolId,jdbcType=INTEGER}
+    </select>
+    
+    <select id="selectByParentId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    	select 
+        <include refid="Base_Column_List" />
+        from schooladmins
+        where parentId = #{parentId,jdbcType=INTEGER}
+    </select>
 </mapper>

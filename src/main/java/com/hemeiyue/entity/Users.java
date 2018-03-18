@@ -21,8 +21,10 @@ public class Users {
     private String phone;
 
     private String address;
-
-    public Integer getId() {
+    
+    private String studentNum;
+    
+	public Integer getId() {
         return id;
     }
 
@@ -34,9 +36,9 @@ public class Users {
 		return openId;
 	}
 
-	public void setOpenid(String openId) {
-		this.openId = openId;
-	}
+//	public void setOpenid(String openId) {
+//		this.openId = openId;
+//	}
 
 	public Schools getSchool() {
 		return school;
@@ -81,4 +83,12 @@ public class Users {
     public void setAddress(String address) {
         this.address = address == null ? null : address.trim();
     }
+    
+    public String getStudentNum() {
+		return studentNum;
+	}
+
+	public void setStudentNum(String studentNum) {
+		this.studentNum = studentNum;
+	}
 }

@@ -1,5 +1,7 @@
 package com.hemeiyue.dao;
 
+import java.util.List;
+
 import com.hemeiyue.entity.Admin;
 
 public interface AdminsMapper {
@@ -14,4 +16,8 @@ public interface AdminsMapper {
     int updateByPrimaryKeySelective(Admin record);
 
     int updateByPrimaryKey(Admin record);
+    
+    Admin login(Admin admin);
+    
+    List<Admin> selectAll(Admin admin);
 }
