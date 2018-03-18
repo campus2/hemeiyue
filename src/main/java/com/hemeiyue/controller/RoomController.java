@@ -16,7 +16,9 @@ import com.hemeiyue.common.UpdateRoom;
 import com.hemeiyue.entity.RoomTypes;
 import com.hemeiyue.entity.Rooms;
 import com.hemeiyue.entity.Schools;
+import com.hemeiyue.service.RoomPeriodsService;
 import com.hemeiyue.service.RoomService;
+import com.hemeiyue.service.RoomTypeService;
 import com.hemeiyue.util.ResponseUtil;
 
 @Controller
@@ -25,6 +27,12 @@ public class RoomController {
 
 	@Autowired
 	private RoomService roomService;
+	
+	@Autowired
+	private RoomPeriodsService roomPeriodService;
+	
+	@Autowired
+	private RoomTypeService roomTypeService;
 	
 	/**
 	 * 返回某个学校的课室
@@ -38,7 +46,7 @@ public class RoomController {
 	@ResponseBody
 	public String roomList(HttpServletRequest request,
 			HttpServletResponse response) {
-		Schools school = (Schools) request.getSession().getAttribute("schood");
+		Schools school = (Schools) request.getSession().getAttribute("school");
 		String result = roomService.selectBySchoolId(school.getId());
 		ResponseUtil.write(response, result);
 		return result;
@@ -65,8 +73,13 @@ public class RoomController {
 	@ResponseBody
 	public String roomDetails(@RequestParam("roomType")String roomType,
 				@RequestParam("roomName")String roomName, HttpServletRequest request) {
+		//当前学校
+		Schools school = (Schools)request.getSession().getAttribute("school");
+		//所属的课室类型
+		RoomTypes roomTypes = roomTypeService.selectBySchoolAndRoomType(school, roomType);
+		Rooms room = new Rooms(roomName, roomTypes, school);
 		
-		return null;
+		return roomPeriodService.findRoomDetail(room);
 	}
 	
 	/**

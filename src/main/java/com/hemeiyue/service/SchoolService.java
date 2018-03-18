@@ -14,7 +14,6 @@ public interface SchoolService {
 	 */
 	public Schools selectById(int id);
 	
-	//   updateByIdSelective updateById
 	
 	/**
 	 * 根据id删除学校

@@ -1,7 +1,5 @@
 package hemeiyue;
 
-import javax.annotation.Resource;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,24 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.hemeiyue.entity.RoomTypes;
-import com.hemeiyue.entity.Schools;
-import com.hemeiyue.service.RoomService;
-import com.hemeiyue.service.RoomTypeService;
-import com.hemeiyue.service.SchoolService;
+import com.hemeiyue.entity.Rooms;
+import com.hemeiyue.service.RoomPeriodsService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations="classpath*:applicationContext.xml")
-public class RoomTypeTest {
+public class RoomTest {
 
-	@Resource
-	private SchoolService schoolService;
-	
 	@Autowired
-	private RoomService roomService;
-	
-	@Autowired
-	private RoomTypeService roomTypeService;
+	private RoomPeriodsService roomPeriodsService;
 	
 	@Before
 	public void setUp() throws Exception {
@@ -38,9 +27,11 @@ public class RoomTypeTest {
 	}
 	
 	@Test
-	public void deleteRoomTypeTest() {
-		RoomTypes roomType = new RoomTypes("????????", new Schools(1));
-		roomTypeService.delete(roomType);
+	public void RooDetailTest() {
+		Rooms room = new Rooms();
+		room.setId(14);
+		String result = roomPeriodsService.findRoomDetail(room);
+		System.out.println(result);
 	}
 
 }

@@ -3,6 +3,7 @@ package com.hemeiyue.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.hemeiyue.entity.RoomTypes;
 import com.hemeiyue.entity.Rooms;
 
 public interface RoomsMapper {
@@ -38,4 +39,11 @@ public interface RoomsMapper {
 	 * @return
 	 */
 	public int update(Rooms room);
+
+	/**
+	 * 返回指定条件的某个课室类型
+	 * @param map
+	 * @return
+	 */
+	public RoomTypes select(Map<String, Object> map);
 }
