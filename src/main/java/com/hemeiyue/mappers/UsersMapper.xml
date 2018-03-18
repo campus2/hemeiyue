@@ -5,16 +5,16 @@
     <resultMap id="BaseResultMap" type="com.hemeiyue.entity.Users" >
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="openId" property="openId" jdbcType="VARCHAR" />
-        <result column="schoolId" property="schoolid" jdbcType="INTEGER" />
-        <result column="userName" property="username" jdbcType="VARCHAR" />
+        <result column="userName" property="userName" jdbcType="VARCHAR" />
         <result column="email" property="email" jdbcType="VARCHAR" />
         <result column="phone" property="phone" jdbcType="VARCHAR" />
         <result column="address" property="address" jdbcType="VARCHAR" />
         <result column="studentNum" property="studentNum" jdbcType="VARCHAR" />
+        <association property="school" column="schoolId" select="com.hemeiyue.dao.SchoolsMapper.selectById" />
     </resultMap>
 
     <sql id="Base_Column_List" >
-        id, openId, schoolId, userName, email, phone, address,studentNum
+        id, openId, userName, email, phone, address,studentNum
     </sql>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
@@ -33,8 +33,8 @@
         insert into users (id, openId, schoolId, 
             userName, email, phone, 
             address,studentNum)
-        values (#{id,jdbcType=INTEGER}, #{openId,jdbcType=VARCHAR}, #{schoolid,jdbcType=INTEGER}, 
-            #{username,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+        values (#{id,jdbcType=INTEGER}, #{openId,jdbcType=VARCHAR}, #{schoolId,jdbcType=INTEGER}, 
+            #{userName,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
             #{address,jdbcType=VARCHAR},#{studentNum,jdbcType=VARCHAR})
     </insert>
 
@@ -47,10 +47,10 @@
             <if test="openId != null" >
                 openId,
             </if>
-            <if test="schoolid != null" >
+            <if test="school != null" >
                 schoolId,
             </if>
-            <if test="username != null" >
+            <if test="userName != null" >
                 userName,
             </if>
             <if test="email != null" >
@@ -73,11 +73,11 @@
             <if test="openId != null" >
                 #{openId,jdbcType=VARCHAR},
             </if>
-            <if test="schoolid != null" >
-                #{schoolid,jdbcType=INTEGER},
+            <if test="school != null" >
+                #{school.id,jdbcType=INTEGER},
             </if>
-            <if test="username != null" >
-                #{username,jdbcType=VARCHAR},
+            <if test="userName != null" >
+                #{userName,jdbcType=VARCHAR},
             </if>
             <if test="email != null" >
                 #{email,jdbcType=VARCHAR},
@@ -97,11 +97,11 @@
             <if test="openId != null" >
                 openId = #{openId,jdbcType=VARCHAR},
             </if>
-            <if test="schoolid != null" >
-                schoolId = #{schoolid,jdbcType=INTEGER},
+            <if test="schoolId != null" >
+                schoolId = #{schoolId,jdbcType=INTEGER},
             </if>
-            <if test="username != null" >
-                userName = #{username,jdbcType=VARCHAR},
+            <if test="userName != null" >
+                userName = #{userName,jdbcType=VARCHAR},
             </if>
             <if test="email != null" >
                 email = #{email,jdbcType=VARCHAR},
@@ -122,8 +122,8 @@
     <update id="updateByPrimaryKey" parameterType="com.hemeiyue.entity.Users" >
         update users
         set openId = #{openId,jdbcType=VARCHAR},
-            schoolId = #{schoolid,jdbcType=INTEGER},
-            userName = #{username,jdbcType=VARCHAR},
+            schoolId = #{schoolId,jdbcType=INTEGER},
+            userName = #{userName,jdbcType=VARCHAR},
             email = #{email,jdbcType=VARCHAR},
             phone = #{phone,jdbcType=VARCHAR},
             address = #{address,jdbcType=VARCHAR},

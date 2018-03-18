@@ -1,12 +1,11 @@
 package com.hemeiyue.service.impl;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.hemeiyue.common.AdminResult;
+import com.hemeiyue.common.ResultBean;
 import com.hemeiyue.dao.AdminsMapper;
 import com.hemeiyue.entity.Admin;
 import com.hemeiyue.service.AdminService;
@@ -18,63 +17,48 @@ public class AdminServiceImpl implements AdminService{
 	private AdminsMapper adminMapper;
 	
 	@Override
-	public void add(Admin admin) {
-		// TODO Auto-generated method stub
-		adminMapper.insertSelective(admin);
-	}
-
-	@Override
-	public boolean login(Admin admin, HttpServletRequest request) {
-		// TODO Auto-generated method stub
-		Admin currentAdmin;
-		currentAdmin = adminMapper.login(admin);
-		if(currentAdmin != null) {
-			request.getSession().setAttribute("currentAdmin", currentAdmin);
-			return true;
+	/**
+	 * 登录
+	 */
+	public ResultBean login(Admin admin, HttpServletRequest request) {
+		//获取对应账号的管理员信息
+		Admin currentAdmin = adminMapper.login(admin);
+		
+		//检查账号与账户是否正确
+		if(currentAdmin == null) {
+			return new ResultBean(false, "用户或密码错误");
 		}
-		return false;
-	}
-
-	@Override
-	public boolean update(Admin admin) {
-		// TODO Auto-generated method stub
-		if(adminMapper.selectByPrimaryKey(admin.getId()) != null) {
-			adminMapper.updateByPrimaryKeySelective(admin);
-			return true;
+		
+		//检查该管理员是否被封停
+		if(currentAdmin.getStatus() != 1) {
+			return new ResultBean(false, "该管理员不可用");
+		} 
+		
+		//检查该管理员的上级是否被封停
+		if(currentAdmin.getParentId() > 1 && 
+				adminMapper.selectByPrimaryKey(currentAdmin.getParentId()).getStatus() == 1){
+			return new ResultBean(false, "该管理员的上级不可用");
 		}
-		return false;
+		
+		request.getSession().setAttribute("currentAdmin", currentAdmin);
+		
+		int authority;
+		if(currentAdmin.getParentId() < 0) {
+			authority = 0;
+		}else if (currentAdmin.getParentId() == 0) {
+			authority = 1;
+		}else {
+			authority = 2;
+		}
+		AdminResult result = new AdminResult();
+		result.setResult(true);
+		result.setAuthority(authority);
+		return result;
 	}
 
 	@Override
-	public List<Admin> find(Admin admin) {
-		// TODO Auto-generated method stub
-		List<Admin> list;
-		list = adminMapper.selectAll(admin);
-		return list;
-	}
-
-	@Override
-	public Admin current(HttpServletRequest request) {
-		// TODO Auto-generated method stub
-		Admin currentAdmin = (Admin) request.getSession().getAttribute("currentAdmin");
-		return adminMapper.selectByPrimaryKey(currentAdmin.getId());
-	}
-
-	@Override
-	public Admin verify(Admin currentAdmin, Admin applicant) {
+	public ResultBean register(Admin admin) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	@Override
-	public boolean delete(Admin admin) {
-		// TODO Auto-generated method stub
-		admin.setStatus(2);
-		if(adminMapper.selectByPrimaryKey(admin.getId()) != null) {
-			adminMapper.updateByPrimaryKeySelective(admin);
-			return true;
-		}
-		return false;
-	}
-
 }

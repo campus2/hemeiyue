@@ -1,5 +1,7 @@
 package com.hemeiyue.entity;
 
+import javax.validation.constraints.Size;
+
 /**
  * 
  * 
@@ -8,10 +10,13 @@ package com.hemeiyue.entity;
  * @date 2018-03-14
  */
 public class Admin {
+	
     private Integer id;
-
+    
+    @Size(min=6,max=11)
     private String account;
-
+    
+    @Size(min=6,max=11)
     private String password;
 
     private String adminName;
@@ -24,9 +29,11 @@ public class Admin {
 
     private String email;
 
-    private Integer roleid;
+    private Integer parentId;
 
     private Integer status;
+    
+    private String salt;
 
     public Integer getId() {
         return id;
@@ -92,12 +99,12 @@ public class Admin {
         this.email = email == null ? null : email.trim();
     }
 
-    public Integer getRoleid() {
-        return roleid;
+    public Integer getParentId() {
+        return parentId;
     }
 
-    public void setRoleid(Integer roleid) {
-        this.roleid = roleid;
+    public void setParentId(Integer parentId) {
+        this.parentId = parentId;
     }
 
     public Integer getStatus() {
@@ -107,4 +114,13 @@ public class Admin {
     public void setStatus(Integer status) {
         this.status = status;
     }
+    
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
+    
 }

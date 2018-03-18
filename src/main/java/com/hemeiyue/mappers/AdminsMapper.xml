@@ -166,4 +166,11 @@
         from admins
         where roleid = '1' or '2'
 	</select>
+	
+	<select id="checkAccount" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select 
+        <include refid="Base_Column_List" />
+        from admins
+        where account = #{account}
+	</select>
 </mapper>

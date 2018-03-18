@@ -4,11 +4,11 @@
 
     <resultMap id="BaseResultMap" type="com.hemeiyue.entity.SchoolAdmins" >
         <id column="id" property="id" jdbcType="INTEGER" />
-        <result column="schoolId" property="schoolid" jdbcType="INTEGER" />
         <result column="adminId" property="adminid" jdbcType="INTEGER" />
         <result column="CDT" property="cdt" jdbcType="TIMESTAMP" />
-        <result column="parentId" property="parentid" jdbcType="INTEGER" />
+        <result column="parentId" property="parentId" jdbcType="INTEGER" />
         <result column="status" property="status" jdbcType="INTEGER" />
+        <association property="school" column="schoolId" select="com.hemeiyue.dao.SchoolsMapper.selectById" />
     </resultMap>
 
     <sql id="Base_Column_List" >
@@ -33,7 +33,7 @@
             <if test="id != null" >
                 id,
             </if>
-            <if test="schoolid != null" >
+            <if test="schoolId != null" >
                 schoolId,
             </if>
             <if test="adminid != null" >
@@ -42,7 +42,7 @@
             <if test="cdt != null" >
                 CDT,
             </if>
-            <if test="parentid != null" >
+            <if test="parentId != null" >
                 parentId,
             </if>
             <if test="status != null" >
@@ -53,8 +53,8 @@
             <if test="id != null" >
                 #{id,jdbcType=INTEGER},
             </if>
-            <if test="schoolid != null" >
-                #{schoolid,jdbcType=INTEGER},
+            <if test="schoolId != null" >
+                #{schoolId,jdbcType=INTEGER},
             </if>
             <if test="adminid != null" >
                 #{adminid,jdbcType=INTEGER},
@@ -62,8 +62,8 @@
             <if test="cdt != null" >
                 #{cdt,jdbcType=TIMESTAMP},
             </if>
-            <if test="parentid != null" >
-                #{parentid,jdbcType=INTEGER},
+            <if test="parentId != null" >
+                #{parentId,jdbcType=INTEGER},
             </if>
             <if test="status != null" >
                 #{status,jdbcType=INTEGER},
@@ -75,7 +75,7 @@
         update schooladmins
         <set >
             <if test="schoolid != null" >
-                schoolId = #{schoolid,jdbcType=INTEGER},
+                schoolId = #{schoolId,jdbcType=INTEGER},
             </if>
             <if test="adminid != null" >
                 adminId = #{adminid,jdbcType=INTEGER},
@@ -84,7 +84,7 @@
                 CDT = #{cdt,jdbcType=TIMESTAMP},
             </if>
             <if test="parentid != null" >
-                parentId = #{parentid,jdbcType=INTEGER},
+                parentId = #{parentId,jdbcType=INTEGER},
             </if>
             <if test="status != null" >
                 status = #{status,jdbcType=INTEGER},

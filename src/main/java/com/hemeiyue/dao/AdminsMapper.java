@@ -20,4 +20,6 @@ public interface AdminsMapper {
     Admin login(Admin admin);
     
     List<Admin> selectAll(Admin admin);
+    
+    Admin checkAccount(String account);
 }
