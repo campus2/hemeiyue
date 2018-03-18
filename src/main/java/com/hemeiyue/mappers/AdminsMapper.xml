@@ -11,12 +11,15 @@
 		<result column="avatar" property="avatar" jdbcType="VARCHAR" />
 		<result column="phone" property="phone" jdbcType="VARCHAR" />
 		<result column="email" property="email" jdbcType="VARCHAR" />
-		<result column="roleid" property="roleid" jdbcType="INTEGER" />
+		<result column="parentId" property="parentId" jdbcType="INTEGER" />
 		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="salt" property="salt" jdbcType="VARCHAR" />
+		<result column="regStatus" property="regStatus" jdbcType="INTEGER" />
+		<association property="school" column="schoolId" select="com.hemeiyue.dao.SchoolsMapper.selectById" />
 	</resultMap>
 	
 	<sql id="Base_Column_List" >
-		id,account,password,adminName,signature,avatar,phone,email,roleId,status
+		id,account,password,adminName,signature,avatar,phone,email,parentId,schoolId,status,regStatus
 	</sql>
 	
 	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
@@ -28,11 +31,12 @@
 	
 	<insert id="insert" parameterType="com.hemeiyue.entity.Admin" >
         insert into admins (id,account,password,adminName,
-        		signature,avatar,phone,email,roleid,status
+        		signature,avatar,phone,email,parentId,status,salt,regStatus,schoolId
             )
         values (#{id,jdbcType=INTEGER}, #{account,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
             #{adminName,jdbcType=VARCHAR}, #{signature,jdbcType=VARCHAR}, #{avatar,jdbcType=VARCHAR},
-            #{phone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{roleid,jdbcType=INTEGER}, #{status,jdbcType=VARCHAR}
+            #{phone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{parentId,jdbcType=INTEGER}, 
+            #{status,jdbcType=VARCHAR},#{salt,jdbcType=VARCHAR}
             )
     </insert>
 	
@@ -64,11 +68,20 @@
             <if test="email != null" >
                 email,
             </if>
-            <if test="roleid != null" >
-                roleid,
+            <if test="parentId != null" >
+                parentId,
             </if>
             <if test="status != null" >
                 status,
+            </if>
+            <if test="salt != null" >
+                salt,
+            </if>
+            <if test="regStatus != null" >
+                regStatus,
+            </if>
+            <if test="school != null" >
+                schoolId,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -96,11 +109,20 @@
             <if test="email != null" >
                 #{email,jdbcType=VARCHAR},
             </if>
-            <if test="roleid != null" >
-                #{roleid,jdbcType=INTEGER},
+            <if test="parentId != null" >
+                #{parentId,jdbcType=INTEGER},
             </if>
             <if test="status != null" >
-                #{status,jdbcType=VARCHAR}
+                #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="salt != null" >
+                #{salt,jdbcType=VARCHAR}
+            </if>
+            <if test="regStatus != null" >
+                #{regStatus,jdbcType=VARCHAR}
+            </if>
+            <if test="school != null" >
+                #{school.id,jdbcType=VARCHAR}
             </if>
         </trim>
     </insert>
@@ -129,11 +151,20 @@
             <if test="email != null" >
                 email = #{email,jdbcType=VARCHAR},
             </if>
-            <if test="roleid != null" >
-                roleid = #{roleid,jdbcType=INTEGER},
+            <if test="parentId != null" >
+                parentId = #{parentId,jdbcType=INTEGER},
             </if>
             <if test="status != null" >
-                status = #{status,jdbcType=VARCHAR}
+                status = #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="salt != null" >
+               salt=  #{salt,jdbcType=VARCHAR},
+            </if>
+            <if test="regStatus != null" >
+               regStatus =  #{regStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="school != null" >
+               schoolId = #{school.id,jdbcType=VARCHAR}
             </if>
         </set>
         where id = #{id,jdbcType=INTEGER}
@@ -148,16 +179,19 @@
             avatar = #{avatar,jdbcType=VARCHAR},
             phone = #{phone,jdbcType=VARCHAR},
             email = #{email,jdbcType=VARCHAR},
-            roleid = #{roleid,jdbcType=INTEGER},
-            status = #{status,jdbcType=VARCHAR}
+            parentId = #{parentId,jdbcType=INTEGER},
+            status = #{status,jdbcType=VARCHAR},
+            salt = #{salt,jdbcType=VARCHAR},
+            regStatus = #{regStatus,jdbcType=VARCHAR},
+            schoolId = #{school.id,jdbcType=VARCHAR}
         where id = #{id,jdbcType=INTEGER}
     </update>
     
-    <select id="login" resultMap="BaseResultMap" parameterType="java.lang.String">
+    <select id="login" resultMap="BaseResultMap" parameterType="com.hemeiyue.entity.Admin">
 		select 
         <include refid="Base_Column_List" />
         from admins
-        where account = #{account} and password = #{password}
+        where account = #{account} and password = #{password} and regStatus = '1'
 	</select>
 	
 	<select id="selectAll" resultMap="BaseResultMap" parameterType="com.hemeiyue.entity.Admin">
@@ -173,4 +207,17 @@
         from admins
         where account = #{account}
 	</select>
+	
+	<select id="selecTenant" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select 
+        id,adminName,phone,Email,schoolId
+        from admins
+        where parentId = '0' and regStatus = #{regStatus,jdbcType=VARCHAR}
+	</select>
+	
+	<update id="updateStatus" parameterType="java.lang.Integer">
+		update admins
+		set regStatus = #{regStatus,jdbcType=VARCHAR}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
 </mapper>

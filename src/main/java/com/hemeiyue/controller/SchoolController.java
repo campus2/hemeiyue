@@ -7,9 +7,12 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,8 +22,10 @@ import com.hemeiyue.common.PageBean;
 import com.hemeiyue.common.ResultBean;
 import com.hemeiyue.entity.Admin;
 import com.hemeiyue.entity.Schools;
+import com.hemeiyue.service.AdminService;
 import com.hemeiyue.service.SchoolService;
 import com.hemeiyue.util.ResponseUtil;
+import com.hemeiyue.util.ValidateHandler;
 
 @Controller
 @RequestMapping("/school")
@@ -28,6 +33,9 @@ public class SchoolController {
 
 	@Autowired
 	private SchoolService schoolService;
+	
+	@Autowired
+	private AdminService adminService;
 	
 	/**
 	 * 添加学校
@@ -98,4 +106,17 @@ public class SchoolController {
 		list.add(new ResultBean(true,"添加成功"));
 		return list;
 	}
+	
+	@RequestMapping("/login")
+	@ResponseBody
+	public ResultBean login(@Valid Admin admin,BindingResult result, 
+				HttpServletRequest request,Model model) {
+		if(result.hasErrors()) {
+			return ValidateHandler.validate(result);
+		}
+		ResultBean bean= adminService.login(admin, request);
+		System.out.println("1111");
+		return bean;
+	}
+	
 }

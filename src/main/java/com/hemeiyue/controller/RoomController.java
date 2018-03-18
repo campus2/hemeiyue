@@ -38,7 +38,7 @@ public class RoomController {
 	@ResponseBody
 	public String roomList(HttpServletRequest request,
 			HttpServletResponse response) {
-		Schools school = (Schools) request.getSession().getAttribute("schood");
+		Schools school = (Schools) request.getSession().getAttribute("school");
 		String result = roomService.selectBySchoolId(school.getId());
 		ResponseUtil.write(response, result);
 		return result;

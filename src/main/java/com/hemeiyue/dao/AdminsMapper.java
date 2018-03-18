@@ -22,4 +22,8 @@ public interface AdminsMapper {
     List<Admin> selectAll(Admin admin);
     
     Admin checkAccount(String account);
+    
+    List<Admin> selecTenant(Integer regStatus);
+    
+    int updateStatus(Integer id,Integer status);
 }

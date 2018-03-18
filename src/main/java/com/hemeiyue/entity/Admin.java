@@ -13,10 +13,10 @@ public class Admin {
 	
     private Integer id;
     
-    @Size(min=6,max=11)
+    @Size(min=6,max=11,message="账号必须超过6位")
     private String account;
     
-    @Size(min=6,max=11)
+    @Size(min=6,max=11,message="密码不可低于6位")
     private String password;
 
     private String adminName;
@@ -34,6 +34,18 @@ public class Admin {
     private Integer status;
     
     private String salt;
+    
+    private Schools school;
+    
+    private Integer regStatus;
+    
+    public Integer getRegStatus() {
+		return regStatus;
+	}
+
+	public void setRegStatus(Integer regStatus) {
+		this.regStatus = regStatus;
+	}
 
     public Integer getId() {
         return id;
@@ -123,4 +135,11 @@ public class Admin {
         this.salt = salt;
     }
     
+    public Schools getSchool() {
+        return school;
+    }
+
+    public void setSchool(Schools school) {
+        this.school = school;
+    }
 }
