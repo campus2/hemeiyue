@@ -7,9 +7,7 @@
         <result column="school" property="school" jdbcType="VARCHAR" />
         <result column="CDT" property="CDT" jdbcType="TIMESTAMP" />
         <result column="status" property="status" jdbcType="INTEGER" />
-        <!-- 
-        <association property="owner" column="ownerId" select="com.hemeiyue.Dao.AdminMapper.selectById"/>
-         -->
+        <association property="owner" column="ownerId" select="com.hemeiyue.Dao.AdminsMapper.selectById"/>
     </resultMap>
     
     <select id="find" parameterType="Map" resultMap="BaseResultMap">

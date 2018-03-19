@@ -9,6 +9,7 @@
         <result column="remark" property="remark" jdbcType="VARCHAR" />
         <association property="roomPeriod" column="roomPeriodId" select="com.hemeiyue.dao.RoomPeriodsMapper.selectById" />
         <association property="user" column="userId" select="com.hemeiyue.dao.UsersMapper.selectByPrimaryKey" />
+        <association property="school" column="schoolId" select="com.hemeiyue.dao.SchoolsMapper.selectById" />
     </resultMap>
     
     <select id="getApplyCount" parameterType="Schools" resultType="Long">

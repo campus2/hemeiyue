@@ -21,8 +21,20 @@ public class Bookings {
     private Integer status;
 
     private String remark;
+    
+    private Schools school;
+    
+    
 
-    public Integer getId() {
+    public Schools getSchool() {
+		return school;
+	}
+
+	public void setSchool(Schools school) {
+		this.school = school;
+	}
+
+	public Integer getId() {
         return id;
     }
 
