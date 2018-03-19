@@ -19,6 +19,9 @@
 	</resultMap>
 	
 	<!-- 陈冬添加部分 -->
+	<select id="selectById" parameterType="Integer" resultMap="BaseResultMap">
+		select id,account,adminName from admins where id=#{id}
+	</select>
 	<select id="find" parameterType="Map" resultMap="BaseResultMap">
 		select id,adminName,account,phone, email from admins
 		<where>

@@ -11,15 +11,15 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 
 /**
- * 格式化发送到前端json中的日期（HH:mm）
+ * 格式化发送到前端json中的日期（YYYY-MM-dd）
  * @author cedo
  *
  */
-public class DateHHmmJSONDeserializer extends JsonDeserializer<Date> {
+public class DateYYMMddJSONDeserializer extends JsonDeserializer<Date> {
 
 	@Override
 	public Date deserialize(JsonParser jsonParser, DeserializationContext arg1) throws IOException, JsonProcessingException {
-		SimpleDateFormat fmt = new SimpleDateFormat("HH:mm");
+		SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
 		
 		try {
 			return fmt.parse(jsonParser.getText());
