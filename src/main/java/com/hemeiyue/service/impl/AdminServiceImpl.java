@@ -1,5 +1,6 @@
 package com.hemeiyue.service.impl;
 
+import java.util.Random;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,9 +12,11 @@ import org.springframework.stereotype.Service;
 
 import com.hemeiyue.common.AdminResult;
 import com.hemeiyue.common.ResultBean;
+import com.hemeiyue.common.ResultList;
 import com.hemeiyue.dao.AdminsMapper;
 import com.hemeiyue.entity.Admin;
 import com.hemeiyue.service.AdminService;
+import com.hemeiyue.util.MD5;
 import com.hemeiyue.util.JSONUtil;
 
 @Service("adminService")
@@ -22,13 +25,14 @@ public class AdminServiceImpl implements AdminService{
 	@Autowired
 	private AdminsMapper adminMapper;
 	
-	@Override
 	/**
 	 * 登录
 	 */
 	public ResultBean login(Admin admin, HttpServletRequest request) {
 		//获取对应账号的管理员信息
+		admin.setPassword(MD5.MD5encoder(admin.getPassword()+admin.getSalt()));
 		Admin currentAdmin = adminMapper.login(admin);
+		
 		
 		//检查账号与账户是否正确
 		if(currentAdmin == null) {
@@ -63,9 +67,103 @@ public class AdminServiceImpl implements AdminService{
 	}
 
 	@Override
-	public ResultBean register(Admin admin) {
-		// TODO Auto-generated method stub
-		return null;
+	public ResultBean insert(Admin admin,HttpServletRequest request) {
+		//获取当前管理员
+		Admin currentAdmin = (Admin) request.getSession().getAttribute("currentAdmin");
+		
+		if(currentAdmin.getParentId() > 1) {
+			return new ResultBean(false, "学校管理员没有权限执行该操作");
+		}else{
+			admin.setParentId(currentAdmin.getId());
+		}
+		
+		//设置状态为注册中
+		admin.setRegStatus(0);
+		admin.setStatus(0);
+		
+		//设置salt
+		Random random = new Random();
+		admin.setSalt(String.valueOf(random.nextInt()));
+		
+		//把加盐后的密码存进去
+		String newPassword = MD5.MD5encoder(admin.getPassword()+admin.getSalt());
+		admin.setPassword(newPassword);
+		adminMapper.insertSelective(admin);
+		return new ResultBean(true, "新管理员信息已录入");
+	}
+	
+	@Override
+	public ResultBean tenantApplyList(HttpServletRequest request) {
+		ResultList resultList = new ResultList();
+		//获取当前管理员
+		Admin currentAdmin = (Admin) request.getSession().getAttribute("currentAdmin");
+		if(currentAdmin.getId() != 0) {
+			return new ResultBean(false, "非超级管理员不可操作");
+		}
+		resultList.setList(adminMapper.selecTenant(0));
+		return resultList;
+	}
+
+	@Override
+	public ResultBean tenantApply(Integer id) {
+		Admin admin = new Admin();
+		admin.setId(id);
+		admin.setStatus(1);
+		admin.setRegStatus(1);
+		if(adminMapper.updateByPrimaryKeySelective(admin) == 1) {
+			return new ResultBean(true);
+		}
+		return new ResultBean(false);
+	}
+
+
+	@Override
+	public ResultBean validationAccount(String account) {
+		if(adminMapper.checkAccount(account) != null) {
+			return new ResultBean(false);
+		}
+		return new ResultBean(true);
+	}
+
+	@Override
+	public ResultBean deleteTenant(int id) {
+		if(adminMapper.selectByPrimaryKey(id).getRegStatus()==1) {
+			return new ResultBean(false);
+		}
+		if(adminMapper.deleteByPrimaryKey(id) == 1) {
+			return new ResultBean(true);
+		}
+		return new ResultBean(false);
+	}
+
+	@Override
+	public ResultBean tenantMangerList(HttpServletRequest request) {
+		ResultList resultList = new ResultList();
+		//获取当前管理员
+		Admin currentAdmin = (Admin) request.getSession().getAttribute("currentAdmin");
+		if(currentAdmin.getId() != 0) {
+			return new ResultBean(false, "非超级管理员不可操作");
+		}
+		resultList.setList(adminMapper.selecTenant(1));
+		return resultList;
+	}
+
+	@Override
+	public ResultBean suspendedTenant(int id) {
+		if(adminMapper.selectByPrimaryKey(id).getRegStatus() == 1 &&
+				adminMapper.updateStatus(id, 0)== 1) {
+			return new ResultBean(true);
+		}
+		return new ResultBean(false);
+	}
+
+	@Override
+	public ResultBean restoreTenant(int id) {
+		if(adminMapper.selectByPrimaryKey(id).getRegStatus() == 1 &&
+				adminMapper.updateStatus(id, 1)== 1) {
+			return new ResultBean(true);
+		}
+		return new ResultBean(false);
 	}
 
 	/*
@@ -108,8 +206,14 @@ public class AdminServiceImpl implements AdminService{
 		}
 		return result;
 	}
+
 	
 	/*
 	 * 陈冬修改结束
 	 */
+	@Override
+	public ResultBean register(Admin admin) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

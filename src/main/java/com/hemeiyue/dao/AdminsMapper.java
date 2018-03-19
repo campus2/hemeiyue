@@ -24,6 +24,10 @@ public interface AdminsMapper {
     
     Admin checkAccount(String account);
     
+    List<Admin> selecTenant(Integer regStatus);
+    
+    int updateStatus(Integer id,Integer status);
+
     /**
      * 根据map中的条件返回指定的数据集
      * @param map

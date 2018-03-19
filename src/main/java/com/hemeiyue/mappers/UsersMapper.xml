@@ -62,7 +62,6 @@
             <if test="address != null" >
                 address,
             </if>
-            
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides="," >
             <if test="id != null" >
