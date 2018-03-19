@@ -34,4 +34,11 @@ public interface ActivityService {
 	 */
 	public String getUsersByActivity(Activity activity);
 
+	/**
+	 * 根据id查询
+	 * @param activityId
+	 * @return
+	 */
+	public Activity selectById(int id);
+
 }

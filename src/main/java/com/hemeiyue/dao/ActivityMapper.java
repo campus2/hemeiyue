@@ -28,4 +28,11 @@ public interface ActivityMapper {
 	 */
 	public int deleteById(int id);
 
+	/**
+	 * 根据id查询
+	 * @param id
+	 * @return
+	 */
+	public Activity selectById(int id);
+
 }

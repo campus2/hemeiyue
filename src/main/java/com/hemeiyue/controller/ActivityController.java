@@ -66,9 +66,10 @@ public class ActivityController {
 	 * @return
 	 */
 	@RequestMapping("/getQrCode")
-	public String getQrCode(
+	public String getQrCode(@RequestParam("activityId")int activityId,
 			HttpServletResponse response) {
-		CodeUtil.createQRImg(response, "https://www.baidu.com/","附加信息");
+		Activity activity = activityService.selectById(activityId);
+		CodeUtil.createQRImg(response, "https://www.baidu.com/?id="+activityId,activity.getTitle());
 		return null;
 	}
 	

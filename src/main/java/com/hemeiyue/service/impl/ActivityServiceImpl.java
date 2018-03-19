@@ -64,4 +64,10 @@ public class ActivityServiceImpl implements ActivityService{
 		}
 		return JSONUtil.transform(userList);
 	}
+	
+	@Override
+	public Activity selectById(int id) {
+		
+		return activityMapper.selectById(id);
+	}
 }

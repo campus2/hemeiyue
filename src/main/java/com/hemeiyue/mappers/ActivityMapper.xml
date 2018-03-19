@@ -15,6 +15,10 @@
         <association property="school" column="schoolId" select="com.hemeiyue.dao.SchoolsMapper.selectById" />
     </resultMap>
     
+    <select id="selectById" parameterType="Integer" resultType="Activity">
+    	select *from activity where id=#{id}
+    </select>
+    
     <update id="deleteById" parameterType="Integer">
     	update activity set status=-1
     	where id=#{id}
