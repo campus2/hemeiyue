@@ -21,6 +21,49 @@ public class AdminManageController {
 	private AdminService adminService;
 	
 	/**
+	 * 返回所有的学校/课室总数
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/getAllSchoolsOrRooms")
+	public String getAllSchoolsOrRooms(HttpServletRequest request) {
+		Admin currentAdmin = (Admin)request.getSession().getAttribute("currentAdmin");
+		if(currentAdmin.getStatus() == -1) {
+			return adminService.getAllSchools();
+		}else if(currentAdmin.getStatus() == 0) {
+			return adminService.getAllRooms(currentAdmin.getSchool());
+		}
+		return null;
+	}
+	
+	/**
+	 * 返回所有的申请总数
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/getAllApply")
+	public String getAllApply(HttpServletRequest request) {
+		Admin currentAdmin = (Admin)request.getSession().getAttribute("currentAdmin");
+		if(currentAdmin.getStatus() == 1) {
+			return adminService.getAllApply(currentAdmin.getSchool());
+		}else if(currentAdmin.getStatus() == -1) {
+			return adminService.getAllApply(null);
+		}
+		return null;
+	}
+	
+	@RequestMapping("/getUserCount")
+	public String getUserCount(HttpServletRequest request) {
+		Admin currentAdmin = (Admin)request.getSession().getAttribute("currentAdmin");
+		if(currentAdmin.getStatus() == 1) {
+			return adminService.getUserCount(currentAdmin.getSchool());
+		}else if(currentAdmin.getStatus() == -1) {
+			return adminService.getUserCount(null);
+		}
+		return null;
+	}
+	
+	/**
 	 * 返回当前学校总管理员的子管理员信息
 	 * @param request
 	 * @return

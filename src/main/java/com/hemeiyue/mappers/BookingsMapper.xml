@@ -5,11 +5,18 @@
     <resultMap id="BaseResultMap" type="com.hemeiyue.entity.Bookings" >
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="roomPeriodId" property="roomperiodid" jdbcType="INTEGER" />
-        <result column="userId" property="userid" jdbcType="INTEGER" />
-        <result column="CDT" property="cdt" jdbcType="TIMESTAMP" />
         <result column="status" property="status" jdbcType="INTEGER" />
         <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <association property="roomPeriod" column="roomPeriodId" select="com.hemeiyue.dao.RoomPeriodsMapper.selectById" />
+        <association property="user" column="userId" select="com.hemeiyue.dao.UsersMapper.selectByPrimaryKey" />
     </resultMap>
+    
+    <select id="getApplyCount" parameterType="Schools" resultType="Long">
+    	select count(*) from bookings 
+    	<where>
+    		<if test="school != null">and school=#{school.id}</if>
+    	</where>
+    </select>
 
     <sql id="Base_Column_List" >
         id, roomPeriodId, userId, CDT, status, remark

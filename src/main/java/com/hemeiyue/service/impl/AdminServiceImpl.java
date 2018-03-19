@@ -14,7 +14,11 @@ import com.hemeiyue.common.AdminResult;
 import com.hemeiyue.common.ResultBean;
 import com.hemeiyue.common.ResultList;
 import com.hemeiyue.dao.AdminsMapper;
+import com.hemeiyue.dao.BookingsMapper;
+import com.hemeiyue.dao.RoomsMapper;
+import com.hemeiyue.dao.SchoolsMapper;
 import com.hemeiyue.entity.Admin;
+import com.hemeiyue.entity.Schools;
 import com.hemeiyue.service.AdminService;
 import com.hemeiyue.util.MD5;
 import com.hemeiyue.util.JSONUtil;
@@ -24,6 +28,15 @@ public class AdminServiceImpl implements AdminService{
 	
 	@Autowired
 	private AdminsMapper adminMapper;
+	
+	@Autowired
+	private BookingsMapper bookingMaper;
+	
+	@Autowired
+	private SchoolsMapper schoolsMapper;
+	
+	@Autowired
+	private RoomsMapper roomMapper;
 	
 	/**
 	 * 登录
@@ -207,6 +220,36 @@ public class AdminServiceImpl implements AdminService{
 		return result;
 	}
 
+	@Override
+	public String getUserCount(Schools school) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("school", school);
+		Long count = adminMapper.getUserCount(school);
+		return String.valueOf(count);
+	}
+	
+	@Override
+	public String getAllApply(Schools school) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("school", school);
+		Long count = bookingMaper.getApplyCount(school);
+		return String.valueOf(count);
+	}
+	
+	@Override
+	public String getAllSchools() {
+		Map<String, Object> map = new HashMap<>();
+		Long count = schoolsMapper.getTotal(map);
+		return String.valueOf(count);
+	}
+	
+	@Override
+	public String getAllRooms(Schools school) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("school", school);
+		Long count = roomMapper.getTotal(map);
+		return String.valueOf(count);
+	}
 	
 	/*
 	 * 陈冬修改结束

@@ -19,6 +19,14 @@
 	</resultMap>
 	
 	<!-- 陈冬添加部分 -->
+	
+	<select id="getUserCount" parameterType="Schools" resultType="Long">
+		select count(*) from users
+		<where>
+			<if test="school != null">and schoolId = #{school.id}</if>
+		</where>
+	</select>
+	
 	<select id="selectById" parameterType="Integer" resultMap="BaseResultMap">
 		select id,account,adminName from admins where id=#{id}
 	</select>
