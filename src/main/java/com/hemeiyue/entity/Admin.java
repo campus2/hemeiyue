@@ -2,6 +2,9 @@ package com.hemeiyue.entity;
 
 import javax.validation.constraints.Size;
 
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
+
 /**
  * 
  * 
@@ -13,12 +16,13 @@ public class Admin {
 	
     private Integer id;
     
-    @Size(min=6,max=11,message="账号必须超过6位")
+    @Size(min=6,max=11,message="账号必须6~11位",groups= {com.hemeiyue.entity.validation.AdminLogin.class,com.hemeiyue.entity.validation.AdminRegister.class})
     private String account;
     
-    @Size(min=6,max=11,message="密码不可低于6位")
+    @Size(min=6,max=11,message="密码必须6~11位",groups= {com.hemeiyue.entity.validation.AdminLogin.class,com.hemeiyue.entity.validation.AdminRegister.class})
     private String password;
-
+    
+    @NotEmpty(message="名字不可为空",groups= {com.hemeiyue.entity.validation.AdminRegister.class})
     private String adminName;
 
     private String signature;
@@ -26,7 +30,8 @@ public class Admin {
     private String avatar;
 
     private String phone;
-
+    	
+    @Email(message="邮箱格式不正确",groups= {com.hemeiyue.entity.validation.AdminRegister.class})
     private String email;
 
     private Integer parentId;

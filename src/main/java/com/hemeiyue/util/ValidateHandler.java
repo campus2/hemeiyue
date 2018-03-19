@@ -29,6 +29,7 @@ public class ValidateHandler {
     public static ResultBean validate(BindingResult result) {
     	if (result.hasErrors()) {
     		FieldError error = result.getFieldErrors().get(0);
+    		System.out.println(error.getDefaultMessage());
     		return new ResultBean(false, error.getDefaultMessage());
     	}
     	return null;

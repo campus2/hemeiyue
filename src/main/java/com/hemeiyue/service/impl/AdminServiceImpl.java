@@ -1,6 +1,5 @@
 package com.hemeiyue.service.impl;
 
-import java.util.Random;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +16,8 @@ import com.hemeiyue.dao.AdminsMapper;
 import com.hemeiyue.entity.Admin;
 import com.hemeiyue.service.AdminService;
 import com.hemeiyue.util.MD5;
+import com.hemeiyue.util.PhoneFormatCheckUtils;
+import com.hemeiyue.util.SendMailUtil;
 import com.hemeiyue.util.JSONUtil;
 
 @Service("adminService")
@@ -30,7 +31,10 @@ public class AdminServiceImpl implements AdminService{
 	 */
 	public ResultBean login(Admin admin, HttpServletRequest request) {
 		//获取对应账号的管理员信息
-		admin.setPassword(MD5.MD5encoder(admin.getPassword()+admin.getSalt()));
+		String salt = adminMapper.checkAccount(admin.getAccount()).getSalt();
+		System.out.println(salt);
+		System.out.println(admin.getAccount() + "   " + admin.getPassword());
+		admin.setPassword(MD5.MD5encoder(admin.getPassword()+ salt));
 		Admin currentAdmin = adminMapper.login(admin);
 		
 		
@@ -68,28 +72,42 @@ public class AdminServiceImpl implements AdminService{
 
 	@Override
 	public ResultBean insert(Admin admin,HttpServletRequest request) {
+		if(adminMapper.checkAccount(admin.getAccount()) != null) {
+			return new ResultBean(false, "该账号已存在");
+		}
 		//获取当前管理员
 		Admin currentAdmin = (Admin) request.getSession().getAttribute("currentAdmin");
 		
-		if(currentAdmin.getParentId() > 1) {
-			return new ResultBean(false, "学校管理员没有权限执行该操作");
+		if(currentAdmin == null) {
+			admin.setParentId(0);
 		}else{
 			admin.setParentId(currentAdmin.getId());
+		}
+		
+		//检查电话号码
+		if(!PhoneFormatCheckUtils.isPhoneLegal(admin.getPhone())) {
+			return new ResultBean(false, "电话号码格式错误");
 		}
 		
 		//设置状态为注册中
 		admin.setRegStatus(0);
 		admin.setStatus(0);
 		
-		//设置salt
-		Random random = new Random();
-		admin.setSalt(String.valueOf(random.nextInt()));
+		//设置salt 0~1000
+		int salt = (int) (Math.random()*1000);
+		admin.setSalt(String.valueOf(salt));
+		System.out.println(salt);
 		
 		//把加盐后的密码存进去
-		String newPassword = MD5.MD5encoder(admin.getPassword()+admin.getSalt());
+		String newPassword = MD5.MD5encoder(admin.getPassword()+salt);
 		admin.setPassword(newPassword);
-		adminMapper.insertSelective(admin);
-		return new ResultBean(true, "新管理员信息已录入");
+		if(adminMapper.insertSelective(admin) == 1) {
+			SendMailUtil send = new SendMailUtil(admin.getEmail(), "注册成功", admin.getAdminName() + "已注册成功，请耐心等待管理员确认");
+			send.start();
+			return new ResultBean(true, "新管理员信息已录入");
+		}else {
+			return new ResultBean(false, "注册失败,请重新登录");
+		}
 	}
 	
 	@Override
@@ -150,8 +168,11 @@ public class AdminServiceImpl implements AdminService{
 
 	@Override
 	public ResultBean suspendedTenant(int id) {
+		Admin admin = new Admin();
+		admin.setId(id);
+		admin.setStatus(0);
 		if(adminMapper.selectByPrimaryKey(id).getRegStatus() == 1 &&
-				adminMapper.updateStatus(id, 0)== 1) {
+				adminMapper.updateStatus(admin)== 1) {
 			return new ResultBean(true);
 		}
 		return new ResultBean(false);
@@ -159,8 +180,11 @@ public class AdminServiceImpl implements AdminService{
 
 	@Override
 	public ResultBean restoreTenant(int id) {
+		Admin admin = new Admin();
+		admin.setId(id);
+		admin.setStatus(1);
 		if(adminMapper.selectByPrimaryKey(id).getRegStatus() == 1 &&
-				adminMapper.updateStatus(id, 1)== 1) {
+				adminMapper.updateStatus(admin)== 1) {
 			return new ResultBean(true);
 		}
 		return new ResultBean(false);
@@ -198,13 +222,11 @@ public class AdminServiceImpl implements AdminService{
 	
 	@Override
 	public ResultBean deleteById(int id) {
-		ResultBean result = null;
 		if(adminMapper.deleteByPrimaryKey(id) > 0) {
-			result = new ResultBean(true, "删除成功");
+			return new  ResultBean(true, "删除成功");
 		}else {
-			result = new ResultBean(false, "删除失败");
+			return new ResultBean(false, "删除失败");
 		}
-		return result;
 	}
 
 	
