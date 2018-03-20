@@ -1,7 +1,5 @@
 package hemeiyue;
 
-import static org.junit.Assert.*;
-
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -10,8 +8,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hemeiyue.eumn.Auth;
 
 public class JSONTest {
 
@@ -21,6 +19,11 @@ public class JSONTest {
 
 	@After
 	public void tearDown() throws Exception {
+	}
+	
+	@Test
+	public void eumnTest() {
+		System.out.println(Auth.operator.ordinal()>1);
 	}
 
 	@Test

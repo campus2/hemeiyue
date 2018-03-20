@@ -9,7 +9,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.hemeiyue.annotion.AuthLoginAnnotation;
 import com.hemeiyue.common.ResultBean;
+import com.hemeiyue.eumn.Auth;
 
 @Controller
 @RequestMapping("/admin")
@@ -23,6 +25,7 @@ public class AdminController {
 	 */
 	@RequestMapping("/index")
 	@ResponseBody
+	@AuthLoginAnnotation(checkAuth=Auth.operator)
 	public List<ResultBean> index(HttpServletResponse response) {
 		List<ResultBean> list = new ArrayList<>();
 		list.add(new ResultBean(true,"success"));
