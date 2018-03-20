@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -15,6 +16,7 @@ import com.hemeiyue.eumn.Auth;
 
 @Controller
 @RequestMapping("/admin")
+
 public class AdminController {
 	
 	
@@ -25,7 +27,7 @@ public class AdminController {
 	 */
 	@RequestMapping("/index")
 	@ResponseBody
-	@AuthLoginAnnotation(checkAuth=Auth.operator)
+	@AuthLoginAnnotation(checkAuth={Auth.priAccount,Auth.operator})
 	public List<ResultBean> index(HttpServletResponse response) {
 		List<ResultBean> list = new ArrayList<>();
 		list.add(new ResultBean(true,"success"));

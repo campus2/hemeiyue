@@ -21,18 +21,21 @@ public class AuthInterceptor implements HandlerInterceptor {
 		HandlerMethod method = (HandlerMethod)handler;
 		AuthLoginAnnotation auth = method.getMethod().getAnnotation(AuthLoginAnnotation.class);
 
-		if(auth != null && auth.checkAuth().getCode()!=Integer.MIN_VALUE) {
+		
+		if(auth != null && auth.checkAuth()[0].getCode()!=Integer.MIN_VALUE) {
 			Admin admin = (Admin)request.getSession().getAttribute("currentAdmin");
 			//判断权限
-			if(admin!=null && admin.getParentId()==auth.checkAuth().getCode()) {
-				return true;
-			}else if(admin!=null && admin.getParentId()>=auth.checkAuth().getCode()) {
-				return true;
-			}else {
-				return false;
+			for(int i=0; i<auth.checkAuth().length; i++) {
+				if(admin!=null && admin.getParentId()==auth.checkAuth()[i].getCode()) {
+					System.out.println(auth.checkAuth()[i]);
+					return true;
+				}else if(admin!=null && admin.getParentId()>=auth.checkAuth()[i].getCode()) {
+					System.out.println("test");
+					return true;
+				}
 			}
+			return false;
 		}
-		
 		return true;
 	}
 	
