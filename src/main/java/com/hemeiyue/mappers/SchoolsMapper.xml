@@ -31,7 +31,7 @@
 
     <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
         select 
-        <include refid="Base_Column_List" />
+        *
         from schools
         where id = #{id,jdbcType=INTEGER}
     </select>
@@ -97,4 +97,8 @@
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
+    
+    <select	id="findSchool" parameterType="String" resultType="Integer">
+    	select count(*) from schools where school = #{school,jdbcType=VARCHAR}
+    </select>
 </mapper>

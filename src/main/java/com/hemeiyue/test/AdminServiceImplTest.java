@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.hemeiyue.entity.Admin;
 import com.hemeiyue.service.AdminService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -65,5 +66,12 @@ public class AdminServiceImplTest {
 		int id = 1;
 		adminService.restoreTenant(id);
 	}
-
+	
+	@Test
+	public void testFindPassword() {
+		Admin admin = new Admin();
+		admin.setId(16);
+		admin.setPassword("987654321");
+		adminService.findPassword(admin);
+	}
 }

@@ -27,7 +27,7 @@ public interface AdminsMapper {
     
     List<Admin> selecTenant(Integer regStatus);
     
-    int updateStatus(Integer id,Integer status);
+    int updateStatus(Admin admin);
 
     /**
      * 根据map中的条件返回指定的数据集
@@ -42,6 +42,13 @@ public interface AdminsMapper {
 	 * @return
 	 */
 	public int updateAdmin(Admin admin);
+	
+	/**
+	 * 查找管理员密码
+	 * @param admin
+	 * @return
+	 */
+	public Admin findPassword(Admin admin);
 
 	/**
 	 * 查询指定学校的用户人数

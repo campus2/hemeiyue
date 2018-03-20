@@ -28,4 +28,6 @@ public interface SchoolsMapper {
 	 * @return
 	 */
 	public Long getTotal(Map<String, Object> map);
+	
+	public int findSchool(String school);
 }

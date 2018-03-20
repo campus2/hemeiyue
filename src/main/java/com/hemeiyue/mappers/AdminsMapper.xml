@@ -27,7 +27,7 @@
 		</where>
 	</select>
 	
-	<select id="selectById" parameterType="Integer" resultMap="BaseResultMap">
+	<select id="selectById" parameterType="Integer" resultType="Admin">
 		select id,account,adminName from admins where id=#{id}
 	</select>
 	<select id="find" parameterType="Map" resultMap="BaseResultMap">
@@ -56,7 +56,7 @@
 	<!-- 陈冬添加部分结束 -->
 	
 	<sql id="Base_Column_List" >
-		id,account,password,adminName,signature,avatar,phone,email,parentId,schoolId,status,regStatus
+		id,account,password,adminName,signature,avatar,phone,email,parentId,schoolId,status,regStatus,salt
 	</sql>
 	
 	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
@@ -153,10 +153,10 @@
                 #{status,jdbcType=VARCHAR},
             </if>
             <if test="salt != null" >
-                #{salt,jdbcType=VARCHAR}
+                #{salt,jdbcType=VARCHAR},
             </if>
             <if test="regStatus != null" >
-                #{regStatus,jdbcType=VARCHAR}
+                #{regStatus,jdbcType=VARCHAR},
             </if>
             <if test="school != null" >
                 #{school.id,jdbcType=VARCHAR}
@@ -252,9 +252,16 @@
         where parentId = '0' and regStatus = #{regStatus,jdbcType=VARCHAR}
 	</select>
 	
-	<update id="updateStatus" parameterType="java.lang.Integer">
+	<update id="updateStatus" parameterType="com.hemeiyue.entity.Admin">
 		update admins
-		set regStatus = #{regStatus,jdbcType=VARCHAR}
+		set status = #{status,jdbcType=VARCHAR}
 		where id = #{id,jdbcType=INTEGER}
 	</update>
+	
+	<select id="findPassword" resultMap="BaseResultMap" parameterType="com.hemeiyue.entity.Admin">
+		select 
+        id,password
+        from admins
+        where id = #{id,jdbcType=INTEGER} and password = #{password} and regStatus = '1'
+	</select>
 </mapper>

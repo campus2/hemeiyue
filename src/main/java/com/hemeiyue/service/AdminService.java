@@ -95,6 +95,13 @@ public interface AdminService {
 	 * @return
 	 */
 	public ResultBean deleteById(int id);
+	
+	/**
+	 * 查找密码
+	 * @param password
+	 * @return
+	 */
+	public ResultBean findPassword(Admin admin);
 
 	/**
 	 * 查询指定学校的用户人数
