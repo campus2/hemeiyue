@@ -99,4 +99,8 @@
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
+    
+    <select	id="findSchool" parameterType="String" resultType="Integer">
+    	select count(*) from schools where school = #{school,jdbcType=VARCHAR}
+    </select>
 </mapper>

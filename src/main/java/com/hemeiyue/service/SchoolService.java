@@ -42,5 +42,12 @@ public interface SchoolService {
 	 * @return
 	 */
 	public String find(Map<String, Object> map);
-
+	
+	
+	/**
+	 * 查找学校是否被注册了
+	 * @param school
+	 * @return
+	 */
+	public ResultBean findSchool(String school);
 }

@@ -94,4 +94,10 @@ public class AdminController {
 	public ResultBean restoreTenant(Integer id) {
 		return adminService.restoreTenant(id);
 	}
+	
+	@RequestMapping("/validatePassword")
+	@ResponseBody
+	public ResultBean validatePassword(Admin admin) {
+		return adminService.findPassword(admin);
+	}
 }

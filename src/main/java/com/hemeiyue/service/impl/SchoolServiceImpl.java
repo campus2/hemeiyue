@@ -71,4 +71,17 @@ public class SchoolServiceImpl implements SchoolService{
 		result.put("total", total);
 		return JSONUtil.transform(result);
 	}
+
+	@Override
+	public ResultBean findSchool(String school) {
+		System.out.println("3");
+		if(schoolMapper.findSchool(school) != 0) {
+			System.out.println("1");
+			return new ResultBean(false,"该学校已被注册");
+		}
+		System.out.println("w");
+		return new ResultBean(true,"该学校第一次注册");
+	}
+	
+	
 }

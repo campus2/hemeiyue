@@ -119,4 +119,9 @@ public class SchoolController {
 		return bean;
 	}
 	
+	@RequestMapping("/validSchool")
+	@ResponseBody
+	public ResultBean validSchool(String school) {
+		return schoolService.findSchool(school);
+	}
 }

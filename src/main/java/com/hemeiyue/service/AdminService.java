@@ -94,4 +94,11 @@ public interface AdminService {
 	 * @return
 	 */
 	public ResultBean deleteById(int id);
+	
+	/**
+	 * 查找密码
+	 * @param password
+	 * @return
+	 */
+	public ResultBean findPassword(Admin admin);
 }

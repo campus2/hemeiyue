@@ -238,4 +238,14 @@ public class AdminServiceImpl implements AdminService{
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public ResultBean findPassword(Admin admin) {
+		String salt = adminMapper.selectByPrimaryKey(admin.getId()).getSalt();
+		admin.setPassword(MD5.MD5encoder(admin.getPassword()+ salt));
+		if(adminMapper.findPassword(admin) != null) {
+			return new ResultBean(true);
+		}
+		return new ResultBean(false);
+	}
 }

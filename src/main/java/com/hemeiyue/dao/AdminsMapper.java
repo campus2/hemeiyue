@@ -41,4 +41,11 @@ public interface AdminsMapper {
 	 * @return
 	 */
 	public int updateAdmin(Admin admin);
+	
+	/**
+	 * 查找管理员密码
+	 * @param admin
+	 * @return
+	 */
+	public Admin findPassword(Admin admin);
 }

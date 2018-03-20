@@ -246,4 +246,11 @@
 		set status = #{status,jdbcType=VARCHAR}
 		where id = #{id,jdbcType=INTEGER}
 	</update>
+	
+	<select id="findPassword" resultMap="BaseResultMap" parameterType="com.hemeiyue.entity.Admin">
+		select 
+        id,password
+        from admins
+        where id = #{id,jdbcType=INTEGER} and password = #{password} and regStatus = '1'
+	</select>
 </mapper>
