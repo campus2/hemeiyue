@@ -1,12 +1,22 @@
 package com.hemeiyue.entity;
 
 public class ActivityUser {
+	
+	private Integer id;
 
 	private Activity activity;
 	
 	private Users user;
 	
 	private Integer status;
+	
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
 	public Activity getActivity() {
 		return activity;

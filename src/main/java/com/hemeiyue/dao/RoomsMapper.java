@@ -46,4 +46,11 @@ public interface RoomsMapper {
 	 * @return
 	 */
 	public RoomTypes select(Map<String, Object> map);
+
+	/**
+	 * 根据指定条件返回记录数
+	 * @param map
+	 * @return
+	 */
+	public Long getTotal(Map<String, Object> map);
 }

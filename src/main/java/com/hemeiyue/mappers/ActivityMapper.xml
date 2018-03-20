@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hemeiyue.dao.ActivityMapper" >
+
+    <resultMap id="BaseResultMap" type="com.hemeiyue.entity.Activity" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="title" property="title" jdbcType="VARCHAR" />
+        <result column="content" property="content" jdbcType="VARCHAR" />
+        <result column="date" property="date" />
+        <result column="time" property="time" jdbcType="VARCHAR" />
+        <result column="count" property="count" jdbcType="INTEGER" />
+        <result column="status" property="status" jdbcType="INTEGER" />
+        <association property="address" column="addrId" select="com.hemeiyue.dao.RoomsMapper.selectById"/>
+        <association property="owner" column="ownerId" select="com.hemeiyue.dao.AdminsMapper.selectById"/>
+        <association property="school" column="schoolId" select="com.hemeiyue.dao.SchoolsMapper.selectById" />
+    </resultMap>
+    
+    <select id="selectById" parameterType="Integer" resultType="Activity">
+    	select *from activity where id=#{id}
+    </select>
+    
+    <update id="deleteById" parameterType="Integer">
+    	update activity set status=-1
+    	where id=#{id}
+    </update>
+    
+    <select id="find" parameterType="Map" resultMap="BaseResultMap">
+    	select *from activity
+    	<where>
+    		<if test="title!=null and title!=''">
+    			and title = #{title}
+    		</if>
+    		<if test="date!=null">
+    			and date = #{date}
+    		</if>
+    		<if test="time!=null and time!=''">
+    			and time = #{time}
+    		</if>
+    		<if test="count!=null and count!=''">
+    			and count = #{count}
+    		</if>
+    		<if test="address!=null">
+    			and addrId = #{address.id}
+    		</if>
+    		<if test="school!=null">
+    			and schoolId = #{school.id}
+    		</if>
+    		<if test="owner!=null">
+    			and ownerId = #{owner.id}
+    		</if>
+    		
+    		and status>0
+    	</where>
+    </select>
+    
+    <insert id="insert" parameterType="com.hemeiyue.entity.Activity" useGeneratedKeys="true" keyProperty="id">
+        insert into activity
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="title != null" >
+                title,
+            </if>
+            <if test="content != null" >
+                content,
+            </if>
+            <if test="date != null" >
+                date,
+            </if>
+            <if test="count != null" >
+                count,
+            </if>
+            <if test="status != null" >
+                status,
+            </if>
+            <if test="address != null">
+    			addrId,
+    		</if>
+    		<if test="school != null">
+    			schoolId,
+    		</if>
+    		<if test="owner != null">
+    			ownerId,
+    		</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="title != null" >
+                #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="content != null" >
+                #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="date != null" >
+                #{date,jdbcType=DATE},
+            </if>
+            <if test="count != null" >
+                #{count,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null" >
+                #{address.id,jdbcType=INTEGER},
+            </if>
+            <if test="school != null" >
+                #{school.id,jdbcType=INTEGER},
+            </if>
+            <if test="owner != null" >
+                #{owner.id,jdbcType=INTEGER},
+            </if>
+            <if test="status != null" >
+                #{status,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+</mapper>

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.hemeiyue.entity.Admin;
+import com.hemeiyue.entity.Schools;
 
 public interface AdminsMapper {
     int deleteByPrimaryKey(Integer id);
@@ -48,4 +49,11 @@ public interface AdminsMapper {
 	 * @return
 	 */
 	public Admin findPassword(Admin admin);
+
+	/**
+	 * 查询指定学校的用户人数
+	 * @param school 可为空，空时返回所有用户的人数
+	 * @return 
+	 */
+	public Long getUserCount(Schools school);
 }

@@ -14,6 +14,14 @@
         <association property="school" column="schoolId" select="com.hemeiyue.dao.SchoolsMapper.selectById" />
     </resultMap>
     
+    <select id="getTotal" parameterType="Map" resultType="Long">
+    	select count(*) from rooms 
+    	<where>
+    		<if test="school != null">and schoolId=#{schoolId}</if>
+    		and status > 0
+    	</where>
+    </select>
+    
     <select id="find" parameterType="Map" resultMap="BaseResultMap">
     	select *from rooms
     	<where>

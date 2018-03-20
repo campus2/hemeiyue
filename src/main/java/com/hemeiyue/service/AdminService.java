@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.hemeiyue.common.ResultBean;
 import com.hemeiyue.entity.Admin;
+import com.hemeiyue.entity.Schools;
 
 public interface AdminService {
 	/**
@@ -101,4 +102,30 @@ public interface AdminService {
 	 * @return
 	 */
 	public ResultBean findPassword(Admin admin);
+
+	/**
+	 * 查询指定学校的用户人数
+	 * @param school 可为空，空时返回所有用户的
+	 * @return 
+	 */
+	public String getUserCount(Schools school);
+
+	/**
+	 * 返回指定学校的申请总数，为空则返回全部
+	 * @param school
+	 * @return
+	 */
+	public String getAllApply(Schools school);
+
+	/**
+	 * 返回学校记录总数
+	 * @return
+	 */
+	public String getAllSchools();
+
+	/**
+	 * 返回指定学校的课室记录数
+	 * @return
+	 */
+	public String getAllRooms(Schools school);
 }

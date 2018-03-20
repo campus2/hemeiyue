@@ -10,6 +10,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.hemeiyue.common.ResultBean;
 import com.hemeiyue.entity.Admin;
+import com.hemeiyue.entity.Schools;
 import com.hemeiyue.service.AdminService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -27,6 +28,10 @@ public class AdminManageTest {
 	public void tearDown() throws Exception {
 	}
 	
+	@Test
+	public void schoolTotalTest() {
+		System.out.println(adminService.getAllRooms(new Schools(1)));
+	}
 	
 	@Test
 	public void adminDeleteTest() {

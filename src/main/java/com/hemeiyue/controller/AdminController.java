@@ -1,6 +1,11 @@
 package com.hemeiyue.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -8,6 +13,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.hemeiyue.annotion.AuthLoginAnnotation;
 import com.hemeiyue.common.ResultBean;
 import com.hemeiyue.entity.Admin;
 import com.hemeiyue.entity.Schools;
@@ -15,6 +21,7 @@ import com.hemeiyue.entity.validation.AdminLogin;
 import com.hemeiyue.entity.validation.AdminRegister;
 import com.hemeiyue.service.AdminService;
 import com.hemeiyue.util.ValidateHandler;
+import com.hemeiyue.eumn.Auth;
 
 @Controller
 @RequestMapping("/admin")
@@ -99,5 +106,12 @@ public class AdminController {
 	@ResponseBody
 	public ResultBean validatePassword(Admin admin) {
 		return adminService.findPassword(admin);
+	}
+	@AuthLoginAnnotation(checkAuth=Auth.operator)
+	public List<ResultBean> index(HttpServletResponse response) {
+		List<ResultBean> list = new ArrayList<>();
+		list.add(new ResultBean(true,"success"));
+		list.add(new ResultBean(true,"添加成功"));
+		return list;
 	}
 }

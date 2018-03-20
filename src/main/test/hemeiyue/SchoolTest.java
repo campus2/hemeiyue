@@ -51,6 +51,7 @@ public class SchoolTest {
 	public void tearDown() throws Exception {
 	}
 	
+	
 	@Test
 	public void roomDelete() {
 		RoomTypes roomType = new RoomTypes(1);

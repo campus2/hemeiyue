@@ -2,6 +2,11 @@ package com.hemeiyue.entity;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.hemeiyue.util.DateYYMMddJSONDeserializer;
+import com.hemeiyue.util.DateYYMMddJSONSerializer;
+
 public class Activity {
 
 	private Integer id;
@@ -12,15 +17,29 @@ public class Activity {
 	
 	private Integer count;
 	
+	@JsonDeserialize(using=DateYYMMddJSONDeserializer.class)
+	@JsonSerialize(using=DateYYMMddJSONSerializer.class)
 	private Date date;
 	
 	private String time;
 	
-	private Rooms room;
+	private Rooms address;
 	
 	private Admin owner;
 	
+	private Schools school;
+	
 	private Integer status;
+	
+	public Activity(Integer id) {
+		super();
+		this.id = id;
+	}
+
+	public Activity() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
 	public Integer getId() {
 		return id;
@@ -70,12 +89,12 @@ public class Activity {
 		this.time = time;
 	}
 
-	public Rooms getRoom() {
-		return room;
+	public Rooms getAddress() {
+		return address;
 	}
 
-	public void setRoom(Rooms room) {
-		this.room = room;
+	public void setAddress(Rooms address) {
+		this.address = address;
 	}
 
 	public Admin getOwner() {
@@ -92,6 +111,14 @@ public class Activity {
 
 	public void setStatus(Integer status) {
 		this.status = status;
+	}
+
+	public Schools getSchool() {
+		return school;
+	}
+
+	public void setSchool(Schools school) {
+		this.school = school;
 	}
 	
 }

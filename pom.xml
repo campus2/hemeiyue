@@ -13,6 +13,23 @@
 	</properties>
 
 	<dependencies>
+		<!-- 二维码相关包 -->
+		<dependency>
+		    <groupId>com.google.zxing</groupId>
+		    <artifactId>core</artifactId>
+		    <version>3.3.0</version>
+		</dependency>
+		<dependency>
+		    <groupId>com.google.zxing</groupId>
+		    <artifactId>javase</artifactId>
+		    <version>3.3.0</version>
+		</dependency>
+		
+		<!-- 二维码导包结束 -->
+		
+	
+	
+	
 		<!-- jms jar包 -->
 		<!-- https://mvnrepository.com/artifact/com.sun.mail/javax.mail -->
 		<dependency>

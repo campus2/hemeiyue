@@ -10,16 +10,16 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 
 /**
- * 格式化接受前端json中的日期（HH:mm）
+ * 格式化接受前端json中的日期（YYYY-MM-dd）
  * @author cedo
  *
  */
-public class DateHHmmJSONSerializer extends JsonSerializer<Date> {
+public class DateYYMMddJSONSerializer extends JsonSerializer<Date> {
 
 	@Override
 	public void serialize(Date date, JsonGenerator jsonGen, SerializerProvider arg2)
 			throws IOException, JsonProcessingException {
-		SimpleDateFormat fmt = new SimpleDateFormat("HH:mm");
+		SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
 		jsonGen.writeString(fmt.format(date));
 	}
 
