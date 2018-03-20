@@ -18,7 +18,6 @@
 	id<input type="text" name="id"><br>
 	<!-- hrefUrl<input type="text" name="hrefUrl"><br> -->
 	<input type="submit">
-	
 </form>
 
 <img src="${pageContext.request.contextPath}assets/wechatImage/0a0d14a3b93b4e94988cc464acaab6a6.png">

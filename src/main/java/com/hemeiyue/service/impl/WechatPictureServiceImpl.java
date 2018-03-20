@@ -23,6 +23,8 @@ public class WechatPictureServiceImpl implements WechatPictureService{
 
 	@Override
 	public ResultBean insert(WechatPicture wechatPicture,HttpServletRequest request) {
+		System.out.println(request.getSession().getServletContext().getRealPath(""));
+		System.out.println(request.getContextPath());
 		String localPath=this.getClass().getClassLoader().getResource("").getPath().replaceAll("/WEB-INF/classes/", "/assets/wechatImage/");  
 		System.out.println(localPath);
 		//若没有这个目录则新建一个

@@ -27,7 +27,7 @@
 		</where>
 	</select>
 	
-	<select id="selectById" parameterType="Integer" resultMap="BaseResultMap">
+	<select id="selectById" parameterType="Integer" resultType="Admin">
 		select id,account,adminName from admins where id=#{id}
 	</select>
 	<select id="find" parameterType="Map" resultMap="BaseResultMap">

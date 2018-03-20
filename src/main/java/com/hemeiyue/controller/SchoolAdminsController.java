@@ -25,7 +25,7 @@ public class SchoolAdminsController {
 	public String add(SchoolAdmins schoolAdmin,HttpServletResponse response) {
 		ResultBean result = new ResultBean();
 		try {
-			schoolAdmin.setCdt(DateUtil.date());
+			schoolAdmin.setCdt(DateUtil.dateTime());
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

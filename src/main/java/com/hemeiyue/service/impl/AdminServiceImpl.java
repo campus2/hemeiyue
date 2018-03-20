@@ -68,6 +68,7 @@ public class AdminServiceImpl implements AdminService{
 		}
 		
 		request.getSession().setAttribute("currentAdmin", currentAdmin);
+		request.getSession().setAttribute("school", currentAdmin.getSchool());
 		
 		int authority;
 		if(currentAdmin.getParentId() < 0) {

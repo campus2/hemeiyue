@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hemeiyue.dao.NotificationMapper" >
+	
+	<resultMap id="BaseResultMap" type="com.hemeiyue.entity.Notification" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="title" property="title" jdbcType="VARCHAR" />
+        <result column="content" property="content" jdbcType="VARCHAR" />
+        <result column="date" property="date" />
+        <result column="time" property="time" jdbcType="VARCHAR" />
+        <result column="status" property="status" jdbcType="INTEGER" />
+        <association property="school" column="schoolId" select="com.hemeiyue.dao.SchoolsMapper.selectById" />
+    </resultMap>
+    
+	<insert id="insert" parameterType="com.hemeiyue.entity.Notification">
+		insert into notification
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="title != null" >
+                title,
+            </if>
+            <if test="content != null" >
+                content,
+            </if>
+            <if test="date != null" >
+                date,
+            </if>
+            <if test="time != null" >
+                time,
+            </if>
+            <if test="status != null" >
+                status,
+            </if>
+    		<if test="school != null">
+    			schoolId,
+    		</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="title != null" >
+                #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="content != null" >
+                #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="date != null" >
+                #{date,jdbcType=DATE},
+            </if>
+            <if test="time != null" >
+                #{time,jdbcType=VARCHAR},
+            </if>
+            <if test="school != null" >
+                #{school.id,jdbcType=INTEGER},
+            </if>
+            <if test="status != null" >
+                #{status,jdbcType=INTEGER},
+            </if>
+        </trim>
+	</insert>
+	
+	<update id="delete" parameterType="Integer">
+		update notification
+		set status = 0
+		where id = #{id}	
+	</update>
+	
+	<select id="findAll" parameterType="Integer" resultMap="BaseResultMap">
+		select id, title, content, schoolId, date, time, status
+		 from notification 
+		 where schoolId = #{schoolId}
+	</select>
+	
+</mapper>
