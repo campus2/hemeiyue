@@ -4,7 +4,6 @@
 
     <resultMap id="BaseResultMap" type="com.hemeiyue.entity.Bookings" >
         <id column="id" property="id" jdbcType="INTEGER" />
-        <result column="roomPeriodId" property="roomperiodid" jdbcType="INTEGER" />
         <result column="status" property="status" jdbcType="INTEGER" />
         <result column="remark" property="remark" jdbcType="VARCHAR" />
         <association property="roomPeriod" column="roomPeriodId" select="com.hemeiyue.dao.RoomPeriodsMapper.selectById" />
