@@ -6,6 +6,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -25,6 +26,7 @@ import com.hemeiyue.eumn.Auth;
 
 @Controller
 @RequestMapping("/admin")
+
 public class AdminController {
 	
 	@Autowired
@@ -32,6 +34,7 @@ public class AdminController {
 	
 	@RequestMapping("/login")
 	@ResponseBody
+	@AuthLoginAnnotation(checkAuth={Auth.priAccount,Auth.operator})
 	public ResultBean login(@Validated(AdminLogin.class) Admin admin,BindingResult result, 
 			HttpServletRequest request) {
 		if(result.hasErrors()) {
@@ -105,14 +108,5 @@ public class AdminController {
 	@ResponseBody
 	public ResultBean validatePassword(Admin admin) {
 		return adminService.findPassword(admin);
-	}
-	
-	
-	@AuthLoginAnnotation(checkAuth=Auth.operator)
-	public List<ResultBean> index(HttpServletResponse response) {
-		List<ResultBean> list = new ArrayList<>();
-		list.add(new ResultBean(true,"success"));
-		list.add(new ResultBean(true,"添加成功"));
-		return list;
 	}
 }
