@@ -1,5 +1,7 @@
 package com.hemeiyue.dao;
 
+import java.util.List;
+
 import com.hemeiyue.entity.Bookings;
 import com.hemeiyue.entity.Schools;
 
@@ -22,4 +24,20 @@ public interface BookingsMapper {
      * @return
      */
 	public Long getApplyCount(Schools school);
+	
+	/**
+	 * 返回申请列表
+	 * @param schoolId
+	 * @return
+	 */
+	public List<Bookings> findAllBooks(Integer schoolId);
+	
+	/**
+	 * 返回申请列表
+	 * @param userId
+	 * @return
+	 */
+	public List<Bookings> findMyBooks(Integer userId);
+	
+	public List<Bookings> findSamePeriodBooks(Integer roomPeriodId);
 }

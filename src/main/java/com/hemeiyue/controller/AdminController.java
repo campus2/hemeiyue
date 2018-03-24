@@ -44,12 +44,11 @@ public class AdminController {
 	@ResponseBody
 	public ResultBean register(@Validated(AdminRegister.class) Admin admin,Integer schoolId,
 			BindingResult result, HttpServletRequest request) {
-		System.out.println("1");
+		System.out.println("注册成功");
 		if(result.hasErrors()) {
-			System.out.println("2");
 			return ValidateHandler.validate(result);
 		}
-		System.out.println(schoolId);
+		
 		Schools school = new Schools();
 		school.setId(schoolId);
 		admin.setSchool(school);
@@ -107,6 +106,8 @@ public class AdminController {
 	public ResultBean validatePassword(Admin admin) {
 		return adminService.findPassword(admin);
 	}
+	
+	
 	@AuthLoginAnnotation(checkAuth=Auth.operator)
 	public List<ResultBean> index(HttpServletResponse response) {
 		List<ResultBean> list = new ArrayList<>();
