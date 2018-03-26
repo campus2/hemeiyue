@@ -4,7 +4,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.hemeiyue.common.ResultBean;
@@ -26,7 +28,7 @@ public class BookingController {
 	 */
 	@RequestMapping("/booking")
 	@ResponseBody
-	public ResultBean booking(Bookings book,Integer roomPeriodId,HttpServletRequest request) {
+	public ResultBean booking(@RequestBody Bookings book,@RequestParam("roomPeriodId") Integer roomPeriodId,HttpServletRequest request) {
 		return bookingService.insertBook(book,roomPeriodId, request);
 	}
 	
@@ -38,7 +40,7 @@ public class BookingController {
 	 */
 	@RequestMapping("/updateBook")
 	@ResponseBody
-	public ResultBean updateBook(Bookings book) {
+	public ResultBean updateBook(@RequestBody Bookings book) {
 		return bookingService.updateBook(book);
 	}
 	
@@ -50,7 +52,7 @@ public class BookingController {
 	 */
 	@RequestMapping("/deleteBook")
 	@ResponseBody
-	public ResultBean deleteBook(Integer bookingId) {
+	public ResultBean deleteBook(@RequestParam("bookingId") Integer bookingId) {
 		return bookingService.deleteBook(bookingId);
 	}
 	
@@ -62,7 +64,7 @@ public class BookingController {
 	 */
 	@RequestMapping("/applyBook")
 	@ResponseBody
-	public ResultBean applyBook(Integer bookingId) {
+	public ResultBean applyBook(@RequestParam("bookingId") Integer bookingId) {
 		return bookingService.applyBook(bookingId);
 	}
 	
@@ -74,7 +76,7 @@ public class BookingController {
 	 */
 	@RequestMapping("/refuseBook")
 	@ResponseBody
-	public ResultBean refuseBook(Integer bookingId) {
+	public ResultBean refuseBook(@RequestParam("bookingId") Integer bookingId) {
 		return bookingService.refuseBook(bookingId);
 	}
 	
@@ -86,7 +88,7 @@ public class BookingController {
 	 */
 	@RequestMapping("/revokeBook")
 	@ResponseBody
-	public ResultBean revokeBook(Integer bookingId) {
+	public ResultBean revokeBook(@RequestParam("bookingId") Integer bookingId) {
 		return bookingService.revokeBook(bookingId);
 	}
 	

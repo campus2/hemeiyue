@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.hemeiyue.entity.Users;
@@ -18,19 +19,19 @@ public class UsersController {
 	private UsersService userService;
 	
 	@RequestMapping("/login")
-	public String login(Users user,HttpServletResponse response) {
+	public String login(@RequestBody Users user,HttpServletResponse response) {
 		ResponseUtil.write(response, userService.login(user.getOpenId()));
 		return null;
 	}
 	
 	@RequestMapping("/modify")
-	public String modify(Users user,HttpServletResponse response) {
+	public String modify(@RequestBody Users user,HttpServletResponse response) {
 		ResponseUtil.write(response, userService.update(user));
 		return null;
 	}
 	
 	@RequestMapping("/delete")
-	public String delete(Users user,HttpServletResponse response) {
+	public String delete(@RequestBody Users user,HttpServletResponse response) {
 		ResponseUtil.write(response, userService.delete(user));
 		return null;
 	}
