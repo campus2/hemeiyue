@@ -15,7 +15,7 @@
 		<result column="status" property="status" jdbcType="INTEGER" />
 		<result column="salt" property="salt" jdbcType="VARCHAR" />
 		<result column="regStatus" property="regStatus" jdbcType="INTEGER" />
-		<association property="school" column="schoolId" select="com.hemeiyue.dao.SchoolsMapper.selectById" />
+		<association property="school" column="schoolId" select="com.hemeiyue.dao.SchoolsMapper.selectSchoolById" />
 	</resultMap>
 	
 	<!-- 陈冬添加部分 -->
@@ -27,8 +27,8 @@
 		</where>
 	</select>
 	
-	<select id="selectById" parameterType="Integer" resultType="Admin">
-		select id,account,adminName from admins where id=#{id}
+	<select id="selectAdminById" parameterType="Integer" resultMap="BaseResultMap">
+		select id,account,userName from admins where id=#{id}
 	</select>
 	<select id="find" parameterType="Map" resultMap="BaseResultMap">
 		select id,adminName,account,phone, email from admins
@@ -42,7 +42,7 @@
 		update admins
 		<set>
 			<if test="password!=null and password!=''"> password=#{password},</if>
-			<if test="email!=null and eamil!=''"> email=#{admin.email},</if>
+			<if test="email!=null and email!=''"> email=#{email},</if>
 			<if test="adminName!=null and adminName!=''"> adminName=#{adminName},</if>
 			<if test="phone!=null and phone!=''"> phone=#{phone},</if>
 		</set>
@@ -59,7 +59,7 @@
 		id,account,password,adminName,signature,avatar,phone,email,parentId,schoolId,status,regStatus,salt
 	</sql>
 	
-	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
 		select 
         <include refid="Base_Column_List" />
         from admins
@@ -225,10 +225,9 @@
     </update>
     
     <select id="login" resultMap="BaseResultMap" parameterType="com.hemeiyue.entity.Admin">
-		select 
-        <include refid="Base_Column_List" />
+		select id, adminName,parentId, schoolId,status,regStatus
         from admins
-        where account = #{account} and password = #{password} and regStatus = '1'
+        where account = #{account} and password = #{password} and regStatus = '1' and status = '1'
 	</select>
 	
 	<select id="selectAll" resultMap="BaseResultMap" parameterType="com.hemeiyue.entity.Admin">

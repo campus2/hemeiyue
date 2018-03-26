@@ -1,28 +1,25 @@
 package com.hemeiyue.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
-import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.hemeiyue.annotion.AuthLoginAnnotation;
+import com.hemeiyue.common.AdminModel;
 import com.hemeiyue.common.ResultBean;
 import com.hemeiyue.entity.Admin;
 import com.hemeiyue.entity.Schools;
 import com.hemeiyue.entity.validation.AdminLogin;
 import com.hemeiyue.entity.validation.AdminRegister;
 import com.hemeiyue.service.AdminService;
+import com.hemeiyue.service.SchoolService;
 import com.hemeiyue.util.ValidateHandler;
-import com.hemeiyue.eumn.Auth;
 
 @Controller
 @RequestMapping("/admin")
@@ -32,10 +29,12 @@ public class AdminController {
 	@Autowired
 	private AdminService adminService;
 	
+	@Autowired
+	private SchoolService schoolService;
+	
 	@RequestMapping("/login")
 	@ResponseBody
-	@AuthLoginAnnotation(checkAuth={Auth.priAccount,Auth.operator})
-	public ResultBean login(@Validated(AdminLogin.class) Admin admin,BindingResult result, 
+	public ResultBean login(@RequestBody @Validated(AdminLogin.class) Admin admin,BindingResult result, 
 			HttpServletRequest request) {
 		if(result.hasErrors()) {
 			return ValidateHandler.validate(result);
@@ -45,18 +44,34 @@ public class AdminController {
 	
 	@RequestMapping("/register")
 	@ResponseBody
-	public ResultBean register(@Validated(AdminRegister.class) Admin admin,Integer schoolId,
+	public ResultBean register(@RequestBody @Validated(AdminRegister.class) AdminModel adminModel,
 			BindingResult result, HttpServletRequest request) {
-		System.out.println("1");
 		if(result.hasErrors()) {
 			System.out.println("2");
 			return ValidateHandler.validate(result);
 		}
-		System.out.println(schoolId);
-		Schools school = new Schools();
-		school.setId(schoolId);
-		admin.setSchool(school);
-		return adminService.insert(admin, request);
+		//构造admin
+		Admin admin = new Admin();
+		admin.setAccount(adminModel.getAccount());
+		admin.setPassword(adminModel.getPassword());
+		admin.setAdminName(adminModel.getAdminName());
+		admin.setEmail(adminModel.getEmail());
+		admin.setPhone(adminModel.getPhone());
+		
+		ResultBean r = schoolService.findSchool(adminModel.getSchool());;
+		if(!r.isResult()) return r;
+		//插入学校
+		Schools newSchool = new Schools(adminModel.getSchool(), 1);
+		//获取学校id
+		int schoolId = schoolService.insert(newSchool);
+		newSchool.setId(schoolId);
+		admin.setSchool(newSchool);
+		r = adminService.insert(admin, request);
+		//设置学校所属管理员
+		newSchool.setOwner(admin);
+		schoolService.update(newSchool);
+		adminService.updateAdmin(admin);
+		return r;
 	}
 	
 	@RequestMapping("/tenantApplyList")
@@ -73,8 +88,8 @@ public class AdminController {
 	
 	@RequestMapping("/validationAccount")
 	@ResponseBody
-	public ResultBean validationAccount(String account) {
-		return adminService.validationAccount(account);
+	public ResultBean validationAccount(@RequestBody AdminModel admin) {
+		return adminService.validationAccount(admin.getAccount());
 	}
 	
 	@RequestMapping("/deleteTenant")

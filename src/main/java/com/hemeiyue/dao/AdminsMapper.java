@@ -13,7 +13,9 @@ public interface AdminsMapper {
 
     int insertSelective(Admin record);
 
-    Admin selectByPrimaryKey(Integer id);
+    Admin selectById(Integer id);
+    
+    Admin selectAdminById(Integer id);
 
     int updateByPrimaryKeySelective(Admin record);
 
@@ -56,4 +58,5 @@ public interface AdminsMapper {
 	 * @return 
 	 */
 	public Long getUserCount(Schools school);
+	
 }

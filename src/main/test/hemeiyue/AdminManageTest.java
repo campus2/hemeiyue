@@ -29,6 +29,16 @@ public class AdminManageTest {
 	}
 	
 	@Test
+	public void loginTest() {
+		Admin admin = new Admin();
+		admin.setAccount("admin");
+		admin.setPassword("admin");
+		
+		adminService.login(admin);
+//		adminService.findPassword(admin);
+	}
+	
+	/*@Test
 	public void schoolTotalTest() {
 		System.out.println(adminService.getAllRooms(new Schools(1)));
 	}
@@ -58,7 +68,7 @@ public class AdminManageTest {
 		admin.setId(1);
 		admin.setParentId(0);
 		adminService.findByAdmin(admin);
-	}
+	}*/
 	
 
 }

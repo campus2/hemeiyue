@@ -20,7 +20,14 @@ public class Schools {
 
     private Integer status;
     
-    public Schools(Integer id) {
+    public Schools(String school, Integer status) {
+		super();
+		this.school = school;
+		this.owner = owner;
+		this.status = status;
+	}
+
+	public Schools(Integer id) {
 		super();
 		this.id = id;
 	}

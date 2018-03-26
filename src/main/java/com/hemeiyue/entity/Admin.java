@@ -1,5 +1,6 @@
 package com.hemeiyue.entity;
 
+import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
@@ -14,34 +15,38 @@ import org.hibernate.validator.constraints.NotEmpty;
  */
 public class Admin {
 	
-    private Integer id;
+    @Null
+	private Integer id;
     
-    @Size(min=6,max=11,message="账号必须6~11位",groups= {com.hemeiyue.entity.validation.AdminLogin.class,com.hemeiyue.entity.validation.AdminRegister.class})
+    @Size(min=5,max=11,message="账号必须5~11位",groups= {com.hemeiyue.entity.validation.AdminLogin.class,com.hemeiyue.entity.validation.AdminRegister.class})
     private String account;
     
-    @Size(min=6,max=11,message="密码必须6~11位",groups= {com.hemeiyue.entity.validation.AdminLogin.class,com.hemeiyue.entity.validation.AdminRegister.class})
+    @Size(min=5,max=11,message="密码必须5~11位",groups= {com.hemeiyue.entity.validation.AdminLogin.class,com.hemeiyue.entity.validation.AdminRegister.class})
     private String password;
     
     @NotEmpty(message="名字不可为空",groups= {com.hemeiyue.entity.validation.AdminRegister.class})
     private String adminName;
 
+    @Null
     private String signature;
 
+    @Null
     private String avatar;
 
+    @Null
     private String phone;
     	
     @Email(message="邮箱格式不正确",groups= {com.hemeiyue.entity.validation.AdminRegister.class})
     private String email;
-
+    @Null
     private Integer parentId;
-
+    @Null
     private Integer status;
-    
+    @Null
     private String salt;
-    
+    @Null
     private Schools school;
-    
+    @Null
     private Integer regStatus;
     
     public Integer getRegStatus() {

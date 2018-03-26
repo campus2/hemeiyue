@@ -51,7 +51,8 @@ public class SchoolController {
 			//设置学校的创建者
 			Admin currentAdmin = (Admin)(request.getSession().getAttribute("currentAdmin"));
 			school.setOwner(currentAdmin);
-			result = schoolService.insert(school);
+//			result = schoolService.insert(school);
+			result = new ResultBean();
 		}else {
 			result = schoolService.update(school);
 		}
@@ -121,7 +122,7 @@ public class SchoolController {
 	
 	@RequestMapping("/validSchool")
 	@ResponseBody
-	public ResultBean validSchool(String school) {
-		return schoolService.findSchool(school);
+	public ResultBean validSchool(@RequestBody Schools school) {
+		return schoolService.findSchool(school.getSchool());
 	}
 }

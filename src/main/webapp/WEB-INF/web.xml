@@ -8,6 +8,8 @@
     <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
   
+  
+  
   <!-- CORS解决跨域 -->
   <filter>
   	<filter-name>cors</filter-name>
@@ -60,4 +62,17 @@
 		<servlet-name>springMVC</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
+	
+	<error-page>
+	  	<error-code>404</error-code>
+	  	<location>/error_404</location>
+    </error-page>
+    <error-page>
+	  	<error-code>500</error-code>
+	  	<location>/error_500</location>
+    </error-page>
+    <error-page>
+	  	<error-code>403</error-code>
+	  	<location>/error_403</location>
+    </error-page>
 </web-app>

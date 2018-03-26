@@ -17,6 +17,8 @@ public class UsersController {
 	@Autowired
 	private UsersService userService;
 	
+	
+	
 	@RequestMapping("/login")
 	public String login(Users user,HttpServletResponse response) {
 		ResponseUtil.write(response, userService.login(user.getOpenId()));

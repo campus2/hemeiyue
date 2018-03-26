@@ -7,10 +7,13 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.hemeiyue.common.ResultBean;
+import com.hemeiyue.common.SchoolModel;
 import com.hemeiyue.dao.SchoolsMapper;
 import com.hemeiyue.entity.Schools;
 import com.hemeiyue.service.SchoolService;
+import com.hemeiyue.util.APIUtil;
 import com.hemeiyue.util.JSONUtil;
 
 @Service("schoolService")
@@ -39,15 +42,16 @@ public class SchoolServiceImpl implements SchoolService{
 	}
 
 	@Override
-	public ResultBean insert(Schools school) {
-		ResultBean result = new ResultBean();
-		if(schoolMapper.insert(school) > 0) {
-			result.setResult(true);
-			result.setMessage("添加成功");
-		}else {
-			result.setResult(false);
-		}
-		return result;
+	public int insert(Schools school) {
+		return schoolMapper.insert(school);
+//		ResultBean result = new ResultBean();
+//		if( > 0) {
+//			result.setResult(true);
+//			result.setMessage("添加成功");
+//		}else {
+//			result.setResult(false);
+//		}
+//		return result;
 	}
 
 	@Override
@@ -75,12 +79,27 @@ public class SchoolServiceImpl implements SchoolService{
 	@Override
 	public ResultBean findSchool(String school) {
 		System.out.println("3");
-		if(schoolMapper.findSchool(school) != 0) {
-			System.out.println("1");
+		Map<String, Object> map = new HashMap<>();
+		//调用远程接口校验学校是否合法
+		map.put("name", school);
+		List<SchoolModel> modelList = JSONUtil.transToModels(APIUtil.API("schoolAPI", map), new TypeReference<List<SchoolModel>>(){});
+		boolean flag = false;
+		for (SchoolModel schoolModel : modelList) {
+			if(schoolModel.getName().equals(school)) {
+				flag = true;
+				break;
+			}
+		}
+		if(!flag) return new ResultBean(false, "请输入合法的学校名称");
+		//校验学校是否已经被注册
+//		map.put("school", school);
+		int count = schoolMapper.findSchool(school);
+		System.out.println(count);
+		if(count!=0) {
 			return new ResultBean(false,"该学校已被注册");
 		}
 		System.out.println("w");
-		return new ResultBean(true,"该学校第一次注册");
+		return new ResultBean(true,"该学校可注册");
 	}
 	
 	

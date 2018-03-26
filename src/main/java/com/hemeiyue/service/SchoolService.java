@@ -27,7 +27,7 @@ public interface SchoolService {
 	 * @param school
 	 * @return
 	 */
-	public ResultBean insert(Schools school);
+	public int insert(Schools school);
 	
 	/**
 	 * 更新学校
