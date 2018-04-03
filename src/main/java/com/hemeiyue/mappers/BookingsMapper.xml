@@ -19,7 +19,7 @@
     </select>
 
     <sql id="Base_Column_List" >
-        id, roomPeriodId, userId, CDT, status, remark
+        id, roomPeriodId, userId, CDT, status, remark,schoolId
     </sql>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
@@ -64,6 +64,9 @@
             <if test="remark != null" >
                 remark,
             </if>
+            <if test="school != null" >
+                schoolId,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides="," >
             <if test="id != null" >
@@ -84,26 +87,32 @@
             <if test="remark != null" >
                 #{remark,jdbcType=VARCHAR},
             </if>
+            <if test="school != null" >
+                #{school.id,jdbcType=VARCHAR},
+            </if>
         </trim>
     </insert>
 
     <update id="updateByPrimaryKeySelective" parameterType="com.hemeiyue.entity.Bookings" >
         update bookings
         <set >
-            <if test="roomperiodid != null" >
-                roomPeriodId = #{roomperiodid,jdbcType=INTEGER},
+            <if test="roomPeriod != null" >
+                roomPeriodId = #{roomPeriod.id,jdbcType=INTEGER},
             </if>
-            <if test="userid != null" >
-                userId = #{userid,jdbcType=INTEGER},
+            <if test="user != null" >
+                userId = #{user.id,jdbcType=INTEGER},
             </if>
-            <if test="cdt != null" >
-                CDT = #{cdt,jdbcType=TIMESTAMP},
+            <if test="CDT != null" >
+                CDT = #{CDT,jdbcType=TIMESTAMP},
             </if>
             <if test="status != null" >
                 status = #{status,jdbcType=INTEGER},
             </if>
             <if test="remark != null" >
                 remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="school != null" >
+                schoolId = #{school.id,jdbcType=VARCHAR},
             </if>
         </set>
         where id = #{id,jdbcType=INTEGER}
@@ -118,4 +127,16 @@
             remark = #{remark,jdbcType=VARCHAR}
         where id = #{id,jdbcType=INTEGER}
     </update>
+    
+    <select id="findAllBooks" resultMap="BaseResultMap" parameterType="Integer">
+    	select * from bookings where schoolId = #{schoolId} and status != 4
+    </select>
+    
+    <select id="findMyBooks" resultMap="BaseResultMap" parameterType="Integer">
+    	select * from bookings where userId = #{userId} and status != 4
+    </select>
+    
+    <select id="findSamePeriodBooks" resultMap="BaseResultMap" parameterType="Integer">
+    	select * from bookings where roomPeriodId = #{roomPeriodId} and status = 0
+    </select>
 </mapper>

@@ -39,6 +39,13 @@ public class AdminController {
 	@Autowired
 	private SchoolService schoolService;
 	
+	/**
+	 * 租户登录
+	 * @param admin
+	 * @param result
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping("/login")
 	@ResponseBody
 	public ResultBean login(@RequestBody @Validated(AdminLogin.class) Admin admin,BindingResult result, 
@@ -49,13 +56,20 @@ public class AdminController {
 		return adminService.login(admin, request);
 	}
 	
+	/**
+	 * 注册租户
+	 * @param admin
+	 * @param schoolId
+	 * @param result
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping("/register")
 	@ResponseBody
 	@Transactional(rollbackFor=Exception.class)
 	public ResultBean register(@RequestBody @Validated(AdminRegister.class) AdminModel adminModel,
 			BindingResult result, HttpServletRequest request) throws ParseException {
 		if(result.hasErrors()) {
-			System.out.println("2");
 			return ValidateHandler.validate(result);
 		}
 		//构造admin
@@ -85,7 +99,7 @@ public class AdminController {
 	 */
 	@RequestMapping("/tenantApplyList")
 	@ResponseBody
-	@AuthLoginAnnotation(checkAuth=Auth.operator)
+	@AuthLoginAnnotation(checkAuth = Auth.operator)
 	public ResultBean tenantApplyList( HttpServletRequest request) {
 		return adminService.tenantApplyList(request);
 	}
@@ -98,16 +112,26 @@ public class AdminController {
 	@RequestMapping("/tenantApply")
 	@ResponseBody
 	@AuthLoginAnnotation(checkAuth=Auth.operator)
-	public ResultBean tenantApply(@RequestParam("id")Integer id) {
+	public ResultBean tenantApply(@RequestParam("id") Integer id) {
 		return adminService.tenantApply(id);
 	}
 	
+	/**
+	 * 注册输入账号时检验账号
+	 * @param account
+	 * @return
+	 */
 	@RequestMapping("/validationAccount")
 	@ResponseBody
-	public ResultBean validationAccount(@RequestBody AdminModel admin) {
-		return adminService.validationAccount(admin.getAccount());
+	public ResultBean validationAccount(@RequestParam("account") String account) {
+		return adminService.validationAccount(account);
 	}
 	
+	/**
+	 * 删除租户
+	 * @param id
+	 * @return
+	 */
 	@RequestMapping("/deleteTenant")
 	@ResponseBody
 	@AuthLoginAnnotation(checkAuth=Auth.operator)
@@ -131,19 +155,34 @@ public class AdminController {
 		return adminService.tenantMangerList(admin);
 	}
 	
+	/**
+	 * 禁用租户
+	 * @param id
+	 * @return
+	 */
 	@RequestMapping("/suspendedTenant")
 	@ResponseBody
 	@AuthLoginAnnotation(checkAuth=Auth.operator)
-	public ResultBean suspendedTenant(@RequestParam("id")Integer id) {
+	public ResultBean suspendedTenant(@RequestParam("id") Integer id) {
 		return adminService.suspendedTenant(id);
 	}
 	
+	/**
+	 * 恢复租户的使用权
+	 * @param id
+	 * @return
+	 */
 	@RequestMapping("/restoreTenant")
 	@ResponseBody
-	public ResultBean restoreTenant(@RequestParam("id")Integer id) {
+	public ResultBean restoreTenant(@RequestParam("id") Integer id) {
 		return adminService.restoreTenant(id);
 	}
 	
+	/**
+	 * 屏保验证密码
+	 * @param admin
+	 * @return
+	 */
 	@RequestMapping("/validatePassword")
 	@ResponseBody
 	public ResultBean validatePassword(@RequestBody Admin admin) {
