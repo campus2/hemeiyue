@@ -26,6 +26,7 @@ public class RoomTest {
 	public void tearDown() throws Exception {
 	}
 	
+	
 	@Test
 	public void RooDetailTest() {
 		Rooms room = new Rooms();

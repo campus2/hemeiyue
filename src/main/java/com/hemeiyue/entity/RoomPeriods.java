@@ -2,6 +2,11 @@ package com.hemeiyue.entity;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.hemeiyue.util.DateYYMMddJSONDeserializer;
+import com.hemeiyue.util.DateYYMMddJSONSerializer;
+
 /**
  * 场地时段类
  * 
@@ -22,6 +27,8 @@ public class RoomPeriods {
 
     private Integer requiredconfirm;
 
+    @JsonDeserialize(using=DateYYMMddJSONDeserializer.class)
+	@JsonSerialize(using=DateYYMMddJSONSerializer.class)
     private Date deadline;
 
     private Integer status;

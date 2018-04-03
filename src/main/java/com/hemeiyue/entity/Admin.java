@@ -1,10 +1,17 @@
 package com.hemeiyue.entity;
 
+import java.util.Date;
+
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
+
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.hemeiyue.util.DateYYMMddJSONDeserializer;
+import com.hemeiyue.util.DateYYMMddJSONSerializer;
 
 /**
  * 
@@ -13,6 +20,7 @@ import org.hibernate.validator.constraints.NotEmpty;
  * 
  * @date 2018-03-14
  */
+@JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
 public class Admin {
 	
     @Null
@@ -49,7 +57,20 @@ public class Admin {
     @Null
     private Integer regStatus;
     
-    public Integer getRegStatus() {
+    @Null
+    @JsonDeserialize(using=DateYYMMddJSONDeserializer.class)
+	@JsonSerialize(using=DateYYMMddJSONSerializer.class)
+    private Date date;
+    
+    public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public Integer getRegStatus() {
 		return regStatus;
 	}
 

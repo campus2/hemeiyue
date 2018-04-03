@@ -18,10 +18,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.hemeiyue.annotion.AuthLoginAnnotation;
 import com.hemeiyue.common.PageBean;
 import com.hemeiyue.common.ResultBean;
 import com.hemeiyue.entity.Admin;
 import com.hemeiyue.entity.Schools;
+import com.hemeiyue.eumn.Auth;
 import com.hemeiyue.service.AdminService;
 import com.hemeiyue.service.SchoolService;
 import com.hemeiyue.util.ResponseUtil;
@@ -44,6 +46,7 @@ public class SchoolController {
 	 * @return
 	 */
 	@RequestMapping("/save")
+	
 	public String save(@RequestBody(required=false) Schools school, 
 			HttpServletRequest request,HttpServletResponse response) {
 		ResultBean result;
@@ -68,6 +71,7 @@ public class SchoolController {
 	 * @return
 	 */
 	@RequestMapping("/delete")
+	@AuthLoginAnnotation(checkAuth=Auth.operator)
 	public String delete(@RequestParam("id")String id, HttpServletResponse response) {
 		ResultBean result = schoolService.deleteById(Integer.parseInt(id));
 		ResponseUtil.write(response, result);
@@ -81,6 +85,8 @@ public class SchoolController {
 	 * @param response
 	 * @return
 	 */
+	@RequestMapping("/list")
+	@AuthLoginAnnotation(checkAuth=Auth.operator)
 	public String list(@RequestParam(value="rows",required=false)String rows,
 				@RequestParam(value="page",required=false)String page, HttpServletResponse response) {
 		PageBean pageBean = new PageBean(Integer.parseInt(page), Integer.parseInt(rows));
@@ -101,9 +107,10 @@ public class SchoolController {
 	 */
 	@RequestMapping("/index")
 	@ResponseBody
-	public List<ResultBean> index(HttpServletResponse response) {
+	public List<ResultBean> index(HttpServletRequest request,HttpServletResponse response) {
 		List<ResultBean> list = new ArrayList<>();
-		list.add(new ResultBean(true,"success"));
+		String localPath= request.getSession().getServletContext().getRealPath("/");
+		list.add(new ResultBean(true,localPath));
 		list.add(new ResultBean(true,"添加成功"));
 		return list;
 	}

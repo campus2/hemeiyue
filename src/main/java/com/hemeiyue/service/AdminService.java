@@ -56,10 +56,10 @@ public interface AdminService {
 	
 	/**
 	 * 返回已注册成功的租户的列表
-	 * @param request
+	 * @param admin
 	 * @return
 	 */
-	public ResultBean tenantMangerList(HttpServletRequest request);
+	public ResultBean tenantMangerList(Admin admin);
 	
 	/**
 	 * 停用租户

@@ -3,6 +3,7 @@ package com.hemeiyue.util;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Date;
 import java.util.Properties;
 
@@ -152,7 +153,8 @@ public class SendMailUtil extends Thread{
 		Properties pro = new Properties();
 		FileInputStream in;
 		try {
-			in = new FileInputStream("D:\\GIT\\Warehouse\\hemeiyue\\src\\main\\resources\\email.properties");
+//			in = new FileInputStream("D:\\GIT\\Warehouse\\hemeiyue\\src\\main\\resources\\email.properties");
+			in = new FileInputStream(SendMailUtil.class.getClassLoader().getResource("email.properties").getFile());
 			pro.load(in);
 			in.close();
 			qqHost = pro.getProperty("qqHost");

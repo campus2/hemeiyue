@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.hemeiyue.common.ResultBean;
 import com.hemeiyue.entity.WechatPicture;
@@ -19,10 +20,12 @@ public class WechatPictureController {
 	@Autowired
 	private WechatPictureService wechatPictureService;
 	
-	@RequestMapping(value="/load",method=RequestMethod.POST)
+	@RequestMapping(value="/upload",method=RequestMethod.POST)
 	@ResponseBody
-	public ResultBean load(WechatPicture wechatPicture,HttpServletRequest request) {
+	public ResultBean upload(MultipartFile file,HttpServletRequest request) {
 		System.out.println("test");
+		WechatPicture wechatPicture = new WechatPicture();
+		wechatPicture.setFile(file);
 		return wechatPictureService.insert(wechatPicture,request);
 	}
 	

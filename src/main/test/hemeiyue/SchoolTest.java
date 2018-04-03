@@ -1,5 +1,9 @@
 package hemeiyue;
 
+import java.text.ParseException;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,12 +23,18 @@ import com.hemeiyue.entity.Schools;
 import com.hemeiyue.service.RoomService;
 import com.hemeiyue.service.RoomTypeService;
 import com.hemeiyue.service.SchoolService;
+import com.hemeiyue.util.DateUtil;
 import com.hemeiyue.util.JSONUtil;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations="classpath*:applicationContext.xml")
 public class SchoolTest {
 
+	static {
+		int x = 5;
+	}
+	static int x, y;
+	
 	@Resource
 	private SchoolService schoolService;
 	
@@ -44,15 +54,25 @@ public class SchoolTest {
 	}
 	
 	@Test
-	public void schoolTest() {
-		ResultBean result = schoolService.findSchool("广东技术师范学院");
-		System.out.println(JSONUtil.transform(result));
-		
-		Map<String, Object> map = new  HashMap<>();
-		map.put("school", "广东技术师范学院");
-		String list = schoolService.find(map);
-		System.out.println(list);
+	public void schoolTest() throws ParseException {
+//		Schools s = new Schools("测试", 0);
+//		int id = schoolService.insert(s);
+//		System.out.println(s.getId());
+		System.out.println(DateUtil.date());
+		System.out.println(DateUtil.time());
+		System.out.println(DateUtil.dateTime().toString());
 	}
+	
+//	@Test
+//	public void schoolTest() {
+//		ResultBean result = schoolService.findSchool("广东技术师范学院");
+//		System.out.println(JSONUtil.transform(result));
+//		
+//		Map<String, Object> map = new  HashMap<>();
+//		map.put("school", "广东技术师范学院");
+//		String list = schoolService.find(map);
+//		System.out.println(list);
+//	}
 	
 	/*@Test
 	public void roomDelete() {

@@ -12,6 +12,7 @@ import com.hemeiyue.common.ResultBean;
 import com.hemeiyue.entity.Admin;
 import com.hemeiyue.entity.Schools;
 import com.hemeiyue.service.AdminService;
+import com.hemeiyue.util.JSONUtil;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations="classpath*:applicationContext.xml")
@@ -29,12 +30,22 @@ public class AdminManageTest {
 	}
 	
 	@Test
+	public void tentantTest() {
+		Admin admin = new Admin();
+		admin.setId(3);
+		admin.setParentId(-1);
+		ResultBean result = adminService.tenantMangerList(admin);
+		System.out.println(JSONUtil.transform(result));
+	}
+	
+	@Test
 	public void loginTest() {
 		Admin admin = new Admin();
 		admin.setAccount("admin");
 		admin.setPassword("admin");
 		
-		adminService.login(admin);
+		ResultBean a = adminService.login(admin);
+		System.out.println(JSONUtil.transform(a));
 //		adminService.findPassword(admin);
 	}
 	

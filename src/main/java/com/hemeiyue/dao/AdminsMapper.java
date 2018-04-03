@@ -3,6 +3,8 @@ package com.hemeiyue.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.hemeiyue.entity.Admin;
 import com.hemeiyue.entity.Schools;
 
@@ -27,7 +29,7 @@ public interface AdminsMapper {
     
     Admin checkAccount(String account);
     
-    List<Admin> selecTenant(Integer regStatus);
+    List<Admin> selecTenant(@Param("parentId")Integer parentId,@Param("regStatus")Integer regStatus);
     
     int updateStatus(Admin admin);
 
@@ -58,5 +60,13 @@ public interface AdminsMapper {
 	 * @return 
 	 */
 	public Long getUserCount(Schools school);
+
+	/**
+	 * 返回租户管理列表
+	 * @param id
+	 * @param i
+	 * @return
+	 */
+	List<Admin> selecTenantManageList(@Param("parentId")Integer parentId, @Param("regStatus")int regStatus);
 	
 }

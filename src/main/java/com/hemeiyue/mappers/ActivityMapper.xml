@@ -53,7 +53,8 @@
     	</where>
     </select>
     
-    <insert id="insert" parameterType="com.hemeiyue.entity.Activity" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" parameterType="com.hemeiyue.entity.Activity"
+    	useGeneratedKeys="true" keyProperty="id">
         insert into activity
         <trim prefix="(" suffix=")" suffixOverrides="," >
             <if test="id != null" >

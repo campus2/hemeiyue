@@ -15,11 +15,18 @@ import org.apache.http.util.EntityUtils;
 
 /**
  * 远程接口调用工具类
+ * 接口地址保存于api.properties
  * @author cedo
  *
  */
 public class APIUtil {
 
+	/**
+	 * 返回API调用结果
+	 * @param APIName 接口在api.properties中的名称
+	 * @param params 访问api所需的参数及参数值
+	 * @return
+	 */
 	public static String API(String APIName, Map<String, Object> params) {
 		 String content = "";
 		 //请求结果  
