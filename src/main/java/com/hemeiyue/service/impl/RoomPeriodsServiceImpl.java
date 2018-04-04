@@ -26,7 +26,7 @@ public class RoomPeriodsServiceImpl implements RoomPeriodsService {
 		Map<String, List<RoomPeriods>> map = new HashMap<>();
 		
 		List<RoomPeriods> temp = null;
-		for (RoomPeriods roomPeriods : list) {
+		for (RoomPeriods roomPeriods : list) {			//把教室的可用时间段根据星期分类
 			String repeat = roomPeriods.getRepeat();
 			
 			if(repeat==null || "".equals(repeat)) continue;

@@ -106,6 +106,6 @@ public class BookingController {
 	@RequestMapping("/findMyBooks")
 	@ResponseBody
 	public ResultBean findMyBooks(HttpServletRequest request) {
-		return null;
+		return bookingService.findMyBooks(request);
 	}
 }

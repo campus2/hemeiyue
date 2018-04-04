@@ -1,8 +1,8 @@
 package com.hemeiyue.util;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Date;
 import java.util.Properties;
 
@@ -150,12 +150,13 @@ public class SendMailUtil extends Thread{
 	 */
 	public SendMailUtil(String to,String subject,String message) {
 		Properties pro = new Properties();
-		FileInputStream in;
+		InputStream in;
 		try {
-			in = new FileInputStream("D:\\GIT\\Warehouse\\hemeiyue\\src\\main\\resources\\email.properties");
+			in = SendMailUtil.class.getClassLoader().getResourceAsStream("email.properties");
 			pro.load(in);
 			in.close();
 			qqHost = pro.getProperty("qqHost");
+			System.out.println(qqHost);
 			userName = pro.getProperty("userName");
 			password = pro.getProperty("password");
 			from = pro.getProperty("from");
@@ -169,5 +170,8 @@ public class SendMailUtil extends Thread{
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+	}
+	public static void main(String[] args) {
+		SendMailUtil s = new SendMailUtil("2338314741@qq.com", "test", "test");
 	}
 }

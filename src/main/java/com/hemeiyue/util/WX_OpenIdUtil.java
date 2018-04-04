@@ -5,8 +5,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.List;
-import java.util.Map;
 
 import net.sf.json.JSONObject;
 
@@ -40,7 +38,7 @@ public class WX_OpenIdUtil {
 	        URL realUrl = new URL(url);  
 	        URLConnection conn = realUrl.openConnection();  
 	        conn.connect();  
-	        Map<String, List<String>> map = conn.getHeaderFields();  
+//	        Map<String, List<String>> map = conn.getHeaderFields();  
 	        is = conn.getInputStream();  
 	        isr = new InputStreamReader(is);  
 	        in = new BufferedReader(isr);  

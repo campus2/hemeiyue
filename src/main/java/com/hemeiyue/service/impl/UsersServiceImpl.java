@@ -1,12 +1,21 @@
 package com.hemeiyue.service.impl;
 
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.hemeiyue.common.ResultBean;
+import com.hemeiyue.common.ResultList;
+import com.hemeiyue.dao.MessagesMapper;
 import com.hemeiyue.dao.UsersMapper;
+import com.hemeiyue.entity.Messages;
 import com.hemeiyue.entity.Users;
 import com.hemeiyue.service.UsersService;
+import com.hemeiyue.util.WX_Util;
 
 @Service("userService")
 public class UsersServiceImpl implements UsersService{
@@ -14,20 +23,30 @@ public class UsersServiceImpl implements UsersService{
 	@Autowired
 	private UsersMapper usersMapper;
 	
+	@Autowired
+	private MessagesMapper messagesMappers;
+	
+	@SuppressWarnings("null")
 	@Override
-	public ResultBean login(String openid) {
-		ResultBean result = new ResultBean();
-		if(usersMapper.selectByOpenId(openid) != null) {
-			result.setResult(true);
-			result.setMessage("该用户曾经登录过");
-		}else {
-			Users user = new Users();
-			user.setOpenId(openid);
-			usersMapper.insertSelective(user);
-			result.setResult(false);
-			result.setMessage("该用户第一次登录，已完成注册");
+	public ResultBean login(String code,HttpServletRequest request) {
+		Map<String, String> map = WX_Util.getOpenId(code);
+		String openId = map.get("openId");
+//		String session_key = map.get("session_key");
+		Users user = usersMapper.selectByOpenId(openId);
+		
+		//如果openId为空，返回false
+		if(openId == null) {
+			return new ResultBean(false);
+		}else if (user == null) {		//本地数据库不存在该用户（第一次登录）
+			user.setOpenId(openId);
+			request.getSession().setAttribute("user", user);
+			request.getServletContext().setAttribute("user", user);
+			return new ResultBean(false);
+		}else {							//用户非第一次登录
+			request.getSession().setAttribute("user", user);
+			request.getSession().setAttribute("school", user.getSchool());
+			return new ResultBean(true);
 		}
-		return result;
 	}
 
 	@Override
@@ -53,6 +72,19 @@ public class UsersServiceImpl implements UsersService{
 			result.setResult(false);
 			result.setMessage("删除失败");
 		}
+		return result;
+	}
+
+	@Override
+	public ResultList userMessage(Integer userId) {
+		List<Messages> list = messagesMappers.findUserMessage(userId);
+		ResultList result = new ResultList();
+		if(list != null || list.size() > 0) {
+			result.setResult(true);
+			result.setList(list);
+			return result;
+		}
+		result.setResult(false);
 		return result;
 	}
 

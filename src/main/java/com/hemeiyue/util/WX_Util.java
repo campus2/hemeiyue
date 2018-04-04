@@ -1,6 +1,14 @@
 package com.hemeiyue.util;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
 import com.hemeiyue.common.Id;
 import com.hemeiyue.common.ResultBean;
@@ -13,6 +21,8 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 public class WX_Util {
+	
+//	private String access_Token = getToken().get("access_Token");
 	
 	/**
 	 * 获取模板列表
@@ -98,18 +108,133 @@ public class WX_Util {
 		
 	}
 	
-	public static String getOpenId(String APPID,String APPSecrect,String code) {
-		String grant_type = "authorization_code";
-		String url = "https://api.weixin.qq.com/sns/jscode2session?"
-				+ "appid=APPID&secret=SECRET&js_code=JSCODE&grant_type=authorization_code";
-		String realUrl = url.replace("APPID", APPID). 
-			       replace("SECRET", APPSecrect).replace("JSCODE", code).  
-			       replace("grant_type", grant_type);
-		JSONObject jsonObject = HttpUtil.httpRequest(realUrl, "GET", null);
-		return jsonObject.getString("openid");
+	/**
+	 * 获取openId
+	 * @param code  前端返回code
+	 * @return
+	 */
+	public static Map<String, String> getOpenId(String code) {
+
+		String APPID = null;        	//小程序AppId
+		String APPSecrect = null; 		//小程序APPSecrect
+		Map<String, String> map = new HashMap<>();
+		
+		Properties pro = new Properties();
+		InputStream in;
+		
+		try {
+			in = WX_Util.class.getClassLoader().getResourceAsStream("wechat.properties");
+			pro.load(in);
+			in.close();
+			APPID = pro.getProperty("APPID");
+			APPSecrect = pro.getProperty("APPSecrect");
+			
+			String url = "https://api.weixin.qq.com/sns/jscode2session?"
+					+ "appid=APPID&secret=SECRET&js_code=JSCODE&grant_type=authorization_code";
+			String realUrl = url.replace("APPID", APPID). 
+				       replace("SECRET", APPSecrect).replace("JSCODE", code);
+			JSONObject jsonObject = HttpUtil.httpRequest(realUrl, "GET", null);
+			
+			map.put("openid", jsonObject.getString("openid"));
+			map.put("session_key", jsonObject.getString("session_key"));
+
+		}catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		return map;
+	}
+	
+	/**
+	 * 后台获取token
+	 * @return
+	 */
+	public static Map<String,String> getToken(){
+		String APPID = null;        	//小程序AppId
+		String APPSecrect = null; 		//小程序APPSecrect
+		Map<String, String> map = new HashMap<>();
+		
+		Properties pro = new Properties();
+		InputStream in;
+		
+		
+		try {
+			in = WX_Util.class.getClassLoader().getResourceAsStream("wechat.properties");
+			pro.load(in);
+			in.close();
+			APPID = pro.getProperty("APPID");
+			APPSecrect = pro.getProperty("APPSecrect");
+			System.out.println(pro.getProperty("APPID"));
+			System.out.println(pro.getProperty("APPSecrect"));
+			
+			String url = "https://api.weixin.qq.com/cgi-bin/token?"
+					+ "grant_type=client_credential&"
+					+ "appid=APPID&"
+					+ "secret=APPSECRET";
+			String realUrl = url.replace("APPID", APPID). 
+				       replace("APPSECRET", APPSecrect);
+			System.out.println(realUrl);
+			JSONObject jsonObject = HttpUtil.httpRequest(realUrl, "GET", null);
+			
+			//access_token和expires_in存进properties文件
+			if(jsonObject.get("errcode") == null) {
+				map.put("APPID", APPID);
+				map.put("APPSecrect", APPSecrect);
+				map.put("access_token",jsonObject.getString("access_token") );
+				map.put("expires_in", jsonObject.getString("expires_in"));
+			}else {
+				map.put("errcode", jsonObject.getString("errcode"));
+				map.put("errmsg", jsonObject.getString("errmsg"));
+			}
+		}catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		return map;
+	}
+	
+	/**
+	 * 更新wechat.properties中的Token
+	 * @return
+	 */
+	public static boolean updateToekn() {
+		Map<String,String> map = getToken();
+		OutputStream os = null;
+		if(map.get("errcode") == "40013") {
+			return false;
+		}else {
+			System.out.println("test");
+			try {
+				String path = WX_Util.class.getResource("/wechat.properties").getPath();
+				os = new FileOutputStream(path);
+				Properties pro = new Properties();
+				pro.setProperty("access_token",map.get("access_token"));
+				pro.setProperty("APPID", map.get("APPID"));
+				pro.setProperty("APPSecrect", map.get("APPSecrect"));
+				System.out.println(pro.get("access_token"));
+				pro.store(os, "update '" +"access_token"+"' value" );
+				os.close();
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return false;
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return true;
+		}
+		
 	}
 	
 	public static void main(String[] args) {
-		System.out.println(getTemplate("8_3R2g1OBlwfHgp4__-tJHhgjIkvPvKZa7nWBSyc56PpynA1GSxijtea38Qw_6saNzHrkeVCvR_GHQrBBnIkJUtPdmtunEzNhCoojiSNJ1ySNUTDGkwuEz5JDCSa_LEoaRr6vKSNoqarIOua7EWBVcAIANSM", "AT0002"));;
+		updateToekn();
+//		System.out.println(getToken().get("access_token"));
 	}
 }	

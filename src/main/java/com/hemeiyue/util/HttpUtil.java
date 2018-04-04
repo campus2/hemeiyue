@@ -13,8 +13,18 @@ import com.hemeiyue.common.MyX509TrustManager;
 
 import net.sf.json.JSONObject;
 
+/*
+ * http/https的工具类
+ */
 public class HttpUtil {
 	
+	/**
+	 * 访问特定url
+	 * @param requestUrl    	要访问的url
+	 * @param requestMethod   	访问方式
+	 * @param outputStr			需要提交的数据
+	 * @return
+	 */
 	public static JSONObject httpRequest(String requestUrl, String requestMethod, String outputStr) {    
         JSONObject jsonObject = null;    
         StringBuffer buffer = new StringBuffer();    

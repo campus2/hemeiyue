@@ -2,6 +2,7 @@ package com.hemeiyue.dao;
 
 import java.util.List;
 
+import com.hemeiyue.entity.Periods;
 import com.hemeiyue.entity.RoomPeriods;
 import com.hemeiyue.entity.Rooms;
 
@@ -21,4 +22,30 @@ public interface RoomperiodsMapper {
      * @return
      */
     public List<RoomPeriods> find(Rooms room);
+    
+    /**
+     * 返回可用的教室列表
+     * @return
+     */
+    public List<Rooms> findRooms();
+    
+    /**
+     * 返回对应时间段下的可用教室列表
+     * @param periodId
+     * @return
+     */
+    public List<Rooms> findRoomsByPeriodId(Integer periodId);
+    
+    /**
+     * 返回可选的时间列表
+     * @return
+     */
+    public List<Periods> findPeriods();
+    
+    /**
+     * 返回对应教室下的可用时间段列表
+     * @param roomId
+     * @return
+     */
+    public List<Periods> findPeriodsByRoomId(Integer roomId);
 }
