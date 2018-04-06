@@ -1,6 +1,8 @@
 package hemeiyue;
 
-import java.util.ArrayList;
+import java.text.ParseException;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -16,26 +18,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.hemeiyue.common.PeriodTime;
 import com.hemeiyue.common.ResultBean;
-import com.hemeiyue.common.RoomModel;
-import com.hemeiyue.common.UpdateRoom;
-import com.hemeiyue.entity.Admin;
-import com.hemeiyue.entity.Departments;
-import com.hemeiyue.entity.Periods;
-import com.hemeiyue.entity.RoomTypes;
-import com.hemeiyue.entity.Rooms;
 import com.hemeiyue.entity.Schools;
 import com.hemeiyue.service.RoomService;
 import com.hemeiyue.service.RoomTypeService;
 import com.hemeiyue.service.SchoolService;
+import com.hemeiyue.util.DateUtil;
+import com.hemeiyue.util.JSONUtil;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations="classpath*:applicationContext.xml")
 public class SchoolTest {
 
+	static {
+		int x = 5;
+	}
+	static int x, y;
+	
 	@Resource
 	private SchoolService schoolService;
+	
 	
 	@Autowired
 	private RoomService roomService;
@@ -51,8 +53,28 @@ public class SchoolTest {
 	public void tearDown() throws Exception {
 	}
 	
-	
 	@Test
+	public void schoolTest() throws ParseException {
+//		Schools s = new Schools("测试", 0);
+//		int id = schoolService.insert(s);
+//		System.out.println(s.getId());
+		System.out.println(DateUtil.date());
+		System.out.println(DateUtil.time());
+		System.out.println(DateUtil.dateTime().toString());
+	}
+	
+//	@Test
+//	public void schoolTest() {
+//		ResultBean result = schoolService.findSchool("广东技术师范学院");
+//		System.out.println(JSONUtil.transform(result));
+//		
+//		Map<String, Object> map = new  HashMap<>();
+//		map.put("school", "广东技术师范学院");
+//		String list = schoolService.find(map);
+//		System.out.println(list);
+//	}
+	
+	/*@Test
 	public void roomDelete() {
 		RoomTypes roomType = new RoomTypes(1);
 		Schools school = new Schools(1);
@@ -136,6 +158,6 @@ public class SchoolTest {
 		room.setRoomType(roomType);
 		room.setStatus(1);
 		roomService.insert(room);
-	}
+	}*/
 
 }

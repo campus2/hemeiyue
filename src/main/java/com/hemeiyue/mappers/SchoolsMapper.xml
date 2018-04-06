@@ -7,9 +7,14 @@
         <result column="school" property="school" jdbcType="VARCHAR" />
         <result column="CDT" property="CDT" jdbcType="TIMESTAMP" />
         <result column="status" property="status" jdbcType="INTEGER" />
-        <association property="owner" column="ownerId" select="com.hemeiyue.Dao.AdminsMapper.selectById"/>
     </resultMap>
     
+    <select id="selectSchoolById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select 
+        id,school
+        from schools
+        where id = #{id,jdbcType=INTEGER}
+    </select>
     <select id="find" parameterType="Map" resultMap="BaseResultMap">
     	select *from schools
     	<where>
@@ -41,7 +46,8 @@
         where id = #{id,jdbcType=INTEGER}
     </delete>
 
-    <insert id="insert" parameterType="com.hemeiyue.entity.Schools" >
+    <insert id="insert" parameterType="com.hemeiyue.entity.Schools" 
+        	  >
         insert into schools
         <trim prefix="(" suffix=")" suffixOverrides="," >
             <if test="id != null" >
@@ -50,10 +56,10 @@
             <if test="school != null" >
                 school,
             </if>
-            <if test="ownerid != null" >
+            <if test="owner != null" >
                 ownerId,
             </if>
-            <if test="cdt != null" >
+            <if test="CDT != null" >
                 CDT,
             </if>
             <if test="status != null" >
@@ -67,16 +73,19 @@
             <if test="school != null" >
                 #{school,jdbcType=VARCHAR},
             </if>
-            <if test="ownerid != null" >
-                #{ownerid,jdbcType=INTEGER},
+            <if test="owner != null" >
+                #{ownerId,jdbcType=INTEGER},
             </if>
-            <if test="cdt != null" >
-                #{cdt,jdbcType=TIMESTAMP},
+            <if test="CDT != null" >
+                #{CDT,jdbcType=TIMESTAMP},
             </if>
             <if test="status != null" >
                 #{status,jdbcType=INTEGER},
             </if>
         </trim>
+        <selectKey keyProperty="id" resultType="java.lang.Integer">
+        select LAST_INSERT_ID() as id
+        </selectKey>
     </insert>
 
     <update id="update" parameterType="com.hemeiyue.entity.Schools" >
@@ -85,11 +94,11 @@
             <if test="school != null" >
                 school = #{school,jdbcType=VARCHAR},
             </if>
-            <if test="ownerid != null" >
-                ownerId = #{ownerid,jdbcType=INTEGER},
+            <if test="owner != null" >
+                ownerId = #{owner.id,jdbcType=INTEGER},
             </if>
-            <if test="cdt != null" >
-                CDT = #{cdt,jdbcType=TIMESTAMP},
+            <if test="CDT != null" >
+                CDT = #{CDT,jdbcType=TIMESTAMP},
             </if>
             <if test="status != null" >
                 status = #{status,jdbcType=INTEGER},

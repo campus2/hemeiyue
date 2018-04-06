@@ -12,6 +12,8 @@ public interface SchoolsMapper {
     public int insert(Schools record);
 
     public Schools selectById(Integer id);
+    
+    public Schools selectSchoolById(Integer id);
 
     public int update(Schools record);
     

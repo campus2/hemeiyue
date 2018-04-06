@@ -2,7 +2,7 @@ package com.hemeiyue.common;
 
 public class TemplantList {
 	
-	private String id;
+	private String template_id;
 	
 	private String title;
 	
@@ -26,12 +26,12 @@ public class TemplantList {
 		this.example = example;
 	}
 
-	public String getId() {
-		return id;
+	public String getTemplate_id() {
+		return template_id;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setTemplate_id(String template_id) {
+		this.template_id = template_id;
 	}
 
 	public String getTitle() {

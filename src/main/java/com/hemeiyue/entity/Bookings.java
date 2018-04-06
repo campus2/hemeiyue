@@ -2,6 +2,11 @@ package com.hemeiyue.entity;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.hemeiyue.util.DateYYMMddJSONDeserializer;
+import com.hemeiyue.util.DateYYMMddJSONSerializer;
+
 /**
  * 
  * 
@@ -16,6 +21,8 @@ public class Bookings {
 
     private Users user;
 
+    @JsonDeserialize(using=DateYYMMddJSONDeserializer.class)
+	@JsonSerialize(using=DateYYMMddJSONSerializer.class)
     private Date CDT;
 
     private Integer status;

@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
@@ -28,5 +29,22 @@ public class JSONUtil {
 			System.out.println("转为JSON数据失败");
 			return null;
 		}
+	}
+
+	/**
+	 * 将json数据转为指定泛型的对象
+	 * @param content
+	 * @param ref
+	 * @return
+	 */
+	public static <T> T transToModels(String content, TypeReference<T> ref) {
+		ObjectMapper objectMapper = new ObjectMapper();
+		try {
+			T array = objectMapper.readValue(content, ref);
+			return array;
+		} catch (Exception e1) {
+			e1.printStackTrace();
+			return null;
+		} 
 	}
 }

@@ -43,6 +43,9 @@
                 #{status,jdbcType=VARCHAR}
             </if>
             </trim>
+            <selectKey keyProperty="id" resultType="Integer">
+            	select LAST_INSERT_ID() as id
+            </selectKey>
 	</insert>
 	
 	<select id="findAll" resultMap="BaseResultMap">

@@ -15,7 +15,8 @@
 		<result column="status" property="status" jdbcType="INTEGER" />
 		<result column="salt" property="salt" jdbcType="VARCHAR" />
 		<result column="regStatus" property="regStatus" jdbcType="INTEGER" />
-		<association property="school" column="schoolId" select="com.hemeiyue.dao.SchoolsMapper.selectById" />
+		<result column="date" property="date" jdbcType="DATE" />
+		<association property="school" column="schoolId" select="com.hemeiyue.dao.SchoolsMapper.selectSchoolById" />
 	</resultMap>
 	
 	<!-- 陈冬添加部分 -->
@@ -27,14 +28,14 @@
 		</where>
 	</select>
 	
-	<select id="selectById" parameterType="Integer" resultType="Admin">
-		select id,account,adminName from admins where id=#{id}
+	<select id="selectAdminById" parameterType="Integer" resultMap="BaseResultMap">
+		select id,account,adminName,schoolId from admins where id=#{id}
 	</select>
 	<select id="find" parameterType="Map" resultMap="BaseResultMap">
-		select id,adminName,account,phone, email from admins
+		select id,adminName,status,schoolId,date from admins
 		<where>
 			<if test="parentId!=null and parentId!=''"> and parentId = #{parentId}</if>
-			and status=1
+			and status=0
 		</where>
 	</select>
 	
@@ -42,24 +43,24 @@
 		update admins
 		<set>
 			<if test="password!=null and password!=''"> password=#{password},</if>
-			<if test="email!=null and eamil!=''"> email=#{admin.email},</if>
+			<if test="email!=null and email!=''"> email=#{email},</if>
 			<if test="adminName!=null and adminName!=''"> adminName=#{adminName},</if>
 			<if test="phone!=null and phone!=''"> phone=#{phone},</if>
 		</set>
 		where id=#{id}
 	</update>
 	
-	<update id="deleteByPrimaryKey" parameterType="Integer">
-		update admins set status = 0
+	<delete id="deleteByPrimaryKey" parameterType="Integer">
+		delete from admins
 		where id=#{id}
-	</update>
+	</delete>
 	<!-- 陈冬添加部分结束 -->
 	
 	<sql id="Base_Column_List" >
-		id,account,password,adminName,signature,avatar,phone,email,parentId,schoolId,status,regStatus,salt
+		id,account,adminName,signature,avatar,phone,email,parentId,schoolId,status,regStatus,salt
 	</sql>
 	
-	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
 		select 
         <include refid="Base_Column_List" />
         from admins
@@ -75,6 +76,9 @@
             #{phone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{parentId,jdbcType=INTEGER}, 
             #{status,jdbcType=VARCHAR},#{salt,jdbcType=VARCHAR}
             )
+            <selectKey keyProperty="id" resultType="java.lang.Integer">
+	        select LAST_INSERT_ID() as id
+	        </selectKey>
     </insert>
 	
 	
@@ -120,6 +124,9 @@
             <if test="school != null" >
                 schoolId,
             </if>
+            <if test="date != null" >
+                date,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides="," >
             <if test="id != null" >
@@ -161,7 +168,13 @@
             <if test="school != null" >
                 #{school.id,jdbcType=VARCHAR}
             </if>
+            <if test="date != null" >
+                #{date}
+            </if>
         </trim>
+        <selectKey keyProperty="id" resultType="java.lang.Integer">
+        select LAST_INSERT_ID() as id
+        </selectKey>
     </insert>
     
     <update id="updateByPrimaryKeySelective" parameterType="com.hemeiyue.entity.Admin" >
@@ -225,10 +238,9 @@
     </update>
     
     <select id="login" resultMap="BaseResultMap" parameterType="com.hemeiyue.entity.Admin">
-		select 
-        <include refid="Base_Column_List" />
+		select id, adminName,parentId, schoolId,status,regStatus
         from admins
-        where account = #{account} and password = #{password} and regStatus = '1'
+        where account = #{account} and password = #{password} and regStatus = '1' and status = '1'
 	</select>
 	
 	<select id="selectAll" resultMap="BaseResultMap" parameterType="com.hemeiyue.entity.Admin">
@@ -245,11 +257,18 @@
         where account = #{account}
 	</select>
 	
-	<select id="selecTenant" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+	<select id="selecTenant" resultMap="BaseResultMap">
 		select 
-        id,adminName,phone,Email,schoolId
+        id,adminName,schoolId,date
         from admins
-        where parentId = '0' and regStatus = #{regStatus,jdbcType=VARCHAR}
+        where parentId = #{parentId} and regStatus = #{regStatus,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="selecTenantManageList" resultMap="BaseResultMap">
+		select 
+        id,adminName,schoolId,email,phone,status
+        from admins
+        where parentId = #{parentId} and regStatus = #{regStatus,jdbcType=VARCHAR}
 	</select>
 	
 	<update id="updateStatus" parameterType="com.hemeiyue.entity.Admin">

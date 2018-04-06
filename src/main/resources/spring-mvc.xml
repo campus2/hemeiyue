@@ -24,6 +24,8 @@
 	<context:component-scan base-package="com.hemeiyue.controller" />
 	
 	<mvc:annotation-driven />
+
+	<mvc:resources mapping="/wechatImage/**" location="/wechatImage/" />
 	
 	<mvc:interceptors>
             <mvc:interceptor>
@@ -51,6 +53,7 @@
     <!-- 最大文件大小，-1为不限制大小 -->    
     <property name="maxUploadSize" value="10485760000"/>    
     </bean>  
+    <bean  class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping"></bean>
     
 	<!-- responseBody编码问题  消息转换器,解决responseBody返回中外乱码问题
 	

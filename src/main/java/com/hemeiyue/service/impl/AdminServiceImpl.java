@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.hemeiyue.common.AdminResult;
 import com.hemeiyue.common.ResultBean;
 import com.hemeiyue.common.ResultList;
+import com.hemeiyue.common.ResultTenant;
 import com.hemeiyue.dao.AdminsMapper;
 import com.hemeiyue.dao.BookingsMapper;
 import com.hemeiyue.dao.RoomsMapper;
@@ -19,10 +20,10 @@ import com.hemeiyue.dao.SchoolsMapper;
 import com.hemeiyue.entity.Admin;
 import com.hemeiyue.entity.Schools;
 import com.hemeiyue.service.AdminService;
+import com.hemeiyue.util.JSONUtil;
 import com.hemeiyue.util.MD5;
 import com.hemeiyue.util.PhoneFormatCheckUtils;
 import com.hemeiyue.util.SendMailUtil;
-import com.hemeiyue.util.JSONUtil;
 
 @Service("adminService")
 public class AdminServiceImpl implements AdminService{
@@ -39,18 +40,31 @@ public class AdminServiceImpl implements AdminService{
 	@Autowired
 	private RoomsMapper roomMapper;
 	
+	@Autowired
+	private SchoolsMapper schoolMapper;
+	
+	public ResultBean login(Admin admin) {
+		String salt = adminMapper.checkAccount(admin.getAccount()).getSalt();
+		admin.setPassword(MD5.MD5encoder(admin.getPassword()+ salt));
+		Admin currentAdmin = adminMapper.login(admin);
+		System.out.println(" a"+admin.getAccount());
+		AdminResult result = new AdminResult();
+		result.setResult(true);
+		return result;
+	}
+	
 	/**
 	 * 登录
 	 */
 	public ResultBean login(Admin admin, HttpServletRequest request) {
 		//获取对应账号的管理员信息
-		String salt = adminMapper.checkAccount(admin.getAccount()).getSalt();
-		System.out.println(salt);
-		System.out.println(admin.getAccount() + "   " + admin.getPassword());
+		Admin a = adminMapper.checkAccount(admin.getAccount());
+		if(a == null) {
+			return new ResultBean(false, "用户不存在");
+		}
+		String salt = a.getSalt();
 		admin.setPassword(MD5.MD5encoder(admin.getPassword()+ salt));
 		Admin currentAdmin = adminMapper.login(admin);
-		
-		
 		//检查账号与账户是否正确
 		if(currentAdmin == null) {
 			return new ResultBean(false, "用户或密码错误");
@@ -63,24 +77,31 @@ public class AdminServiceImpl implements AdminService{
 		
 		//检查该管理员的上级是否被封停
 		if(currentAdmin.getParentId() > 1 && 
-				adminMapper.selectByPrimaryKey(currentAdmin.getParentId()).getStatus() == 1){
+				adminMapper.selectById(currentAdmin.getParentId()).getStatus() == 1){
 			return new ResultBean(false, "该管理员的上级不可用");
 		}
 		
 		request.getSession().setAttribute("currentAdmin", currentAdmin);
 		request.getSession().setAttribute("school", currentAdmin.getSchool());
+		request.getServletContext().setAttribute("currentAdmin", currentAdmin);
+		request.getServletContext().setAttribute("school", currentAdmin.getSchool());
+		
 		
 		int authority;
 		if(currentAdmin.getParentId() < 0) {
-			authority = 0;
+			authority = -1;
 		}else if (currentAdmin.getParentId() == 0) {
-			authority = 1;
+			authority = 0;
 		}else {
-			authority = 2;
+			authority = 1;
 		}
 		AdminResult result = new AdminResult();
 		result.setResult(true);
 		result.setAuthority(authority);
+		result.setAdmin(currentAdmin);
+		//测试一下
+		request.getServletContext().setAttribute("test", "testcontext");
+		System.out.println(request.getSession().getAttribute("currentAdmin"));
 		return result;
 	}
 
@@ -123,9 +144,9 @@ public class AdminServiceImpl implements AdminService{
 		if(adminMapper.insertSelective(admin) == 1) {
 			SendMailUtil send = new SendMailUtil(admin.getEmail(), "注册成功", admin.getAdminName() + "已注册成功，请耐心等待管理员确认");
 			send.start();
-			return new ResultBean(true, "新管理员信息已录入");
+			return new ResultBean(true, "注册成功");
 		}else {
-			return new ResultBean(false, "注册失败,请重新登录");
+			return new ResultBean(false, "注册失败");
 		}
 	}
 	
@@ -133,38 +154,43 @@ public class AdminServiceImpl implements AdminService{
 	public ResultBean tenantApplyList(HttpServletRequest request) {
 		ResultList resultList = new ResultList();
 		//获取当前管理员
-		Admin currentAdmin = (Admin) request.getSession().getAttribute("currentAdmin");
-		if(currentAdmin.getId() != 0) {
+//		Admin currentAdmin = (Admin) request.getSession().getAttribute("currentAdmin");
+		Admin currentAdmin = (Admin) request.getServletContext().getAttribute("currentAdmin");
+		if(currentAdmin.getParentId() != -1) {
 			return new ResultBean(false, "非超级管理员不可操作");
 		}
-		resultList.setList(adminMapper.selecTenant(0));
+		resultList.setResult(true);
+		resultList.setList(adminMapper.selecTenant(0,0));
 		return resultList;
 	}
 
 	@Override
 	public ResultBean tenantApply(Integer id) {
-		Admin admin = new Admin();
-		admin.setId(id);
-		admin.setStatus(1);
+		Admin admin = adminMapper.selectAdminById(id);
 		admin.setRegStatus(1);
+		admin.setStatus(1);
 		if(adminMapper.updateByPrimaryKeySelective(admin) == 1) {
-			return new ResultBean(true);
+			Schools s = admin.getSchool();
+			s.setOwner(admin);
+			s.setStatus(1);
+			schoolMapper.update(s);
+			return new ResultBean(true,"操作成功");
 		}
-		return new ResultBean(false);
+		return new ResultBean(false,"操作失败");
 	}
 
 
 	@Override
 	public ResultBean validationAccount(String account) {
 		if(adminMapper.checkAccount(account) != null) {
-			return new ResultBean(false);
+			return new ResultBean(false,"该账号已被注册");
 		}
-		return new ResultBean(true);
+		return new ResultBean(true,"该账号可用");
 	}
 
 	@Override
 	public ResultBean deleteTenant(int id) {
-		if(adminMapper.selectByPrimaryKey(id).getRegStatus()==1) {
+		if(adminMapper.selectById(id).getRegStatus()==1) {
 			return new ResultBean(false);
 		}
 		if(adminMapper.deleteByPrimaryKey(id) == 1) {
@@ -174,14 +200,13 @@ public class AdminServiceImpl implements AdminService{
 	}
 
 	@Override
-	public ResultBean tenantMangerList(HttpServletRequest request) {
+	public ResultBean tenantMangerList(Admin admin) {
 		ResultList resultList = new ResultList();
-		//获取当前管理员
-		Admin currentAdmin = (Admin) request.getSession().getAttribute("currentAdmin");
-		if(currentAdmin.getId() != 0) {
+		if(admin.getParentId() != -1) {
 			return new ResultBean(false, "非超级管理员不可操作");
 		}
-		resultList.setList(adminMapper.selecTenant(1));
+		resultList.setResult(true);
+		resultList.setList(adminMapper.selecTenantManageList(0,1));
 		return resultList;
 	}
 
@@ -190,11 +215,15 @@ public class AdminServiceImpl implements AdminService{
 		Admin admin = new Admin();
 		admin.setId(id);
 		admin.setStatus(0);
-		if(adminMapper.selectByPrimaryKey(id).getRegStatus() == 1 &&
+		if(adminMapper.selectById(id).getRegStatus() == 1 &&
 				adminMapper.updateStatus(admin)== 1) {
-			return new ResultBean(true);
+			ResultTenant rt = new ResultTenant();
+			rt.setResult(true);
+			rt.setStatus(0);
+			rt.setMessage("操作成功");
+			return rt;
 		}
-		return new ResultBean(false);
+		return new ResultBean(false,"操作失败");
 	}
 
 	@Override
@@ -202,11 +231,15 @@ public class AdminServiceImpl implements AdminService{
 		Admin admin = new Admin();
 		admin.setId(id);
 		admin.setStatus(1);
-		if(adminMapper.selectByPrimaryKey(id).getRegStatus() == 1 &&
+		if(adminMapper.selectById(id).getRegStatus() == 1 &&
 				adminMapper.updateStatus(admin)== 1) {
-			return new ResultBean(true);
+			ResultTenant rt = new ResultTenant();
+			rt.setResult(true);
+			rt.setStatus(1);
+			rt.setMessage("操作成功");
+			return rt;
 		}
-		return new ResultBean(false);
+		return new ResultBean(false,"操作失败");
 	}
 
 	/*
@@ -290,7 +323,7 @@ public class AdminServiceImpl implements AdminService{
 
 	@Override
 	public ResultBean findPassword(Admin admin) {
-		String salt = adminMapper.selectByPrimaryKey(admin.getId()).getSalt();
+		String salt = adminMapper.selectById(admin.getId()).getSalt();
 		admin.setPassword(MD5.MD5encoder(admin.getPassword()+ salt));
 		if(adminMapper.findPassword(admin) != null) {
 			return new ResultBean(true);

@@ -10,9 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import com.hemeiyue.common.Id;
 import com.hemeiyue.common.ResultBean;
-import com.hemeiyue.common.ResultList;
 import com.hemeiyue.common.TemplantList;
 import com.hemeiyue.common.Template;
 import com.hemeiyue.common.WX_page;
@@ -22,8 +20,6 @@ import net.sf.json.JSONObject;
 
 public class WX_Util {
 	
-//	private String access_Token = getToken().get("access_Token");
-	
 	/**
 	 * 获取模板列表
 	 * @param access_Token
@@ -31,7 +27,7 @@ public class WX_Util {
 	 * @param count
 	 * @return
 	 */
-	public static ResultBean getTemplateList(String access_Token,Integer offset,Integer count ) {
+	public static List<TemplantList> getTemplateList(String access_Token,Integer offset,Integer count ) {
 		
 		//发送请求获取模板信息json数据
 		String url = "https://api.weixin.qq.com/cgi-bin/wxopen/template/list?access_token=ACCESS_TOKEN";
@@ -45,13 +41,9 @@ public class WX_Util {
 			JSONArray jsonArray = jsonObject.getJSONArray("list");
 			@SuppressWarnings("unchecked")
 			List<TemplantList> list =(List<TemplantList>) JSONArray.toCollection(jsonArray,TemplantList.class);
-			ResultList result = new ResultList();
-			result.setResult(true);
-			result.setMessage("获取列表成功");
-			result.setList(list);
-			return result;
+			return list;
 		}else {
-			return new ResultBean(false, "获取模板列表失败");
+			return null;
 		}
 	}
 	
@@ -64,9 +56,8 @@ public class WX_Util {
 	public static String getTemplate(String access_Token,String templateId) {
 		String url = "https://api.weixin.qq.com/cgi-bin/wxopen/template/library/get?access_token=ACCESS_TOKEN";
 		String realUrl = url.replace("ACCESS_TOKEN", access_Token);
-		Id id = new Id();
-		id.setId(templateId);
-		JSONObject json = JSONObject.fromObject(id);
+		String test = "{\"id\":\""+templateId+"\"}";
+		JSONObject json = JSONObject.fromObject(test);
 		System.out.println(json);
 		JSONObject jsonObject = HttpUtil.httpRequest(realUrl, "POST", json.toString());
 		return jsonObject.toString();
@@ -167,8 +158,6 @@ public class WX_Util {
 			in.close();
 			APPID = pro.getProperty("APPID");
 			APPSecrect = pro.getProperty("APPSecrect");
-			System.out.println(pro.getProperty("APPID"));
-			System.out.println(pro.getProperty("APPSecrect"));
 			
 			String url = "https://api.weixin.qq.com/cgi-bin/token?"
 					+ "grant_type=client_credential&"
@@ -176,7 +165,6 @@ public class WX_Util {
 					+ "secret=APPSECRET";
 			String realUrl = url.replace("APPID", APPID). 
 				       replace("APPSECRET", APPSecrect);
-			System.out.println(realUrl);
 			JSONObject jsonObject = HttpUtil.httpRequest(realUrl, "GET", null);
 			
 			//access_token和expires_in存进properties文件
@@ -234,7 +222,11 @@ public class WX_Util {
 	}
 	
 	public static void main(String[] args) {
-		updateToekn();
+//		updateToekn();
 //		System.out.println(getToken().get("access_token"));
+//		String t = getTemplate(getToken().get("access_token"), "AT0007");
+//		System.out.println(t);
+//		List<TemplantList> list = getTemplateList(getToken().get("access_token"), 0, 5);
+//		System.out.println(list.get(0).getTemplate_id()); 
 	}
 }	

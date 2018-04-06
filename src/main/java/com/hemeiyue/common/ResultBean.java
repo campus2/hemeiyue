@@ -21,6 +21,13 @@ public class ResultBean {
 		this.result = result;
 		this.message = message;
 	}
+	
+	public ResultBean(boolean result,String code,String message) {
+		super();
+		this.result = result;
+		this.message = message;
+		this.code = code;
+	}
 
 	public ResultBean() {
 		super();

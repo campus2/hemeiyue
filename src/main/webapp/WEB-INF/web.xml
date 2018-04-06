@@ -3,6 +3,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance  http://www.springmodules.org/schema/cache/springmodules-cache.xsd http://www.springmodules.org/schema/cache/springmodules-ehcache.xsd"    xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee   
     http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd       
      ">
+
   <display-name>hemeiyue</display-name>
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>
@@ -36,18 +37,13 @@
 			<param-value>UTF-8</param-value>
 		</init-param>
 	</filter>
-	
 	<filter-mapping>
 		<filter-name>encodingFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-	
 	<!-- Spring监听器 -->
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-	</listener>
-	<listener>
-		<listener-class>com.hemeiyue.common.UpdateTokenListener</listener-class>
 	</listener>
 	
 	<!-- 添加对springmvc的支持 -->
@@ -62,7 +58,27 @@
 		<async-supported>true</async-supported>
 	</servlet>
 	<servlet-mapping>
+	    <servlet-name>default</servlet-name>
+	    <url-pattern>*.jpg</url-pattern>
+	    <url-pattern>*.jpeg</url-pattern>
+	    <url-pattern>*.png</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		
 		<servlet-name>springMVC</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
+	
+	<error-page>
+	  	<error-code>404</error-code>
+	  	<location>/error_404</location>
+    </error-page>
+    <error-page>
+	  	<error-code>500</error-code>
+	  	<location>/error_500</location>
+    </error-page>
+    <error-page>
+	  	<error-code>403</error-code>
+	  	<location>/error_403</location>
+    </error-page>
 </web-app>

@@ -32,19 +32,25 @@ public class UsersServiceImpl implements UsersService{
 		Map<String, String> map = WX_Util.getOpenId(code);
 		String openId = map.get("openId");
 //		String session_key = map.get("session_key");
-		Users user = usersMapper.selectByOpenId(openId);
+		
 		
 		//如果openId为空，返回false
 		if(openId == null) {
-			return new ResultBean(false);
-		}else if (user == null) {		//本地数据库不存在该用户（第一次登录）
-			user.setOpenId(openId);
-			request.getSession().setAttribute("user", user);
-			request.getServletContext().setAttribute("user", user);
+			return new ResultBean(false,"没有openId");
+		}
+		
+		Users user = usersMapper.selectByOpenId(openId);
+		if (user == null) {		//本地数据库不存在该用户（第一次登录）
+			Users newUser = new Users();
+			newUser.setOpenId(openId);
+//			request.getSession().setAttribute("user", user);
+			request.getServletContext().setAttribute("user", newUser);
 			return new ResultBean(false);
 		}else {							//用户非第一次登录
-			request.getSession().setAttribute("user", user);
-			request.getSession().setAttribute("school", user.getSchool());
+//			request.getSession().setAttribute("user", user);
+//			request.getSession().setAttribute("school", user.getSchool());
+			request.getServletContext().setAttribute("user", user);
+			request.getServletContext().setAttribute("school", user.getSchool());
 			return new ResultBean(true);
 		}
 	}

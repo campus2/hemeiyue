@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.hemeiyue.common.ResultBean;
 import com.hemeiyue.entity.WechatPicture;
@@ -23,8 +24,10 @@ public class WechatPictureController {
 	
 	@RequestMapping(value="/upload",method=RequestMethod.POST)
 	@ResponseBody
-	public ResultBean upload(@RequestBody WechatPicture wechatPicture,HttpServletRequest request) {
+	public ResultBean upload(MultipartFile file,HttpServletRequest request) {
 		System.out.println("test");
+		WechatPicture wechatPicture = new WechatPicture();
+		wechatPicture.setFile(file);
 		return wechatPictureService.insert(wechatPicture,request);
 	}
 	

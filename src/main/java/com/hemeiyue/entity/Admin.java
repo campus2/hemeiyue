@@ -1,9 +1,17 @@
 package com.hemeiyue.entity;
 
+import java.util.Date;
+
+import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
+
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.hemeiyue.util.DateYYMMddJSONDeserializer;
+import com.hemeiyue.util.DateYYMMddJSONSerializer;
 
 /**
  * 
@@ -12,39 +20,57 @@ import org.hibernate.validator.constraints.NotEmpty;
  * 
  * @date 2018-03-14
  */
+@JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
 public class Admin {
 	
-    private Integer id;
+    @Null
+	private Integer id;
     
-    @Size(min=6,max=11,message="账号必须6~11位",groups= {com.hemeiyue.entity.validation.AdminLogin.class,com.hemeiyue.entity.validation.AdminRegister.class})
+    @Size(min=5,max=11,message="账号必须5~11位",groups= {com.hemeiyue.entity.validation.AdminLogin.class,com.hemeiyue.entity.validation.AdminRegister.class})
     private String account;
     
-    @Size(min=6,max=11,message="密码必须6~11位",groups= {com.hemeiyue.entity.validation.AdminLogin.class,com.hemeiyue.entity.validation.AdminRegister.class})
+    @Size(min=5,max=11,message="密码必须5~11位",groups= {com.hemeiyue.entity.validation.AdminLogin.class,com.hemeiyue.entity.validation.AdminRegister.class})
     private String password;
     
     @NotEmpty(message="名字不可为空",groups= {com.hemeiyue.entity.validation.AdminRegister.class})
     private String adminName;
 
+    @Null
     private String signature;
 
+    @Null
     private String avatar;
 
+    @Null
     private String phone;
     	
     @Email(message="邮箱格式不正确",groups= {com.hemeiyue.entity.validation.AdminRegister.class})
     private String email;
-
+    @Null
     private Integer parentId;
-
+    @Null
     private Integer status;
-    
+    @Null
     private String salt;
-    
+    @Null
     private Schools school;
-    
+    @Null
     private Integer regStatus;
     
-    public Integer getRegStatus() {
+    @Null
+    @JsonDeserialize(using=DateYYMMddJSONDeserializer.class)
+	@JsonSerialize(using=DateYYMMddJSONSerializer.class)
+    private Date date;
+    
+    public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public Integer getRegStatus() {
 		return regStatus;
 	}
 

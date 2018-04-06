@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.hemeiyue.common.PictureResult;
 import com.hemeiyue.common.ResultBean;
 import com.hemeiyue.common.ResultList;
 import com.hemeiyue.dao.WechatPictureMapper;
@@ -23,8 +24,6 @@ public class WechatPictureServiceImpl implements WechatPictureService{
 
 	@Override
 	public ResultBean insert(WechatPicture wechatPicture,HttpServletRequest request) {
-		System.out.println(request.getSession().getServletContext().getRealPath(""));
-		System.out.println(request.getContextPath());
 		String localPath=this.getClass().getClassLoader().getResource("").getPath().replaceAll("/WEB-INF/classes/", "/assets/wechatImage/");  
 		System.out.println(localPath);
 		//若没有这个目录则新建一个
@@ -42,7 +41,9 @@ public class WechatPictureServiceImpl implements WechatPictureService{
 	          
 	          //获得文件类型，  判断如果文件类型不为png或jpg，禁止上传    
 	          String contentType=wechatPicture.getFile().getContentType();
-	          if(contentType.indexOf("png") == -1 && contentType.indexOf("jpg") == -1) {
+	          System.out.println(contentType);
+	          if(contentType.indexOf("png") == -1 && contentType.indexOf("jpg") == -1
+	        		  && contentType.indexOf("jpeg") == -1) {
 	        	  return new ResultBean(false, "上传的图片格式必须为png或jpg");
 	          }
 	          //获得文件后缀名   
@@ -59,10 +60,11 @@ public class WechatPictureServiceImpl implements WechatPictureService{
 				System.out.println("exception");
 				return new ResultBean(false,"保存文件失败");
 			}
-	        wechatPicture.setUrl(localPath+filename);
+	        wechatPicture.setUrl("/assets/wechatImage/"+filename);
 	        wechatPicture.setStatus(1);
 	        if(wechatPictureMapper.insert(wechatPicture) == 1) {
-	        	return new ResultBean(true);
+	        	return new PictureResult(true, "上传成功", 
+	        			wechatPicture.getId(),wechatPicture.getUrl(),wechatPicture.getHrefUrl());
 	        }
 		}
 		return new ResultBean(false,"文件为空");
