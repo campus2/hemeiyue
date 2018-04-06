@@ -1,5 +1,7 @@
 package com.hemeiyue.dao;
 
+import java.util.List;
+
 import com.hemeiyue.entity.Messages;
 
 public interface MessagesMapper {
@@ -14,4 +16,6 @@ public interface MessagesMapper {
     int updateByPrimaryKeySelective(Messages record);
 
     int updateByPrimaryKey(Messages record);
+    
+    List<Messages> findUserMessage(Integer userId);
 }

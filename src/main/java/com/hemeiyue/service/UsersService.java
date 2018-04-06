@@ -1,5 +1,7 @@
 package com.hemeiyue.service;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.hemeiyue.common.ResultBean;
 import com.hemeiyue.entity.Users;
 
@@ -12,7 +14,7 @@ public interface UsersService {
 	 * @param openid
 	 * @return
 	 */
-	public ResultBean login(String openid);
+	public ResultBean login(String openid,HttpServletRequest request);
 	
 	/**
 	 * 修改用户信息
@@ -27,4 +29,6 @@ public interface UsersService {
 	 * @return
 	 */
 	public ResultBean delete(Users user);
+	
+	public ResultBean userMessage(Integer userId);
 }

@@ -108,13 +108,22 @@ public class AdminServiceImpl implements AdminService{
 	
 	@Override
 	public ResultBean insert(Admin admin,HttpServletRequest request) {
+		
+		//检查账号是否已存在
 		if(adminMapper.checkAccount(admin.getAccount()) != null) {
 			return new ResultBean(false, "该账号已存在");
 		}
+		
+		//检查电话号码
+				if(!PhoneFormatCheckUtils.isPhoneLegal(admin.getPhone())) {
+					return new ResultBean(false, "电话号码格式错误");
+				}
+				
 		//获取当前管理员
 //		Admin currentAdmin = (Admin) request.getSession().getAttribute("currentAdmin");
 		Admin currentAdmin = (Admin) request.getServletContext().getAttribute("currentAdmin");
 		
+		//检查当前是否有管理员登录；如果没有，则注册的是租户，如果有，则注册的是管理员
 		if(currentAdmin == null) {
 			admin.setParentId(0);
 			//设置状态为注册中
@@ -127,10 +136,6 @@ public class AdminServiceImpl implements AdminService{
 			admin.setStatus(1);
 		}
 		
-		//检查电话号码
-		if(!PhoneFormatCheckUtils.isPhoneLegal(admin.getPhone())) {
-			return new ResultBean(false, "电话号码格式错误");
-		}
 		
 		//设置salt 0~1000
 		int salt = (int) (Math.random()*1000);

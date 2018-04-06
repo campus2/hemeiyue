@@ -150,6 +150,7 @@ public class BookingServiceImpl implements BookingService{
 	public ResultBean findMyBooks(HttpServletRequest request) {
 		//检查是否为用户操作
 		Users user = (Users) request.getSession().getAttribute("user");
+//		Users user = (Users) request.getServletContext().getAttribute("user");
 		if(user == null) {
 			return new ResultBean(false, "用户请登录再执行操作");
 		}

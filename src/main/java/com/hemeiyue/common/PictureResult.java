@@ -1,15 +1,16 @@
 package com.hemeiyue.common;
 
+import com.hemeiyue.entity.WechatPicture;
+
 public class PictureResult extends ResultBean{
 	
-	/**
-	 * 图片ID
-	 */
 	private Integer id;
 	
 	private String url;
 	
 	private String hrefUrl;
+	
+	private WechatPicture wechatPicture;
 	
 	public PictureResult(boolean result, String message, Integer id, String url, String hrefUrl) {
 		super(result, message);
@@ -17,6 +18,7 @@ public class PictureResult extends ResultBean{
 		this.url = url;
 		this.hrefUrl = hrefUrl;
 	}
+
 	public Integer getId() {
 		return id;
 	}
@@ -25,24 +27,27 @@ public class PictureResult extends ResultBean{
 		this.id = id;
 	}
 
-	public String getHrefUrl() {
-		return hrefUrl;
+	public String getUrl() {
+		return url;
 	}
 
 	public void setUrl(String url) {
 		this.url = url;
 	}
 
-	public PictureResult(boolean result, String message, String url) {
-		super(result, message);
-		this.url = url;
+	public String getHrefUrl() {
+		return hrefUrl;
 	}
 
-	public String getUrl() {
-		return url;
+	public void setHrefUrl(String hrefUrl) {
+		this.hrefUrl = hrefUrl;
 	}
 
-	public void setHrefUrl(String url) {
-		this.url = url;
+	public WechatPicture getWechatPicture() {
+		return wechatPicture;
+	}
+
+	public void setWechatPicture(WechatPicture wechatPicture) {
+		this.wechatPicture = wechatPicture;
 	}
 }

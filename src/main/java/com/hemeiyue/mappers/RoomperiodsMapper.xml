@@ -10,6 +10,15 @@
         <result column="deadLine" property="deadline" jdbcType="TIMESTAMP" />
         <result column="status" property="status" jdbcType="INTEGER" />
         <association property="period" column="periodId" select="com.hemeiyue.dao.PeriodsMapper.selectById"/>
+        <association property="room" column="roomId" select="com.hemeiyue.dao.RoomsMapper.selectById"/>
+    </resultMap>
+    
+    <resultMap type="com.hemeiyue.entity.Rooms" id="RoomResult">
+    	<association property="room" column="roomId" select="com.hemeiyue.dao.RoomsMapper.selectById"/>
+    </resultMap>
+    
+    <resultMap type="com.hemeiyue.entity.Periods" id="PeriodResult">
+    	<association property="period" column="periodId" select="com.hemeiyue.dao.PeriodsMapper.selectById"/>
     </resultMap>
     
     <select id="find" parameterType="Rooms" resultMap="BaseResultMap">
@@ -121,4 +130,27 @@
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
+    
+    <select id="findRooms" resultMap="RoomResult">
+    	select distinct roomId from roomperiods
+    	<where>
+    		and status = 1
+    	</where>
+    </select>
+    
+    <select id="findRoomsByPeriodId" resultMap="RoomResult" parameterType="java.lang.Integer">
+    	select roomId from roomperiods
+    	<where>
+    		periodId = #{periodId,jdbcType=INTEGER}
+    		and status = 1
+    	</where>
+    </select>
+    
+    <select id="findPeriods" resultMap="PeriodResult">
+    	select roomId from roomperiods where status = 1
+    </select>
+    
+    <select id="findPeriodsByRoomId" resultMap="PeriodResult" parameterType="java.lang.Integer">
+    	select roomId from roomperiods where status = 1 and roomId = #{roomId,jdbcType=INTEGER}
+    </select>
 </mapper>
