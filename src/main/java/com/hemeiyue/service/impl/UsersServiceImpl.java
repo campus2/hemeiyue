@@ -26,7 +26,6 @@ public class UsersServiceImpl implements UsersService{
 	@Autowired
 	private MessagesMapper messagesMappers;
 	
-	@SuppressWarnings("null")
 	@Override
 	public ResultBean login(String code,HttpServletRequest request) {
 		Map<String, String> map = WX_Util.getOpenId(code);
@@ -85,7 +84,7 @@ public class UsersServiceImpl implements UsersService{
 	public ResultList userMessage(Integer userId) {
 		List<Messages> list = messagesMappers.findUserMessage(userId);
 		ResultList result = new ResultList();
-		if(list != null || list.size() > 0) {
+		if(list != null && list.size() > 0) {
 			result.setResult(true);
 			result.setList(list);
 			return result;
