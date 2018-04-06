@@ -32,7 +32,7 @@ public class Admin {
     @Size(min=5,max=11,message="密码必须5~11位",groups= {com.hemeiyue.entity.validation.AdminLogin.class,com.hemeiyue.entity.validation.AdminRegister.class})
     private String password;
     
-    @NotEmpty(message="名字不可为空",groups= {com.hemeiyue.entity.validation.AdminRegister.class})
+    @NotEmpty(message="名字不可为空",groups= {com.hemeiyue.entity.validation.AdminRegister.class,com.hemeiyue.entity.validation.AdminModify.class})
     private String adminName;
 
     @Null
@@ -44,7 +44,7 @@ public class Admin {
     @Null
     private String phone;
     	
-    @Email(message="邮箱格式不正确",groups= {com.hemeiyue.entity.validation.AdminRegister.class})
+    @Email(message="邮箱格式不正确",groups= {com.hemeiyue.entity.validation.AdminRegister.class,com.hemeiyue.entity.validation.AdminModify.class})
     private String email;
     @Null
     private Integer parentId;

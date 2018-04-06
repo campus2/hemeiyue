@@ -24,6 +24,8 @@ import com.hemeiyue.entity.Rooms;
 import com.hemeiyue.service.RoomService;
 import com.hemeiyue.util.JSONUtil;
 
+import net.sf.json.JSONObject;
+
 @Service("roomService")
 public class RoomServiceImpl implements RoomService {
 
@@ -77,31 +79,54 @@ public class RoomServiceImpl implements RoomService {
 	}
 
 	@Override
-	public String selectBySchoolId(int schoolId) {
-		List<Rooms> roomList = roomMapper.selectBySchool(schoolId);
+	public Map<String, Object> selectBySchoolId(int schoolId) {
+		List<Map<String, Object>> resultList = new ArrayList<>();
 		List<RoomTypes> typeList = roomTypeMapper.selectBySchoolId(schoolId);
 		
-		//将课室按照课室类型进行分类
-		Map<String, Object> roomMap = new HashMap<>();
-		//外层循环课室类型，内层循环所有课室
 		for(int i=0; i<typeList.size(); i++) {
-			List<Rooms> temp = new ArrayList<>();
-			String roomTypeName = typeList.get(i).getRoomType();
-			if(roomList!=null && roomList.size()>0)
-				for(int j=0; j<roomList.size(); j++) {
-					Rooms room = roomList.get(j);
-					//找到对应类型的课室
-					if(roomTypeName.equals(room.getRoomType().getRoomType())) {
-						temp.add(roomList.get(j));
-					}
-				}
-			roomMap.put(roomTypeName, temp);
+			Map<String, Object> roomMap = new HashMap<>();
+			RoomTypes rt = typeList.get(i);
+			List<Rooms> roomList = roomMapper.selectBySchoolAndRoomType(schoolId,rt.getId());
+			roomMap.put("type", rt.getRoomType());
+			roomMap.put("class", roomList);
+			resultList.add(roomMap);
 		}
 		//学校名称
 		String school = schoolMapper.selectById(schoolId).getSchool();
 		Map<String, Object> map = new HashMap<>();
-		map.put(school, roomMap);
-		return JSONUtil.transform(map);
+		map.put("school", school);
+		map.put("roomType", resultList);
+		Map<String, Object> r = new HashMap<>();
+		r.put("result", true);
+		r.put("data", map);
+		return r;
+		
+//		//将课室按照课室类型进行分类
+//		Map<String, Object> roomMap = new HashMap<>();
+//		//外层循环课室类型，内层循环所有课室
+//		for(int i=0; i<typeList.size(); i++) {
+//			List<Rooms> temp = new ArrayList<>();
+//			String roomTypeName = typeList.get(i).getRoomType();
+//			if(roomList!=null && roomList.size()>0)
+//				for(int j=0; j<roomList.size(); j++) {
+//					Rooms room = roomList.get(j);
+//					//找到对应类型的课室
+//					if(roomTypeName.equals(room.getRoomType().getRoomType())) {
+////						roomList.get(j).setRoomType(null);
+//						temp.add(roomList.get(j));
+//						System.out.println(roomList.get(j).getRoom());
+////						roomList.remove(roomList.get(j));
+//					}
+//				}
+////			roomMap.put(roomTypeName, temp);
+//			for (Rooms rooms : temp) {
+//				System.out.println(rooms.getRoom());
+//			}
+//			roomMap.put("type", roomTypeName);
+//			roomMap.put("class", temp);
+//			resultList.add(roomMap);
+//		}
+		
 	}
 
 	@Override

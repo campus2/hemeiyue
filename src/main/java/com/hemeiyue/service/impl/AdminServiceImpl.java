@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.hemeiyue.common.AdminResult;
 import com.hemeiyue.common.ResultBean;
+import com.hemeiyue.common.ResultCount;
 import com.hemeiyue.common.ResultList;
 import com.hemeiyue.common.ResultTenant;
 import com.hemeiyue.dao.AdminsMapper;
@@ -20,7 +21,6 @@ import com.hemeiyue.dao.SchoolsMapper;
 import com.hemeiyue.entity.Admin;
 import com.hemeiyue.entity.Schools;
 import com.hemeiyue.service.AdminService;
-import com.hemeiyue.util.JSONUtil;
 import com.hemeiyue.util.MD5;
 import com.hemeiyue.util.PhoneFormatCheckUtils;
 import com.hemeiyue.util.SendMailUtil;
@@ -105,18 +105,26 @@ public class AdminServiceImpl implements AdminService{
 		return result;
 	}
 
+	
 	@Override
 	public ResultBean insert(Admin admin,HttpServletRequest request) {
 		if(adminMapper.checkAccount(admin.getAccount()) != null) {
 			return new ResultBean(false, "该账号已存在");
 		}
 		//获取当前管理员
-		Admin currentAdmin = (Admin) request.getSession().getAttribute("currentAdmin");
+//		Admin currentAdmin = (Admin) request.getSession().getAttribute("currentAdmin");
+		Admin currentAdmin = (Admin) request.getServletContext().getAttribute("currentAdmin");
 		
 		if(currentAdmin == null) {
 			admin.setParentId(0);
+			//设置状态为注册中
+			admin.setRegStatus(0);
+			admin.setStatus(0);
 		}else{
 			admin.setParentId(currentAdmin.getId());
+			//设置状态为可用
+			admin.setRegStatus(1);
+			admin.setStatus(1);
 		}
 		
 		//检查电话号码
@@ -124,14 +132,9 @@ public class AdminServiceImpl implements AdminService{
 			return new ResultBean(false, "电话号码格式错误");
 		}
 		
-		//设置状态为注册中
-		admin.setRegStatus(0);
-		admin.setStatus(0);
-		
 		//设置salt 0~1000
 		int salt = (int) (Math.random()*1000);
 		admin.setSalt(String.valueOf(salt));
-		System.out.println(salt);
 		
 		//把加盐后的密码存进去
 		String newPassword = MD5.MD5encoder(admin.getPassword()+salt);
@@ -243,21 +246,26 @@ public class AdminServiceImpl implements AdminService{
 	 */
 	
 	@Override
-	public String findByAdmin(Admin admin) {
+	public ResultBean findByAdmin(Admin admin) {
 		//校验当前登录者为学校总管理员
 		if(admin.getParentId() > 0) return null;
 		
 		//返回子管理员数据
 		Map<String, Object> map = new HashMap<>();
-		map.put("parentId", admin.getParentId());
-		List<Admin> sonList = adminMapper.find(map);
-		return JSONUtil.transform(sonList);
+		map.put("parentId", admin.getId());
+		List<Admin> sonList = adminMapper.findAdmin(map);
+		System.out.println(sonList.size());
+		if(sonList!=null && sonList.size()>0) {
+			ResultList r = new ResultList();
+			r.setResult(true);
+			r.setList(sonList);
+			return r;
+		}
+		return new ResultBean(false, "暂无管理员数据");
 	}
 
 	@Override
 	public ResultBean updateAdmin(Admin admin) {
-		//校验管理员是否存在
-		if(adminMapper.checkAccount(admin.getAccount()) == null) return new ResultBean(false,"该管理员不存在");
 		
 		//更新
 		if(adminMapper.updateAdmin(admin) > 0)
@@ -277,34 +285,30 @@ public class AdminServiceImpl implements AdminService{
 	}
 
 	@Override
-	public String getUserCount(Schools school) {
+	public long getUserCount(Schools school) {
 		Map<String, Object> map = new HashMap<>();
 		map.put("school", school);
-		Long count = adminMapper.getUserCount(school);
-		return String.valueOf(count);
+		return adminMapper.getUserCount(school);
 	}
 	
 	@Override
-	public String getAllApply(Schools school) {
+	public long getAllApply(Schools school) {
 		Map<String, Object> map = new HashMap<>();
 		map.put("school", school);
-		Long count = bookingMaper.getApplyCount(school);
-		return String.valueOf(count);
+		return bookingMaper.getApplyCount(school);
 	}
 	
 	@Override
-	public String getAllSchools() {
+	public long getAllSchools() {
 		Map<String, Object> map = new HashMap<>();
-		Long count = schoolsMapper.getTotal(map);
-		return String.valueOf(count);
+		return schoolsMapper.getTotal(map);
 	}
 	
 	@Override
-	public String getAllRooms(Schools school) {
+	public long getAllRooms(Schools school) {
 		Map<String, Object> map = new HashMap<>();
 		map.put("school", school);
-		Long count = roomMapper.getTotal(map);
-		return String.valueOf(count);
+		return roomMapper.getTotal(map);
 	}
 	
 	/*
@@ -319,10 +323,44 @@ public class AdminServiceImpl implements AdminService{
 	@Override
 	public ResultBean findPassword(Admin admin) {
 		String salt = adminMapper.selectById(admin.getId()).getSalt();
+		System.out.println(salt);
 		admin.setPassword(MD5.MD5encoder(admin.getPassword()+ salt));
+		System.out.println(admin.getPassword());
 		if(adminMapper.findPassword(admin) != null) {
 			return new ResultBean(true);
 		}
 		return new ResultBean(false);
 	}
+
+	@Override
+	public ResultCount getCount(Admin admin) {
+		ResultCount result = new ResultCount();
+		Map<String, Long> map = new HashMap<>();
+		if(admin.getParentId() == 0) {
+			map.put("schoolCount", this.getAllRooms(admin.getSchool()));
+			map.put("applyCount", this.getAllApply(admin.getSchool()));
+			map.put("userCount", this.getUserCount(admin.getSchool()));
+			map.put("adminCount", this.getAdminCount(admin.getSchool()));
+		}else if(admin.getParentId() == -1) {
+			map.put("schoolCount",this.getAllSchools());
+			map.put("applyCount", this.getAllApply(null));
+			map.put("userCount", this.getUserCount(null));
+			map.put("adminCount", this.getUserCount(null));
+		}
+		result.setResult(true);
+		result.setCount(map);
+		return result;
+	}
+
+	/**
+	 * 获取管理员人数
+	 * @param school
+	 * @return
+	 */
+	private Long getAdminCount(Schools school) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("school", school);
+		return adminMapper.getAdminCount(school);
+	}
+	
 }

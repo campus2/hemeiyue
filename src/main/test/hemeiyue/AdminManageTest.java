@@ -30,24 +30,33 @@ public class AdminManageTest {
 	}
 	
 	@Test
-	public void tentantTest() {
+	public void listTest() {
 		Admin admin = new Admin();
-		admin.setId(3);
-		admin.setParentId(-1);
-		ResultBean result = adminService.tenantMangerList(admin);
+		admin.setId(14);
+		admin.setParentId(0);
+		ResultBean result = adminService.findByAdmin(admin);
 		System.out.println(JSONUtil.transform(result));
 	}
 	
-	@Test
-	public void loginTest() {
-		Admin admin = new Admin();
-		admin.setAccount("admin");
-		admin.setPassword("admin");
-		
-		ResultBean a = adminService.login(admin);
-		System.out.println(JSONUtil.transform(a));
-//		adminService.findPassword(admin);
-	}
+//	@Test
+//	public void tentantTest() {
+//		Admin admin = new Admin();
+//		admin.setId(3);
+//		admin.setParentId(-1);
+//		ResultBean result = adminService.tenantMangerList(admin);
+//		System.out.println(JSONUtil.transform(result));
+//	}
+//	
+//	@Test
+//	public void loginTest() {
+//		Admin admin = new Admin();
+//		admin.setAccount("admin");
+//		admin.setPassword("admin");
+//		
+//		ResultBean a = adminService.login(admin);
+//		System.out.println(JSONUtil.transform(a));
+////		adminService.findPassword(admin);
+//	}
 	
 	/*@Test
 	public void schoolTotalTest() {

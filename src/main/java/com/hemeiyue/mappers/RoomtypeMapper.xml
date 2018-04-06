@@ -10,7 +10,7 @@
     </resultMap>
 
 	<select id="selectBySchoolId" parameterType="Integer" resultMap="BaseResultMap">
-		select *from roomtype where schoolId=#{schoolId}
+		select *from roomtype where schoolId=#{schoolId} and status > 0
 	</select>
 	
 	<select id="select" parameterType="Map" resultMap="BaseResultMap">

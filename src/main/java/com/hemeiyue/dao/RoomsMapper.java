@@ -3,6 +3,9 @@ package com.hemeiyue.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
+
+import com.beust.jcommander.Parameter;
 import com.hemeiyue.entity.RoomTypes;
 import com.hemeiyue.entity.Rooms;
 
@@ -27,11 +30,11 @@ public interface RoomsMapper {
 	public List<Rooms> find(Map<String, Object> map);
 
     /**
-     * 返回某个学校的课室
+     * 返回某个学校某个类型的课室
      * @param schoolId
      * @return
      */
-	public List<Rooms> selectBySchool(int schoolId);
+	public List<Rooms> selectBySchoolAndRoomType(@Param("schoolId")int schoolId, @Param("roomTypeId")int roomTypeId);
 
 	/**
 	 * 修改课室

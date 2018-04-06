@@ -69,4 +69,13 @@ public interface AdminsMapper {
 	 */
 	List<Admin> selecTenantManageList(@Param("parentId")Integer parentId, @Param("regStatus")int regStatus);
 	
+	public List<Admin> findAdmin(Map<String, Object> map);
+
+	/**
+	 * 返回管理员人数
+	 * @param school
+	 * @return
+	 */
+	Long getAdminCount(Schools school);
+	
 }

@@ -1,5 +1,7 @@
 package com.hemeiyue.controller;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -10,16 +12,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.hemeiyue.annotion.AuthLoginAnnotation;
 import com.hemeiyue.common.ResultBean;
 import com.hemeiyue.common.RoomModel;
 import com.hemeiyue.common.UpdateRoom;
 import com.hemeiyue.entity.RoomTypes;
 import com.hemeiyue.entity.Rooms;
 import com.hemeiyue.entity.Schools;
+import com.hemeiyue.eumn.Auth;
 import com.hemeiyue.service.RoomPeriodsService;
 import com.hemeiyue.service.RoomService;
 import com.hemeiyue.service.RoomTypeService;
-import com.hemeiyue.util.ResponseUtil;
 
 @Controller
 @RequestMapping("/room")
@@ -44,12 +47,12 @@ public class RoomController {
 	 */
 	@RequestMapping("/roomList")
 	@ResponseBody
-	public String roomList(HttpServletRequest request,
+	@AuthLoginAnnotation(checkAuth=Auth.priAccount)
+	public Map<String, Object> roomList(HttpServletRequest request,
 			HttpServletResponse response) {
-		Schools school = (Schools) request.getSession().getAttribute("school");
-		String result = roomService.selectBySchoolId(school.getId());
-		ResponseUtil.write(response, result);
-		return result;
+//		Schools school = (Schools) request.getSession().getAttribute("school");
+		Schools school = (Schools) request.getServletContext().getAttribute("school");
+		return roomService.selectBySchoolId(school.getId());
 	}
 	
 	/**
@@ -62,19 +65,28 @@ public class RoomController {
 	@ResponseBody
 	public ResultBean modifyRoomName(@RequestBody UpdateRoom updateRoom,
 			HttpServletRequest request) {
-		Schools school = (Schools)request.getSession().getAttribute("school");
+//		Schools school = (Schools) request.getSession().getAttribute("school");
+		Schools school = (Schools) request.getServletContext().getAttribute("school");
 		updateRoom.setSchool(school);
 		ResultBean result = roomService.updateRoom(updateRoom);
 		
 		return result;
 	}
 	
+	/**
+	 * 返回某间课室的预订时间段
+	 * @param roomType
+	 * @param roomName
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping("/roomDetails")
 	@ResponseBody
 	public String roomDetails(@RequestParam("roomType")String roomType,
 				@RequestParam("roomName")String roomName, HttpServletRequest request) {
 		//当前学校
-		Schools school = (Schools)request.getSession().getAttribute("school");
+//		Schools school = (Schools) request.getSession().getAttribute("school");
+		Schools school = (Schools) request.getServletContext().getAttribute("school");
 		//所属的课室类型
 		RoomTypes roomTypes = roomTypeService.selectBySchoolAndRoomType(school, roomType);
 		Rooms room = new Rooms(roomName, roomTypes, school);
@@ -92,7 +104,8 @@ public class RoomController {
 	@ResponseBody
 	public ResultBean addRoom(@RequestBody RoomModel roomModel,
 			HttpServletRequest request) {
-		Schools school = (Schools)request.getSession().getAttribute("school");
+//		Schools school = (Schools) request.getSession().getAttribute("school");
+		Schools school = (Schools) request.getServletContext().getAttribute("school");
 		//构造待插入的数据
 		Rooms room = new Rooms();
 		room.setSchool(school);
@@ -114,7 +127,8 @@ public class RoomController {
 	@ResponseBody
 	public ResultBean delete(@RequestParam("roomType")String roomType,
 			@RequestParam("roomName")String roomName, HttpServletRequest request) {
-		Schools school = (Schools)request.getSession().getAttribute("school");
+//		Schools school = (Schools) request.getSession().getAttribute("school");
+		Schools school = (Schools) request.getServletContext().getAttribute("school");
 		RoomTypes roomtype = new RoomTypes(roomType, school);
 		ResultBean result = roomService.deleteByTypeAndName(roomtype, roomName);
 

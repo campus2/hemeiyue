@@ -1,5 +1,7 @@
 package com.hemeiyue.entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 /**
  * 
  * 
@@ -7,6 +9,7 @@ package com.hemeiyue.entity;
  * 
  * @date 2018-03-14
  */
+@JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
 public class Rooms {
     private Integer id;
 

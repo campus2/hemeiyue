@@ -25,10 +25,18 @@ public class RoomTypeController {
 	@Autowired
 	private RoomTypeService roomTypeService;
 	
+	/**
+	 * 添加课室类型
+	 * @param roomType
+	 * @param request
+	 * @param response
+	 * @return
+	 */
 	@RequestMapping("/addRoomType")
 	public String addRoomType(@RequestParam("roomType")String roomType,
 			HttpServletRequest request, HttpServletResponse response) {
-		Schools school = (Schools)request.getSession().getAttribute("school");
+//		Schools school = (Schools)request.getSession().getAttribute("school");
+		Schools school = (Schools)request.getServletContext().getAttribute("school");
 		ResultBean result = roomTypeService.insertRoomType(school,roomType);
 		
 		ResponseUtil.write(response, result);
@@ -46,17 +54,25 @@ public class RoomTypeController {
 	@ResponseBody
 	public ResultBean modifyRoomType(@RequestParam("oldRoomType")String oldRoomType,
 			@RequestParam("newRoomType")String newRoomType, HttpServletRequest request) {
-		Schools school = (Schools)request.getSession().getAttribute("school");
+//		Schools school = (Schools)request.getSession().getAttribute("school");
+		Schools school = (Schools)request.getServletContext().getAttribute("school");
 		RoomTypes roomType = new RoomTypes(oldRoomType, school);
 		ResultBean result = roomTypeService.updateRoomType(roomType, newRoomType);
 		return result;
 	}
 	
+	/**
+	 * 删除课室类型
+	 * @param roomType
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping("/deleteRoomType")
 	@ResponseBody
 	public ResultBean deleteRoomType(@RequestParam("roomType")String roomType,
 			HttpServletRequest request) {
-		Schools school = (Schools)request.getSession().getAttribute("school");
+//		Schools school = (Schools)request.getSession().getAttribute("school");
+		Schools school = (Schools)request.getServletContext().getAttribute("school");
 		RoomTypes roomtype = new RoomTypes(roomType, school);
 		
 		ResultBean result = roomTypeService.delete(roomtype);

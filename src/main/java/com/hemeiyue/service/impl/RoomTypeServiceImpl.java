@@ -26,6 +26,7 @@ public class RoomTypeServiceImpl implements RoomTypeService {
 	
 	@Override
 	public ResultBean insertRoomType(Schools school, String roomType) {
+		if(roomType==null || roomType.isEmpty()) return new ResultBean(false, "课室类型不可为空");
 		ResultBean result = new ResultBean();
 		Map<String, Object> map = new HashMap<>();
 		map.put("roomType", roomType);
@@ -40,6 +41,7 @@ public class RoomTypeServiceImpl implements RoomTypeService {
 			recond.setSchool(school);
 			roomTypeMapper.insert(recond);
 			result.setResult(true);
+			result.setMessage("添加课室类型成功");
 		}
 		return result;
 	}

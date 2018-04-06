@@ -4,7 +4,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -39,7 +38,10 @@ public class WechatPictureController {
 	
 	@RequestMapping(value="/updateHrefUrl")
 	@ResponseBody
-	public ResultBean updateHrefUrl(@RequestBody WechatPicture wechatPicture) {
+	public ResultBean updateHrefUrl(@RequestParam("id")Integer id, @RequestParam("hrefUrl")String hrefUrl) {
+		WechatPicture wechatPicture = new WechatPicture();
+		wechatPicture.setId(id);
+		wechatPicture.setHrefUrl(hrefUrl);
 		return wechatPictureService.updateHrefUrl(wechatPicture);
 	}
 	

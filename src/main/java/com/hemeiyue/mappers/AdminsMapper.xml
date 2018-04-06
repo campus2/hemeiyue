@@ -21,6 +21,13 @@
 	
 	<!-- 陈冬添加部分 -->
 	
+	<select id="getAdminCount" parameterType="Schools" resultType="Long">
+		select count(*) from admins
+		<where>
+			<if test="school != null">and schoolId = #{school.id}</if>
+		</where>
+	</select>
+	
 	<select id="getUserCount" parameterType="Schools" resultType="Long">
 		select count(*) from users
 		<where>
@@ -30,6 +37,13 @@
 	
 	<select id="selectAdminById" parameterType="Integer" resultMap="BaseResultMap">
 		select id,account,adminName,schoolId from admins where id=#{id}
+	</select>
+	<select id="findAdmin" parameterType="Map" resultMap="BaseResultMap">
+		select id,account,adminName,status,email,phone from admins
+		<where>
+			<if test="parentId!=null"> and parentId = #{parentId}</if>
+			and regStatus = 1
+		</where>
 	</select>
 	<select id="find" parameterType="Map" resultMap="BaseResultMap">
 		select id,adminName,status,schoolId,date from admins

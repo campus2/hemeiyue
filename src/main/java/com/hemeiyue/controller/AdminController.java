@@ -162,7 +162,7 @@ public class AdminController {
 	 */
 	@RequestMapping("/suspendedTenant")
 	@ResponseBody
-	@AuthLoginAnnotation(checkAuth=Auth.operator)
+	@AuthLoginAnnotation(checkAuth= {Auth.operator,Auth.priAccount})
 	public ResultBean suspendedTenant(@RequestParam("id") Integer id) {
 		return adminService.suspendedTenant(id);
 	}
@@ -174,6 +174,7 @@ public class AdminController {
 	 */
 	@RequestMapping("/restoreTenant")
 	@ResponseBody
+	@AuthLoginAnnotation(checkAuth= {Auth.operator,Auth.priAccount})
 	public ResultBean restoreTenant(@RequestParam("id") Integer id) {
 		return adminService.restoreTenant(id);
 	}
@@ -185,7 +186,13 @@ public class AdminController {
 	 */
 	@RequestMapping("/validatePassword")
 	@ResponseBody
-	public ResultBean validatePassword(@RequestBody Admin admin) {
+	public ResultBean validatePassword(@RequestParam("password")String password, HttpServletRequest request) {
+//		Admin currentAdmin = (Admin) request.getSession().getAttribute("currentAdmin");
+		Admin currentAdmin = (Admin) request.getServletContext().getAttribute("currentAdmin");
+		System.out.println(password);
+		Admin admin = new Admin();
+		admin.setId(currentAdmin.getId());
+		admin.setPassword(password);
 		return adminService.findPassword(admin);
 	}
 }

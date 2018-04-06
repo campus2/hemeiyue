@@ -1,5 +1,7 @@
 package com.hemeiyue.service;
 
+import java.util.Map;
+
 import com.hemeiyue.common.ResultBean;
 import com.hemeiyue.common.RoomModel;
 import com.hemeiyue.common.UpdateRoom;
@@ -13,7 +15,7 @@ public interface RoomService {
 	 * @param 学校ID
 	 * @return JSON数据
 	 */
-	public String selectBySchoolId(int schoolId);
+	public Map<String, Object> selectBySchoolId(int schoolId);
 
 	/**
 	 * 添加课室

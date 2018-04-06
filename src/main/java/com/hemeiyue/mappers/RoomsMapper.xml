@@ -38,8 +38,8 @@
     	</where>
     </select>
     
-    <select id="selectBySchool" parameterType="Integer" resultMap="BaseResultMap">
-    	select id,room,roomTypeId from rooms where schoolId=#{schoolId} and status>0
+    <select id="selectBySchoolAndRoomType" parameterType="Integer" resultMap="BaseResultMap">
+    	select room from rooms where schoolId=#{schoolId} and roomTypeId=#{roomTypeId} and status>0
     </select>
 
     <sql id="Base_Column_List" >

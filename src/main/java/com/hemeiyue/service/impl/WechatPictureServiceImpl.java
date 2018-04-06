@@ -81,17 +81,17 @@ public class WechatPictureServiceImpl implements WechatPictureService{
 	@Override
 	public ResultBean updateHrefUrl(WechatPicture wechatPicture) {
 		if(wechatPictureMapper.updateHrefUrl(wechatPicture) == 1) {
-			return new ResultBean(true);
+			return new ResultBean(true,"添加成功");
 		}
-		return new ResultBean(false);
+		return new ResultBean(false,"添加失败");
 	}
 
 	@Override
 	public ResultBean updateStatus(Integer id) {
 		if(wechatPictureMapper.updateStatus(id) == 1) {
-			return new ResultBean(true);
+			return new ResultBean(true,"删除成功");
 		}
-		return new ResultBean(false);
+		return new ResultBean(false,"删除失败");
 	}
 	
 }
