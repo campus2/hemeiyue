@@ -2,6 +2,8 @@ package com.hemeiyue.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.hemeiyue.entity.Periods;
 import com.hemeiyue.entity.RoomPeriods;
 import com.hemeiyue.entity.Rooms;
@@ -48,4 +50,11 @@ public interface RoomperiodsMapper {
      * @return
      */
     public List<Periods> findPeriodsByRoomId(Integer roomId);
+
+    /***
+     * 批量插入
+     * @param rpList
+     * @return
+     */
+	int insertList(@Param("list")List<RoomPeriods> list);
 }

@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.hemeiyue.common.ResultBean;
 import com.hemeiyue.entity.Bookings;
+import com.hemeiyue.entity.Schools;
 
 public interface BookingService {
 	
@@ -37,7 +38,7 @@ public interface BookingService {
 	 * @param request
 	 * @return
 	 */
-	public ResultBean applyBook(Integer id);
+	public ResultBean updateApplyBook(Integer id);
 	
 	/**
 	 * 拒绝申请   管理员操作
@@ -45,7 +46,7 @@ public interface BookingService {
 	 * @param request
 	 * @return
 	 */
-	public ResultBean refuseBook(Integer id);
+	public ResultBean  updateRefuseBook(Integer id);
 	
 	/**
 	 * 撤销申请   用户操作
@@ -53,14 +54,14 @@ public interface BookingService {
 	 * @param request
 	 * @return
 	 */
-	public ResultBean revokeBook(Integer id);
+	public ResultBean  updateRevokeBook(Integer id);
 	
 	/**
 	 * 返回申请列表   管理员操作
 	 * @param request
 	 * @return
 	 */
-	public ResultBean findAllBooks(HttpServletRequest request);
+	public ResultBean findAllBooks(Schools school);
 	
 	/**
 	 * 返回申请列表 用户

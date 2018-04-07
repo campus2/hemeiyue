@@ -14,12 +14,12 @@
 	</select>
 	
 	<select id="select" parameterType="Map" resultMap="BaseResultMap">
-		select id, roomType
+		select id, roomType from roomtype
 		<where>
 			<if test="school!=null">
-				and schoolId = #{schoolId}
+				and schoolId = #{school.id}
 			</if>
-			<if test="roomType!=null and roomType!=''">
+			<if test="roomType!=null">
 				and roomType = #{roomType}
 			</if>
 		</where>
@@ -29,7 +29,7 @@
 	<select id="find" parameterType="Map" resultMap="BaseResultMap">
 		select *from roomtype
 		<where>
-			<if test="roomType!=null and roomType!=''">
+			<if test="roomType!=null">
 				and roomType = #{roomType,jdbcType=VARCHAR}
 			</if>
 			<if test="school!=null">

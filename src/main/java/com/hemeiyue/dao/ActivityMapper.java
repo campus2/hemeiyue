@@ -34,5 +34,12 @@ public interface ActivityMapper {
 	 * @return
 	 */
 	public Activity selectById(int id);
+	
+	/**
+	 * 更新活动
+	 * @param activity
+	 * @return
+	 */
+	public int update(Activity activity);
 
 }

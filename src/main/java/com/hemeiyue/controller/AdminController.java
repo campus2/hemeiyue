@@ -54,6 +54,14 @@ public class AdminController {
 		return adminService.login(admin, request);
 	}
 	
+	@RequestMapping("/testlogin")
+	@ResponseBody
+	public ResultBean testlogin(@RequestBody @Validated(AdminLogin.class) Admin admin,
+			HttpServletRequest request) {
+		return adminService.login(admin, request);
+	}
+	
+	
 	/**
 	 * 注册租户
 	 * @param admin

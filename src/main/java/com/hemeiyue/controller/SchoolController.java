@@ -39,6 +39,14 @@ public class SchoolController {
 	@Autowired
 	private AdminService adminService;
 	
+	
+	@RequestMapping("/selectSchool")
+	@ResponseBody
+	public ResultBean selectSchool(@RequestParam("school")String school) {
+		
+		return schoolService.selectSchool(school);
+	}
+	
 	/**
 	 * 添加学校
 	 * @param school

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.hemeiyue.common.ResultBean;
 import com.hemeiyue.common.ResultList;
+import com.hemeiyue.common.UserModel;
 import com.hemeiyue.dao.MessagesMapper;
 import com.hemeiyue.dao.UsersMapper;
 import com.hemeiyue.entity.Messages;
@@ -50,7 +51,7 @@ public class UsersServiceImpl implements UsersService{
 //			request.getSession().setAttribute("school", user.getSchool());
 			request.getServletContext().setAttribute("user", user);
 			request.getServletContext().setAttribute("school", user.getSchool());
-			return new ResultBean(true);
+			return new UserModel(true, user.getSchool().getSchool());
 		}
 	}
 

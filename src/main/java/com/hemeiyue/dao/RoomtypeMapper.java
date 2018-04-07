@@ -34,4 +34,11 @@ public interface RoomtypeMapper {
 	 */
 	public List<RoomTypes> find(Map<String, Object> map);
 
+	/**
+	 * 根据指定条件返回某个课室类型
+	 * @param map
+	 * @return
+	 */
+	public RoomTypes select(Map<String, Object> map);
+
 }

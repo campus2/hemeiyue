@@ -8,11 +8,13 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.hemeiyue.common.ResultBean;
+import com.hemeiyue.common.ResultMap;
 import com.hemeiyue.dao.RoomperiodsMapper;
+import com.hemeiyue.dao.RoomsMapper;
 import com.hemeiyue.entity.RoomPeriods;
 import com.hemeiyue.entity.Rooms;
 import com.hemeiyue.service.RoomPeriodsService;
-import com.hemeiyue.util.JSONUtil;
 
 @Service("roomPeriodService")
 public class RoomPeriodsServiceImpl implements RoomPeriodsService {
@@ -20,68 +22,79 @@ public class RoomPeriodsServiceImpl implements RoomPeriodsService {
 	@Autowired
 	private RoomperiodsMapper roomPeriodsMapper;
 	
+	@Autowired
+	private RoomsMapper roomsMapper;
+	
 	@Override
-	public String findRoomDetail(Rooms room) {
+	public ResultMap findRoomDetail(Rooms room) {
 		List<RoomPeriods> list = roomPeriodsMapper.find(room);
-		Map<String, List<RoomPeriods>> map = new HashMap<>();
+		if(list==null || list.size()==0) return new ResultMap(false, "暂无数据");
+		Map<String, List<RoomPeriods>> data = new HashMap<>();
 		
 		List<RoomPeriods> temp = null;
 		for (RoomPeriods roomPeriods : list) {			//把教室的可用时间段根据星期分类
-			String repeat = roomPeriods.getRepeat();
+			String repeat = roomPeriods.getWeeks();
 			
 			if(repeat==null || "".equals(repeat)) continue;
 
 			if(repeat.contains("1")) {
-				if(map.get("1") == null) temp = new ArrayList<>();
-				else temp = map.get("1");
+				if(data.get("1") == null) temp = new ArrayList<>();
+				else temp = data.get("1");
 				
 				temp.add(roomPeriods);
-				map.put("1", temp);
+				data.put("1", temp);
 			}
 			if(repeat.contains("2")) {
-				if(map.get("2") == null) temp = new ArrayList<>();
-				else temp = map.get("2");
+				if(data.get("2") == null) temp = new ArrayList<>();
+				else temp = data.get("2");
 				
 				temp.add(roomPeriods);
-				map.put("2", temp);
+				data.put("2", temp);
 			}
 			if(repeat.contains("3")) {
-				if(map.get("3") == null) temp = new ArrayList<>();
-				else temp = map.get("3");
+				if(data.get("3") == null) temp = new ArrayList<>();
+				else temp = data.get("3");
 				
 				temp.add(roomPeriods);
-				map.put("3", temp);
+				data.put("3", temp);
 			}
 			if(repeat.contains("4")) {
-				if(map.get("4") == null) temp = new ArrayList<>();
-				else temp = map.get("4");
+				if(data.get("4") == null) temp = new ArrayList<>();
+				else temp = data.get("4");
 				
 				temp.add(roomPeriods);
-				map.put("4", temp);
+				data.put("4", temp);
 			}
 			if(repeat.contains("5")) {
-				if(map.get("5") == null) temp = new ArrayList<>();
-				else temp = map.get("5");
+				if(data.get("5") == null) temp = new ArrayList<>();
+				else temp = data.get("5");
 				
 				temp.add(roomPeriods);
-				map.put("5", temp);
+				data.put("5", temp);
 			}
 			if(repeat.contains("6")) {
-				if(map.get("6") == null) temp = new ArrayList<>();
-				else temp = map.get("6");
+				if(data.get("6") == null) temp = new ArrayList<>();
+				else temp = data.get("6");
 				
 				temp.add(roomPeriods);
-				map.put("6", temp);
+				data.put("6", temp);
 			}
 			if(repeat.contains("7")) {
-				if(map.get("7") == null) temp = new ArrayList<>();
-				else temp = map.get("7");
+				if(data.get("7") == null) temp = new ArrayList<>();
+				else temp = data.get("7");
 				
 				temp.add(roomPeriods);
-				map.put("7", temp);
+				data.put("7", temp);
 			}
 		}
-		return JSONUtil.transform(map);
+		return new ResultMap(true, data);
 	}
 
+	@Override
+	public ResultBean delete(Integer id) {
+		if(roomPeriodsMapper.deleteById(id) > 0) {
+			return new ResultBean(true, "删除成功");
+		}
+		return new ResultBean(false, "删除失败");
+	}
 }

@@ -3,6 +3,7 @@ package com.hemeiyue.service;
 import java.util.Map;
 
 import com.hemeiyue.common.ResultBean;
+import com.hemeiyue.common.ResultList;
 import com.hemeiyue.entity.Schools;
 
 public interface SchoolService {
@@ -50,4 +51,12 @@ public interface SchoolService {
 	 * @return
 	 */
 	public ResultBean findSchool(String school);
+
+
+	/**
+	 * 模糊查询学校
+	 * @param school
+	 * @return
+	 */
+	public ResultList selectSchool(String school);
 }

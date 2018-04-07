@@ -1,6 +1,6 @@
 package com.hemeiyue.entity;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -20,18 +20,29 @@ public class Bookings {
     private RoomPeriods roomPeriod;
 
     private Users user;
-
+    
+    /**
+     * 申请的日期
+     */
     @JsonDeserialize(using=DateYYMMddJSONDeserializer.class)
 	@JsonSerialize(using=DateYYMMddJSONSerializer.class)
-    private Date CDT;
+    private Timestamp bookingDate;
 
+    /**
+     * 创建时间
+     */
+    @JsonDeserialize(using=DateYYMMddJSONDeserializer.class)
+	@JsonSerialize(using=DateYYMMddJSONSerializer.class)
+    private Timestamp CDT;
+
+    /**
+     * -1：删除状态、撤销申请，0：拒绝申请，1：申请中，,2：申请成功
+     */
     private Integer status;
 
     private String remark;
     
     private Schools school;
-    
-    
 
     public Schools getSchool() {
 		return school;
@@ -65,11 +76,11 @@ public class Bookings {
 		this.user = user;
 	}
 
-	public Date getCDT() {
+	public Timestamp getCDT() {
 		return CDT;
 	}
 
-	public void setCDT(Date cDT) {
+	public void setCDT(Timestamp cDT) {
 		CDT = cDT;
 	}
 
@@ -88,4 +99,13 @@ public class Bookings {
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
     }
+
+	public Timestamp getBookingDate() {
+		return bookingDate;
+	}
+
+	public void setBookingDate(Timestamp bookingDate) {
+		this.bookingDate = bookingDate;
+	}
+    
 }

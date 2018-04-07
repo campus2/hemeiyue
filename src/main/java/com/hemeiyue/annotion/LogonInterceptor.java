@@ -7,7 +7,9 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.hemeiyue.common.ResultBean;
 import com.hemeiyue.entity.Admin;
+import com.hemeiyue.util.ResponseUtil;
 
 /**
  * 判断登录状态
@@ -23,9 +25,14 @@ public class LogonInterceptor implements HandlerInterceptor {
 		
 		if(auth != null && auth.checkLogin()) {
 			System.out.println("logon test");
-			Admin currentAdmin = (Admin)request.getSession().getAttribute("currentAdmin");
+//			Admin currentAdmin = (Admin)request.getSession().getAttribute("currentAdmin");
+			Admin currentAdmin = (Admin)request.getServletContext().getAttribute("currentAdmin");
 			if(currentAdmin==null) {
+				System.out.println("请先登录");
+				ResponseUtil.write(response, new ResultBean(false, "请先登录"));
 				return false;
+			}else {
+				return true;
 			}
 		}
 		

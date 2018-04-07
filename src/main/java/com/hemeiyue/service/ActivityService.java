@@ -41,4 +41,11 @@ public interface ActivityService {
 	 */
 	public Activity selectById(int id);
 
+	/**
+	 * 更新活动
+	 * @param activity
+	 * @return
+	 */
+	public ResultBean updateActivity(Activity activity);
+
 }

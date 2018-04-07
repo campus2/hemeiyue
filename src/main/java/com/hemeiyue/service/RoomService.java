@@ -2,11 +2,14 @@ package com.hemeiyue.service;
 
 import java.util.Map;
 
+import com.hemeiyue.common.PeriodAddModel;
 import com.hemeiyue.common.ResultBean;
 import com.hemeiyue.common.RoomModel;
 import com.hemeiyue.common.UpdateRoom;
+import com.hemeiyue.entity.Admin;
 import com.hemeiyue.entity.RoomTypes;
 import com.hemeiyue.entity.Rooms;
+import com.hemeiyue.entity.Schools;
 
 public interface RoomService {
 
@@ -43,14 +46,14 @@ public interface RoomService {
 	 * @param room 
 	 * @return
 	 */
-	public ResultBean insertRoomModel(RoomModel roomModel, Rooms room);
+	public ResultBean insertRoomModel(RoomModel roomModel, Rooms room, Admin admin);
 	
 	/**
 	 * 根据updateRoomd的属性修改room
 	 * @param updateRoom
 	 * @return
 	 */
-	public ResultBean updateRoom(UpdateRoom updateRoom);
+	public ResultBean updateRoom(UpdateRoom updateRoom, Schools school);
 
 	/**
 	 * 删除指定的课室
@@ -59,5 +62,14 @@ public interface RoomService {
 	 * @return
 	 */
 	public ResultBean deleteByTypeAndName(RoomTypes roomtype, String roomName);
+
+	/**
+	 * 为某个课室增加时间段
+	 * @param roomModel
+	 * @param room
+	 * @param admin
+	 * @return
+	 */
+	public ResultBean addRoomPeriod(PeriodAddModel modell, Rooms room, Admin admin);
 
 }

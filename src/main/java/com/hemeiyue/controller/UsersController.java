@@ -22,8 +22,6 @@ public class UsersController {
 	@Autowired
 	private UsersService userService;
 	
-	
-	
 	@RequestMapping("/login")
 	@ResponseBody
 	public ResultBean login(@RequestParam("code")String code,HttpServletRequest request) {

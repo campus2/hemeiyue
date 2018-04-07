@@ -70,4 +70,12 @@ public class ActivityServiceImpl implements ActivityService{
 		
 		return activityMapper.selectById(id);
 	}
+
+	@Override
+	public ResultBean updateActivity(Activity activity) {
+		if(activityMapper.update(activity) > 0) {
+			return new ResultBean(true, "操作成功");
+		}
+		return new ResultBean(false, "操作失败");
+	}
 }

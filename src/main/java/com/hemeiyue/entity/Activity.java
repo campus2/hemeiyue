@@ -1,9 +1,12 @@
 package com.hemeiyue.entity;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.hemeiyue.util.DateHHmmJSONDeserializer;
+import com.hemeiyue.util.DateHHmmJSONSerializer;
 import com.hemeiyue.util.DateYYMMddJSONDeserializer;
 import com.hemeiyue.util.DateYYMMddJSONSerializer;
 
@@ -19,11 +22,15 @@ public class Activity {
 	
 	@JsonDeserialize(using=DateYYMMddJSONDeserializer.class)
 	@JsonSerialize(using=DateYYMMddJSONSerializer.class)
-	private Date date;
+	private Timestamp date;
 	
-	private String time;
+	@JsonDeserialize(using=DateHHmmJSONDeserializer.class)
+	@JsonSerialize(using=DateHHmmJSONSerializer.class)
+	private Timestamp time;
 	
-	private Rooms address;
+	private String imageUrl;
+	
+	private String address;
 	
 	private Admin owner;
 	
@@ -39,6 +46,14 @@ public class Activity {
 	public Activity() {
 		super();
 		// TODO Auto-generated constructor stub
+	}
+
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}
 
 	public Integer getId() {
@@ -77,23 +92,23 @@ public class Activity {
 		return date;
 	}
 
-	public void setDate(Date date) {
-		this.date = date;
-	}
-
-	public String getTime() {
+	public Timestamp getTime() {
 		return time;
 	}
 
-	public void setTime(String time) {
+	public void setTime(Timestamp time) {
 		this.time = time;
 	}
 
-	public Rooms getAddress() {
+	public void setDate(Timestamp date) {
+		this.date = date;
+	}
+
+	public String getAddress() {
 		return address;
 	}
 
-	public void setAddress(Rooms address) {
+	public void setAddress(String address) {
 		this.address = address;
 	}
 

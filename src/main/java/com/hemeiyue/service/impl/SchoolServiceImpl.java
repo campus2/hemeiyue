@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.hemeiyue.common.ResultBean;
+import com.hemeiyue.common.ResultList;
 import com.hemeiyue.common.SchoolModel;
 import com.hemeiyue.dao.SchoolsMapper;
 import com.hemeiyue.entity.Schools;
@@ -100,6 +101,12 @@ public class SchoolServiceImpl implements SchoolService{
 		}
 		System.out.println("w");
 		return new ResultBean(true,"该学校可注册");
+	}
+
+	@Override
+	public ResultList selectSchool(String school) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	
