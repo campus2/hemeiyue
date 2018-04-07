@@ -2,6 +2,9 @@ package com.hemeiyue.entity;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+@JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
 public class WechatPicture {
 	private Integer id;
 	

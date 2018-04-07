@@ -32,9 +32,9 @@ public class NotificationController {
 		return notificationService.delete(id);
 	}
 	
-	@RequestMapping("/list")
+	@RequestMapping("/getNotification")
 	@ResponseBody
-	public ResultBean notficationList(@RequestParam("schoolId") Integer schoolId) {
-		return notificationService.findAll(schoolId);
+	public String getNotification() {
+		return notificationService.findAll();
 	}
 }

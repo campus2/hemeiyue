@@ -14,6 +14,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 public class JSONUtil {
 	
+	/**
+	 * Object转Json，同时去掉null，日期格式化
+	 * @param obj
+	 * @return
+	 */
 	public static String transform(Object obj) {
 		ObjectMapper objectMapper = new ObjectMapper();
 		//设置null值不序列化

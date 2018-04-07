@@ -1,7 +1,10 @@
 package com.hemeiyue.entity;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+@JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
 public class Notification {
 	private Integer id;
 	
@@ -9,9 +12,7 @@ public class Notification {
 	
 	private String content;
 	
-	private Date date;
-	
-	private String time;
+	private Timestamp time;
 	
 	private Integer status;
 	
@@ -41,19 +42,11 @@ public class Notification {
 		this.content = content;
 	}
 
-	public Date getDate() {
-		return date;
-	}
-
-	public void setDate(Date date) {
-		this.date = date;
-	}
-
-	public String getTime() {
+	public Timestamp getTime() {
 		return time;
 	}
 
-	public void setTime(String time) {
+	public void setTime(Timestamp time) {
 		this.time = time;
 	}
 

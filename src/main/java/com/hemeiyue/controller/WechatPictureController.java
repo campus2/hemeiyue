@@ -15,7 +15,7 @@ import com.hemeiyue.entity.WechatPicture;
 import com.hemeiyue.service.WechatPictureService;
 
 @Controller
-@RequestMapping("/file")
+@RequestMapping("/wechatPicture")
 public class WechatPictureController {
 	
 	@Autowired
@@ -49,5 +49,15 @@ public class WechatPictureController {
 	@ResponseBody
 	public ResultBean updateStatus(@RequestParam("id") Integer id) {
 		return wechatPictureService.updateStatus(id);
+	}
+	
+	@RequestMapping("/getIndex")
+	@ResponseBody
+	/**
+	 * 把小程序首页所有的信息返回
+	 * @return
+	 */
+	public ResultBean getIndex() {
+		return wechatPictureService.getIndex();
 	}
 }

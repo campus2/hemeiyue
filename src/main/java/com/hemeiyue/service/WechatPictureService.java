@@ -33,4 +33,11 @@ public interface WechatPictureService {
 	 * @return
 	 */
 	public ResultBean updateStatus(Integer id);
+	
+	/**
+	 * 把小程序首页所有的信息返回
+	 * @return
+	 */
+	public ResultBean getIndex();
+	
 }

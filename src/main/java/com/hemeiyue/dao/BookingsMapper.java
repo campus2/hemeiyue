@@ -2,6 +2,7 @@ package com.hemeiyue.dao;
 
 import java.util.List;
 
+import com.hemeiyue.common.BookingModel;
 import com.hemeiyue.entity.Bookings;
 import com.hemeiyue.entity.Schools;
 
@@ -40,4 +41,6 @@ public interface BookingsMapper {
 	public List<Bookings> findMyBooks(Integer userId);
 	
 	public List<Bookings> findSamePeriodBooks(Integer roomPeriodId);
+	
+	public List<BookingModel> findBookingModels(Bookings booking);
 }

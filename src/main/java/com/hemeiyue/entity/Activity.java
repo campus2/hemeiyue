@@ -1,11 +1,6 @@
 package com.hemeiyue.entity;
 
-import java.util.Date;
-
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.hemeiyue.util.DateYYMMddJSONDeserializer;
-import com.hemeiyue.util.DateYYMMddJSONSerializer;
+import java.sql.Timestamp;
 
 public class Activity {
 
@@ -17,11 +12,7 @@ public class Activity {
 	
 	private Integer count;
 	
-	@JsonDeserialize(using=DateYYMMddJSONDeserializer.class)
-	@JsonSerialize(using=DateYYMMddJSONSerializer.class)
-	private Date date;
-	
-	private String time;
+	private Timestamp time;
 	
 	private Rooms address;
 	
@@ -73,19 +64,12 @@ public class Activity {
 		this.count = count;
 	}
 
-	public Date getDate() {
-		return date;
-	}
 
-	public void setDate(Date date) {
-		this.date = date;
-	}
-
-	public String getTime() {
+	public Timestamp getTime() {
 		return time;
 	}
 
-	public void setTime(String time) {
+	public void setTime(Timestamp time) {
 		this.time = time;
 	}
 

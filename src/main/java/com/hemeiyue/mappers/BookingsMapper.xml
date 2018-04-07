@@ -6,10 +6,13 @@
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="status" property="status" jdbcType="INTEGER" />
         <result column="remark" property="remark" jdbcType="VARCHAR" />
-        <association property="roomPeriod" column="roomPeriodId" select="com.hemeiyue.dao.RoomPeriodsMapper.selectById" />
+        <result column="CDT" property="CDT" jdbcType="TIMESTAMP"/>
+        <result column="bookingDate" property="bookingDate" jdbcType="TIMESTAMP"/>
+        <association property="roomPeriod" column="roomPeriodId" select="com.hemeiyue.dao.RoomperiodsMapper.selectById" />
         <association property="user" column="userId" select="com.hemeiyue.dao.UsersMapper.selectByPrimaryKey" />
         <association property="school" column="schoolId" select="com.hemeiyue.dao.SchoolsMapper.selectById" />
     </resultMap>
+    
     
     <select id="getApplyCount" parameterType="Schools" resultType="Long">
     	select count(*) from bookings 
@@ -19,7 +22,7 @@
     </select>
 
     <sql id="Base_Column_List" >
-        id, roomPeriodId, userId, CDT, status, remark,schoolId
+        id, roomPeriodId, userId, CDT, status, remark,schoolId,bookingDate
     </sql>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
@@ -35,10 +38,10 @@
     </delete>
 
     <insert id="insert" parameterType="com.hemeiyue.entity.Bookings" >
-        insert into bookings (id, roomPeriodId, userId, 
+        insert into bookings (id, roomPeriodId, userId,bookingDate, 
             CDT, status, remark
             )
-        values (#{id,jdbcType=INTEGER}, #{roomperiodid,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, 
+        values (#{id,jdbcType=INTEGER}, #{roomperiodid,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, #{bookingDate}
             #{cdt,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}
             )
     </insert>
@@ -54,6 +57,9 @@
             </if>
             <if test="userid != null" >
                 userId,
+            </if>
+            <if test="bookingDate != null">
+            	bookingDate,
             </if>
             <if test="cdt != null" >
                 CDT,
@@ -77,6 +83,9 @@
             </if>
             <if test="userid != null" >
                 #{userid,jdbcType=INTEGER},
+            </if>
+            <if test="bookingDate != null">
+            	#{bookingDate,jdbcType=TIMESTAMP},
             </if>
             <if test="cdt != null" >
                 #{cdt,jdbcType=TIMESTAMP},
@@ -102,6 +111,9 @@
             <if test="user != null" >
                 userId = #{user.id,jdbcType=INTEGER},
             </if>
+            <if test="bookingDate != null">
+            	bookingDate = #{bookingDate,jdbcType=TIMESTAMP},
+            </if>
             <if test="CDT != null" >
                 CDT = #{CDT,jdbcType=TIMESTAMP},
             </if>
@@ -122,6 +134,7 @@
         update bookings
         set roomPeriodId = #{roomperiodid,jdbcType=INTEGER},
             userId = #{userid,jdbcType=INTEGER},
+            bookingDate = #{bookingDate,jdbcType=TIMESTAMP},
             CDT = #{cdt,jdbcType=TIMESTAMP},
             status = #{status,jdbcType=INTEGER},
             remark = #{remark,jdbcType=VARCHAR}
@@ -129,11 +142,12 @@
     </update>
     
     <select id="findAllBooks" resultMap="BaseResultMap" parameterType="Integer">
-    	select * from bookings where schoolId = #{schoolId} and status != 4
+    	select * from bookings where schoolId = #{schoolId} and status != -1
     </select>
     
     <select id="findMyBooks" resultMap="BaseResultMap" parameterType="Integer">
-    	select * from bookings where userId = #{userId} and status != 4
+    	select id, roomPeriodId, userId, CDT, status, remark,schoolId,bookingDate
+    	 from bookings where userId = #{userId} and status != -1 order by date desc
     </select>
     
     <select id="findSamePeriodBooks" resultMap="BaseResultMap" parameterType="Integer">

@@ -11,12 +11,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.hemeiyue.common.ResultBean;
+import com.hemeiyue.dao.UsersMapper;
 import com.hemeiyue.entity.Activity;
 import com.hemeiyue.entity.Admin;
 import com.hemeiyue.entity.Schools;
+import com.hemeiyue.entity.Users;
 import com.hemeiyue.service.ActivityService;
 import com.hemeiyue.util.CodeUtil;
 import com.hemeiyue.util.JSONUtil;
+import com.hemeiyue.util.WX_Util;
 
 @Controller
 @RequestMapping("/activity")
@@ -25,6 +28,8 @@ public class ActivityController {
 	@Autowired
 	private ActivityService activityService;
 	
+	@Autowired
+	private UsersMapper usersMapper;
 	/**
 	 * 用于添加活动
 	 * @param activity
@@ -88,5 +93,39 @@ public class ActivityController {
 	@ResponseBody
 	public ResultBean deleteActivity(@RequestParam("activityId")int activityId) {
 		return activityService.deleteById(activityId);
+	}
+	
+	@RequestMapping("/getActivityDetail")
+	@ResponseBody
+	public ResultBean  getActivityDetail(int id,HttpServletRequest request) {
+		Users user = (Users) request.getSession().getAttribute("user");
+		if(user == null) {
+			return new ResultBean(false);
+		}
+		return activityService.findById(id,user);
+	}
+	
+	@RequestMapping("/getArtivityList")
+	@ResponseBody
+	public String getArtivityList(HttpServletRequest request) {
+		Schools school = (Schools) request.getSession().getAttribute("school");
+		return activityService.findArtivityList(school);
+	}
+	
+	@RequestMapping("/weChatScan")
+	@ResponseBody
+	public String weChatScan(@RequestParam("code")String code,@RequestParam("activityId")int activityId,
+				HttpServletRequest request) {
+		Users user;
+		//如果code为空，从session获取userId
+		if(code == null || code.isEmpty()) {
+			user = (Users) request.getSession().getAttribute("user");
+			if(user == null || user.getId() == 0)
+				return JSONUtil.transform(new ResultBean(false));
+		}else {			//code不为空，从腾讯客户端获取openId
+			String openId = WX_Util.getOpenId(code).get("openId");
+			user = usersMapper.selectByOpenId(openId);
+		}
+		return activityService.updateWeChatScan(user, activityId);
 	}
 }

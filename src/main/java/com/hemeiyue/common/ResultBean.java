@@ -1,10 +1,13 @@
 package com.hemeiyue.common;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 /**
  * 基础包
  * @author cedo
  *
  */
+@JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
 public class ResultBean {
 
 	//请求结果

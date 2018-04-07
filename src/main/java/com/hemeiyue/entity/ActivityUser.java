@@ -1,5 +1,7 @@
 package com.hemeiyue.entity;
 
+import java.sql.Timestamp;
+
 public class ActivityUser {
 	
 	private Integer id;
@@ -10,6 +12,16 @@ public class ActivityUser {
 	
 	private Integer status;
 	
+	private Timestamp signTime;
+	
+	public Timestamp getSignTime() {
+		return signTime;
+	}
+
+	public void setSignTime(Timestamp signTime) {
+		this.signTime = signTime;
+	}
+
 	public Integer getId() {
 		return id;
 	}

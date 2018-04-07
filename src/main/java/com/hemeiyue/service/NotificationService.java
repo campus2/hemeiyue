@@ -11,5 +11,5 @@ public interface NotificationService {
 	
 	public ResultBean delete(Integer id);
 	
-	public ResultBean findAll(Integer schoolId);
+	public String findAll();
 }

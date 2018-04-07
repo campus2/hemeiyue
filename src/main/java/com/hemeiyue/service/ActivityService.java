@@ -1,8 +1,10 @@
 package com.hemeiyue.service;
 
+
 import com.hemeiyue.common.ResultBean;
 import com.hemeiyue.entity.Activity;
 import com.hemeiyue.entity.Schools;
+import com.hemeiyue.entity.Users;
 
 public interface ActivityService {
 
@@ -40,5 +42,28 @@ public interface ActivityService {
 	 * @return
 	 */
 	public Activity selectById(int id);
-
+	
+	/**
+	 * 根据Id返回活动信息
+	 * @param id
+	 * @param user
+	 * @return
+	 */
+	public ResultBean findById(Integer id,Users user);
+	
+	/**
+	 * 返回对应学校的活动列表
+	 * @param school
+	 * @return
+	 */
+	public String findArtivityList(Schools school);
+	
+	/**
+	 * 用户扫码签到
+	 * @param code
+	 * @param activityId
+	 * @param request
+	 * @return
+	 */
+	public String updateWeChatScan(Users user, int activityId);
 }

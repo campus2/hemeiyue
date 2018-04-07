@@ -20,5 +20,14 @@ public interface ActivityUserMapper {
 	 * @return
 	 */
 	public int insert(ActivityUser activityUser);
+	
+	/**
+	 * 活动参加人数
+	 * @param id
+	 * @return
+	 */
+	public int findCountActivity(Integer id);
+	
+	public int updateSignTime(ActivityUser activityUser);
 
 }

@@ -2,6 +2,7 @@ package com.hemeiyue.service.impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,9 +10,12 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.hemeiyue.common.ActivityModel;
 import com.hemeiyue.common.PictureResult;
 import com.hemeiyue.common.ResultBean;
+import com.hemeiyue.common.ResultImgAndAct;
 import com.hemeiyue.common.ResultList;
+import com.hemeiyue.dao.ActivityMapper;
 import com.hemeiyue.dao.WechatPictureMapper;
 import com.hemeiyue.entity.WechatPicture;
 import com.hemeiyue.service.WechatPictureService;
@@ -21,6 +25,9 @@ public class WechatPictureServiceImpl implements WechatPictureService{
 	
 	@Autowired
 	private WechatPictureMapper wechatPictureMapper;
+	
+	@Autowired
+	private ActivityMapper activityMapper;
 
 	@Override
 	public ResultBean insert(WechatPicture wechatPicture,HttpServletRequest request) {
@@ -92,6 +99,23 @@ public class WechatPictureServiceImpl implements WechatPictureService{
 			return new ResultBean(true,"删除成功");
 		}
 		return new ResultBean(false,"删除失败");
+	}
+
+	@Override
+	public ResultBean getIndex() {
+		List<WechatPicture> weChatPicture = wechatPictureMapper.findAll();
+		List<ActivityModel> activityList = activityMapper.findAll();
+		if(weChatPicture == null || weChatPicture.size() == 0 
+				|| activityList == null || activityList.size() == 0) {
+			return new ResultBean(false);
+		}
+		if(weChatPicture.size() > 5) {
+			weChatPicture = weChatPicture.subList(0, 4);
+		}
+		if(activityList.size() > 6) {
+			activityList.subList(0, 5);
+		}
+		return new ResultImgAndAct(true, weChatPicture, activityList);
 	}
 	
 }

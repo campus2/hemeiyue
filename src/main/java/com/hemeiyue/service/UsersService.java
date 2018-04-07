@@ -31,4 +31,11 @@ public interface UsersService {
 	public ResultBean delete(Users user);
 	
 	public ResultBean userMessage(Integer userId);
+	
+	/**
+	 * 把用户预定信息返回来，包括课室预定和活动预定，过期的不用返回来
+	 * @param userId
+	 * @return
+	 */
+	public String reserve(Integer userId);
 }

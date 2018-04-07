@@ -1,6 +1,5 @@
 package com.hemeiyue.service.impl;
 
-import java.text.ParseException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,12 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.hemeiyue.common.ResultBean;
-import com.hemeiyue.common.ResultList;
 import com.hemeiyue.dao.NotificationMapper;
 import com.hemeiyue.entity.Notification;
 import com.hemeiyue.entity.Schools;
 import com.hemeiyue.service.NotificationService;
-import com.hemeiyue.util.DateUtil;
+import com.hemeiyue.util.JSONUtil;
 
 @Service("notificationService")
 public class NotificationServiceImpl implements NotificationService{
@@ -24,14 +22,7 @@ public class NotificationServiceImpl implements NotificationService{
 
 	@Override
 	public ResultBean insert(Notification notification,HttpServletRequest request) {
-		try {
-			notification.setDate(DateUtil.date());
-			notification.setTime(DateUtil.time());
-			notification.setSchool((Schools) request.getSession().getAttribute("school"));
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		notification.setSchool((Schools) request.getSession().getAttribute("school"));
 		if(notificationMapper.insert(notification) == 1) return new ResultBean(true);
 		return new ResultBean(false);
 	}
@@ -43,14 +34,11 @@ public class NotificationServiceImpl implements NotificationService{
 	}
 
 	@Override
-	public ResultBean findAll(Integer schoolId) {
-		ResultList result = new ResultList();
-		List<Notification> list = notificationMapper.findAll(schoolId);
-		if(list != null) {
-			result.setResult(true);
-			result.setList(list);
-			return result;
+	public String findAll() {
+		List<Notification> list = notificationMapper.findAll();
+		if(list != null && list.size() > 0) {
+			return JSONUtil.transform(list);
 		}
-		return new ResultBean(false);
+		return JSONUtil.transform(new ResultBean(false));
 	}
 }

@@ -23,6 +23,7 @@ import com.hemeiyue.common.PageBean;
 import com.hemeiyue.common.ResultBean;
 import com.hemeiyue.entity.Admin;
 import com.hemeiyue.entity.Schools;
+import com.hemeiyue.entity.Users;
 import com.hemeiyue.eumn.Auth;
 import com.hemeiyue.service.AdminService;
 import com.hemeiyue.service.SchoolService;
@@ -112,6 +113,7 @@ public class SchoolController {
 		String localPath= request.getSession().getServletContext().getRealPath("/");
 		list.add(new ResultBean(true,localPath));
 		list.add(new ResultBean(true,"添加成功"));
+		list.add(new ResultBean(true, null));
 		return list;
 	}
 	
@@ -131,5 +133,21 @@ public class SchoolController {
 	@ResponseBody
 	public ResultBean validSchool(@RequestBody Schools school) {
 		return schoolService.findSchool(school.getSchool());
+	}
+	
+	@RequestMapping("/selectSchool")
+	@ResponseBody
+	public ResultBean selectSchool(@RequestParam("school")String school) {
+		return schoolService.selectSchool(school);
+	}
+	
+	@RequestMapping("/handleSchool")
+	@ResponseBody
+	public ResultBean handleSchool(@RequestParam("school")String school,HttpServletRequest request) {
+		Users user = (Users) request.getSession().getAttribute("user");
+		if(user == null) {
+			return new ResultBean(false);
+		}
+		return schoolService.insertHandleSchool(school, user);
 	}
 }

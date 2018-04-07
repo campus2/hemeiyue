@@ -49,7 +49,7 @@
 	</insert>
 	
 	<select id="findAll" resultMap="BaseResultMap">
-		select id,hrefUrl,url from wechatPicture where status = 1
+		select url,hrefUrl from wechatPicture where status = 1
 	</select>
 	
 	<update id="updateHrefUrl" parameterType="com.hemeiyue.entity.WechatPicture">

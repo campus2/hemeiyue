@@ -4,6 +4,7 @@ import java.util.Map;
 
 import com.hemeiyue.common.ResultBean;
 import com.hemeiyue.entity.Schools;
+import com.hemeiyue.entity.Users;
 
 public interface SchoolService {
 	
@@ -50,4 +51,14 @@ public interface SchoolService {
 	 * @return
 	 */
 	public ResultBean findSchool(String school);
+	
+	/**
+	 * 模糊查询学校
+	 * @param school
+	 * @return
+	 */
+	public ResultBean selectSchool(String school);
+	
+	public ResultBean insertHandleSchool(String school,Users user);
+	
 }

@@ -37,17 +37,26 @@ public class UsersController {
 	}
 	
 	@RequestMapping("/delete")
+	@ResponseBody
 	public String delete(@RequestBody Users user,HttpServletResponse response) {
 		ResponseUtil.write(response, userService.delete(user));
 		return null;
 	}
 	
 	@RequestMapping("/messageList")
+	@ResponseBody
 	public ResultBean messageList(HttpServletRequest request) {
 		Users user = (Users) request.getSession().getAttribute("user");
 		if(user != null) {
 			return userService.userMessage(user.getId());
 		}
 		return new ResultBean(false);
+	}
+	
+	@RequestMapping("/reserve")
+	@ResponseBody
+	public String reserve(HttpServletRequest request){
+		Users user = (Users) request.getSession().getAttribute("user");
+		return null;
 	}
 }

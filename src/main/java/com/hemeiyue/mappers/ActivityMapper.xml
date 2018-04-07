@@ -6,17 +6,29 @@
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="title" property="title" jdbcType="VARCHAR" />
         <result column="content" property="content" jdbcType="VARCHAR" />
-        <result column="date" property="date" />
-        <result column="time" property="time" jdbcType="VARCHAR" />
+        <result column="time" property="time" jdbcType="TIMESTAMP" />
         <result column="count" property="count" jdbcType="INTEGER" />
         <result column="status" property="status" jdbcType="INTEGER" />
+        <result column="imageUrl" property="imageUrl" jdbcType="VARCHAR" />
         <association property="address" column="addrId" select="com.hemeiyue.dao.RoomsMapper.selectById"/>
         <association property="owner" column="ownerId" select="com.hemeiyue.dao.AdminsMapper.selectById"/>
         <association property="school" column="schoolId" select="com.hemeiyue.dao.SchoolsMapper.selectById" />
     </resultMap>
     
+    <resultMap type="com.hemeiyue.common.ActivityModel" id="activityModel">
+    	<id column="id" property="id" jdbcType="INTEGER" />
+        <result column="title" property="activityTitle" jdbcType="VARCHAR" />
+        <result column="content" property="content" jdbcType="VARCHAR" />
+        <result column="time" property="time" jdbcType="TIMESTAMP" />
+        <result column="count" property="count" jdbcType="INTEGER" />
+        <result column="imageUrl" property="imageUrl" jdbcType="VARCHAR" />
+        <result column="status" property="status" jdbcType="INTEGER" />
+        <association property="sign" column="id" select="com.hemeiyue.dao.ActivityUserMapper.findCountActivity" />
+        <association property="address" column="addrId" select="com.hemeiyue.dao.RoomsMapper.selectById"/>
+    </resultMap>
+    	
     <select id="selectById" parameterType="Integer" resultType="Activity">
-    	select *from activity where id=#{id}
+    	select * from activity where id=#{id}
     </select>
     
     <update id="deleteById" parameterType="Integer">
@@ -29,9 +41,6 @@
     	<where>
     		<if test="title!=null and title!=''">
     			and title = #{title}
-    		</if>
-    		<if test="date!=null">
-    			and date = #{date}
     		</if>
     		<if test="time!=null and time!=''">
     			and time = #{time}
@@ -48,7 +57,6 @@
     		<if test="owner!=null">
     			and ownerId = #{owner.id}
     		</if>
-    		
     		and status>0
     	</where>
     </select>
@@ -66,9 +74,6 @@
             <if test="content != null" >
                 content,
             </if>
-            <if test="date != null" >
-                date,
-            </if>
             <if test="count != null" >
                 count,
             </if>
@@ -84,6 +89,9 @@
     		<if test="owner != null">
     			ownerId,
     		</if>
+    		<if test="imageUrl != null">
+    			imageUrl,
+    		</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides="," >
             <if test="id != null" >
@@ -94,9 +102,6 @@
             </if>
             <if test="content != null" >
                 #{content,jdbcType=VARCHAR},
-            </if>
-            <if test="date != null" >
-                #{date,jdbcType=DATE},
             </if>
             <if test="count != null" >
                 #{count,jdbcType=VARCHAR},
@@ -113,6 +118,25 @@
             <if test="status != null" >
                 #{status,jdbcType=INTEGER},
             </if>
+            <if test="imageUrl != null">
+            	#{imageUrl,jdbcType=VARCHAR},
+    		</if>
         </trim>
     </insert>
+    
+    <select id="findAll" resultMap="activityModel" >
+    	select id,title,time,count,imageUrl from activity
+    </select>
+    
+    <select id="findById" resultMap="activityModel" parameterType="java.lang.Integer">
+    	select id,title,content,count,time,addrId,status from activity where id=#{id}
+    </select>
+    
+    <select id="findArtivityList" resultMap="activityModel" >
+    	select id,title,time,count,imageUrl from activity where schoolId = #{schoolId}
+    </select>
+    
+    <select id="findActivityDetail" resultMap="activityModel" parameterType="com.hemeiyue.entity.Activity">
+    	select id,title,content,count,time,addrId,status from activity where id=#{id} and time > #{time}
+    </select>
 </mapper>

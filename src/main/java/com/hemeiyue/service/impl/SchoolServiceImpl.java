@@ -9,9 +9,13 @@ import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.hemeiyue.common.ResultBean;
+import com.hemeiyue.common.ResultList;
+import com.hemeiyue.common.ResultSchool;
 import com.hemeiyue.common.SchoolModel;
 import com.hemeiyue.dao.SchoolsMapper;
+import com.hemeiyue.dao.UsersMapper;
 import com.hemeiyue.entity.Schools;
+import com.hemeiyue.entity.Users;
 import com.hemeiyue.service.SchoolService;
 import com.hemeiyue.util.APIUtil;
 import com.hemeiyue.util.JSONUtil;
@@ -21,6 +25,9 @@ public class SchoolServiceImpl implements SchoolService{
 
 	@Autowired
 	private SchoolsMapper schoolMapper;
+	
+	@Autowired
+	private UsersMapper usersMapper;
 	
 	@Override
 	public Schools selectById(int id) {
@@ -102,5 +109,31 @@ public class SchoolServiceImpl implements SchoolService{
 		return new ResultBean(true,"该学校可注册");
 	}
 	
+	@Override
+	public ResultBean selectSchool(String school) {
+		List<Schools> schools = schoolMapper.selectSchool(school);
+		if(schools == null || schools.size() == 0) {
+			return new ResultBean(false);
+		}else{
+			if(schools.size() > 5) {
+				schools.subList(0, 4);
+			}
+			return new ResultList(true,schools);
+		}
+	}
+
+	@Override
+	public ResultBean insertHandleSchool(String school,Users user) {
+		Schools schools = schoolMapper.querySchool(school);
+		if(schools == null) 
+			return new ResultBean(false);
+		else {
+			user.setSchool(schools);
+			if(usersMapper.insertSelective(user) == 1) {
+				return new ResultSchool(true, school);
+			}
+			return new ResultBean(false);
+		}
+	}
 	
 }
