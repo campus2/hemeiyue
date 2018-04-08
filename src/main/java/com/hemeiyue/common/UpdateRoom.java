@@ -1,7 +1,5 @@
 package com.hemeiyue.common;
 
-import com.hemeiyue.entity.Schools;
-
 /**
  * 修改课室名类，用于接受前端数据
  * @author cedo
@@ -15,25 +13,14 @@ public class UpdateRoom {
 	
 	private String newRoom;		//新的课室名
 	
-	private Schools school;		//所属学校
-	
-	public UpdateRoom(String oldRoom, Schools school) {
+	public UpdateRoom(String oldRoom) {
 		super();
 		this.oldRoom = oldRoom;
-		this.school = school;
 	}
 
 	public UpdateRoom() {
 		super();
 		// TODO Auto-generated constructor stub
-	}
-
-	public Schools getSchool() {
-		return school;
-	}
-
-	public void setSchool(Schools school) {
-		this.school = school;
 	}
 
 	public String getRoomType() {

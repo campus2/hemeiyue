@@ -37,6 +37,7 @@ public interface ActivityMapper {
 	public Activity selectById(int id);
 	
 	/**
+<<<<<<< HEAD
 	 * 返回所有活动
 	 * @return
 	 */
@@ -63,4 +64,11 @@ public interface ActivityMapper {
 	 */
 	public ActivityModel findActivityDetail(Activity activity);
 	
+	/**
+	 * 更新活动
+	 * @param activity
+	 * @return
+	 */
+	public int update(Activity activity);
+
 }

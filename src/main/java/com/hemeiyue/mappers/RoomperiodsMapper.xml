@@ -4,7 +4,7 @@
 
     <resultMap id="BaseResultMap" type="com.hemeiyue.entity.RoomPeriods" >
         <id column="id" property="id" jdbcType="INTEGER" />
-        <result column="repeat" property="repeat" jdbcType="VARCHAR" />
+        <result column="weeks" property="weeks" jdbcType="VARCHAR" />
         <result column="expirDate" property="expirdate" jdbcType="TIMESTAMP" />
         <result column="requiredConfirm" property="requiredconfirm" jdbcType="INTEGER" />
         <result column="deadLine" property="deadline" jdbcType="TIMESTAMP" />
@@ -22,17 +22,16 @@
     </resultMap>
     
     <select id="find" parameterType="Rooms" resultMap="BaseResultMap">
-    	select *from roomperiods
+    	select rp.id, rp.periodId, rp.weeks,rp.status from roomperiods as rp
     	<where>
-    		<if test="room!=null">
-    			and roomId = #{room.id}
-    		</if>
+    		roomId=
+    		(select r.id from rooms as r where r.roomTypeId=#{roomType.id} and r.schoolId=#{school.id} and r.room = #{room} )
     		and status > 0
     	</where>
     </select>
 
     <sql id="Base_Column_List" >
-        id, roomId, periodId, repeat, expirDate, requiredConfirm, deadLine, status
+        id, roomId, periodId, weeks, expirDate, requiredConfirm, deadLine, status
     </sql>
 
     <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
@@ -46,6 +45,13 @@
         delete from roomperiods
         where id = #{id,jdbcType=INTEGER}
     </delete>
+     <!-- 批量插入 -->
+    <insert id="insertList" parameterType="java.util.List" useGeneratedKeys="true">
+    	insert into roomperiods values
+    	<foreach collection="list" item="item" separator=",">
+    		(null, #{item.room.id},#{item.period.id},#{item.weeks},#{item.expirdate},#{item.requiredconfirm},#{item.deadline}fi,#{item.status})
+    	</foreach>
+    </insert>
 
     <insert id="insert" parameterType="com.hemeiyue.entity.RoomPeriods" >
         insert into roomperiods
@@ -59,8 +65,8 @@
             <if test="period != null" >
                 periodId,
             </if>
-            <if test="repeat != null" >
-                repeat,
+            <if test="weeks != null" >
+                weeks,
             </if>
             <if test="expirdate != null" >
                 expirDate,
@@ -85,8 +91,8 @@
             <if test="period != null" >
                 #{period.id,jdbcType=INTEGER},
             </if>
-            <if test="repeat != null" >
-                #{repeat,jdbcType=VARCHAR},
+            <if test="weeks != null" >
+                #{weeks,jdbcType=VARCHAR},
             </if>
             <if test="expirdate != null" >
                 #{expirdate,jdbcType=TIMESTAMP},
@@ -101,6 +107,9 @@
                 #{status,jdbcType=INTEGER},
             </if>
         </trim>
+        <selectKey keyProperty="id" resultType="java.lang.Integer">
+	        select LAST_INSERT_ID() as id
+	    </selectKey>
     </insert>
 
     <update id="update" parameterType="com.hemeiyue.entity.RoomPeriods" >
@@ -112,8 +121,8 @@
             <if test="period != null" >
                 period.id = #{periodid,jdbcType=INTEGER},
             </if>
-            <if test="repeat != null" >
-                repeat = #{repeat,jdbcType=VARCHAR},
+            <if test="weeks != null" >
+                weeks = #{weeks,jdbcType=VARCHAR},
             </if>
             <if test="expirdate != null" >
                 expirDate = #{expirdate,jdbcType=TIMESTAMP},
@@ -131,7 +140,7 @@
         where id = #{id,jdbcType=INTEGER}
     </update>
     
-    <select id="findRooms" resultMap="RoomResult">
+    <select id="Rooms" resultMap="RoomResult">
     	select distinct roomId from roomperiods
     	<where>
     		and status = 1

@@ -62,7 +62,16 @@ public class Admin {
 	@JsonSerialize(using=DateYYMMddJSONSerializer.class)
     private Date date;
     
-    public Date getDate() {
+    public Admin() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public Admin(Integer id) {
+		this.id = id;
+	}
+
+	public Date getDate() {
 		return date;
 	}
 

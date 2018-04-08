@@ -21,7 +21,7 @@ public class RoomPeriods {
 
     private Periods period;
 
-    private String repeat;
+    private String weeks;
 
     private Date expirdate;
 
@@ -41,15 +41,15 @@ public class RoomPeriods {
         this.id = id;
     }
 
-    public String getRepeat() {
-        return repeat;
-    }
+    public String getWeeks() {
+		return weeks;
+	}
 
-    public void setRepeat(String repeat) {
-        this.repeat = repeat == null ? null : repeat.trim();
-    }
+	public void setWeeks(String weeks) {
+		this.weeks = weeks;
+	}
 
-    public Date getExpirdate() {
+	public Date getExpirdate() {
         return expirdate;
     }
 

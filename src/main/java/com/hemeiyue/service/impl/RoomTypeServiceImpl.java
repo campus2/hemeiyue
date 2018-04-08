@@ -73,7 +73,7 @@ public class RoomTypeServiceImpl implements RoomTypeService {
 	public ResultBean delete(RoomTypes roomType) {
 		//查询待删除课室类型是否存在
 		Map<String, Object> map = new HashMap<>();
-		map.put("roomType", roomType.getRoomType());
+		map.put("roomType", roomType);
 		map.put("school", roomType.getSchool());
 		
 		List<RoomTypes> roomTypeList = roomTypeMapper.find(map);
@@ -91,7 +91,10 @@ public class RoomTypeServiceImpl implements RoomTypeService {
 		
 		//删除课室类型，标志为改为-1
 		ResultBean result = new ResultBean();
-		if(roomTypeMapper.updateById(delRoomType.getId()) > 0) result.setResult(true);
+		if(roomTypeMapper.updateById(delRoomType.getId()) > 0) {
+			result.setResult(true);
+			result.setMessage("删除成功");
+		}
 		
 		return result;
 	}
@@ -102,7 +105,7 @@ public class RoomTypeServiceImpl implements RoomTypeService {
 		map.put("school", school);
 		map.put("roomType", roomType);
 		
-		return roomsMapper.select(map);
+		return roomTypeMapper.select(map);
 	}
 
 }

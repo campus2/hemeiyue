@@ -14,7 +14,6 @@ import com.hemeiyue.common.ResultSchool;
 import com.hemeiyue.dao.BookingsMapper;
 import com.hemeiyue.dao.MessagesMapper;
 import com.hemeiyue.dao.UsersMapper;
-import com.hemeiyue.entity.Bookings;
 import com.hemeiyue.entity.Messages;
 import com.hemeiyue.entity.Users;
 import com.hemeiyue.service.UsersService;

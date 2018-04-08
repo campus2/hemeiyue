@@ -21,7 +21,7 @@ public class ActivityServiceImplTest {
 	public void testSelectById() {
 		Users user = new Users();
 		user.setId(2);
-		System.out.println(JSONUtil.transform(activityServiceImpl.findById(1,user)));;
+		System.out.println(JSONUtil.transform(activityServiceImpl.findById(1,user)));
 	}
 	
 	@Test

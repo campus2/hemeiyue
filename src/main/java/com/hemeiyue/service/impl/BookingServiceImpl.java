@@ -1,6 +1,8 @@
 package com.hemeiyue.service.impl;
 
-import java.text.ParseException;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -8,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.hemeiyue.common.BookingModel;
 import com.hemeiyue.common.ResultBean;
 import com.hemeiyue.common.ResultList;
 import com.hemeiyue.dao.BookingsMapper;
@@ -46,14 +49,7 @@ public class BookingServiceImpl implements BookingService{
 		if(roomPeriod == null || roomPeriod.getStatus() != 1) {
 			return new ResultBean(false, "请再次确认申请是否可行");
 		}
-		
-		
-		try {
-			book.setCDT(DateUtil.dateTime());
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		book.setCDT(new Timestamp(new Date().getTime()));
 		book.setRoomPeriod(roomPeriod);
 		book.setSchool(school);
 		book.setUser(user);
@@ -84,19 +80,19 @@ public class BookingServiceImpl implements BookingService{
 	}
 
 	@Override
-	public ResultBean applyBook(Integer id) {
+	public ResultBean  updateApplyBook(Integer id) {
 		//检查该申请是否过期
 		Bookings book = bookingsMapper.selectByPrimaryKey(id);
 		if(book.getRoomPeriod().getStatus() != 1) {
 			return new ResultBean(false, "该申请已无效");
 		}
-		book.setStatus(1);
+		book.setStatus(2);
 		
 		//同意该申请后同时把别的同时期申请拒绝
 		if(bookingsMapper.updateByPrimaryKeySelective(book) == 1) {
 			List<Bookings> bookList = bookingsMapper.findSamePeriodBooks(book.getRoomPeriod().getId());
 			for (Bookings b : bookList) {
-				refuseBook(b.getId());
+				updateRefuseBook(b.getId());
 			}
 			return new ResultBean(true, "同意申请成功");
 		}
@@ -105,10 +101,11 @@ public class BookingServiceImpl implements BookingService{
 	}
 
 	@Override
-	public ResultBean refuseBook(Integer id) {
+	public ResultBean  updateRefuseBook(Integer id) {
 		Bookings book = new Bookings();
 		book.setId(id);
-		book.setStatus(2);
+		//状态0：拒绝申请
+		book.setStatus(0);
 		
 		//拒绝申请
 		if(bookingsMapper.updateByPrimaryKeySelective(book) == 1) {
@@ -118,10 +115,10 @@ public class BookingServiceImpl implements BookingService{
 	}
 
 	@Override
-	public ResultBean revokeBook(Integer id) {
+	public ResultBean  updateRevokeBook(Integer id) {
 		Bookings book = new Bookings();
 		book.setId(id);
-		book.setStatus(3);
+		book.setStatus(-1);
 		
 		//撤销申请
 		if(bookingsMapper.updateByPrimaryKeySelective(book) == 1) {
@@ -130,17 +127,30 @@ public class BookingServiceImpl implements BookingService{
 		return new ResultBean(false, "撤销申请失败");
 	}
 
+	@SuppressWarnings("unused")
 	@Override
-	public ResultBean findAllBooks(HttpServletRequest request) {
-		Schools school = (Schools) request.getSession().getAttribute("school");
-		
+	public ResultBean findAllBooks(Schools school) {
 		//返回该管理员学校的所有申请
 		List<Bookings> list = bookingsMapper.findAllBooks(school.getId());
+		//封装数据
+		List<BookingModel> modelList = new ArrayList<>(list.size());
+		for (Bookings booking : list) {
+			BookingModel bm = new BookingModel();
+			bm.setId(booking.getId());
+			bm.setUserId(booking.getUser().getId());
+			bm.setUserName(booking.getUser().getUserName());
+			bm.setRoomType(booking.getRoomPeriod().getRoom().getRoomType().getRoomType());
+			bm.setRoomName(booking.getRoomPeriod().getRoom().getRoom());
+			bm.setDate(DateUtil.dateToString(booking.getBookingDate()));
+			bm.setTime(DateUtil.timeToString(booking.getRoomPeriod().getPeriod().getBeginTime(), 
+					booking.getRoomPeriod().getPeriod().getEndTime()));
+			bm.setStatus(booking.getStatus());
+			modelList.add(bm);
+		}
 		if(list != null) {
 			ResultList result = new ResultList();
 			result.setResult(true);
-			result.setMessage("返回列表成功");
-			result.setList(list);
+			result.setList(modelList);
 			return result;
 		}
 		return new ResultBean(false, "返回列表失败");

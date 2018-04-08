@@ -66,4 +66,12 @@ public interface ActivityService {
 	 * @return
 	 */
 	public String updateWeChatScan(Users user, int activityId);
+
+	/**
+	 * 更新活动
+	 * @param activity
+	 * @return
+	 */
+	public ResultBean updateActivity(Activity activity);
+
 }

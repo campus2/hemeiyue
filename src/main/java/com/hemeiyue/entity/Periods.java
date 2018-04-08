@@ -1,6 +1,10 @@
 package com.hemeiyue.entity;
 
-import java.util.Date;
+import java.sql.Timestamp;
+
+import javax.validation.constraints.Null;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -21,12 +25,15 @@ public class Periods {
 
     @JsonSerialize(using=DateHHmmJSONSerializer.class)
     @JsonDeserialize(using=DateHHmmJSONDeserializer.class)
-    private Date begintime;
+    @DateTimeFormat(pattern="HH:mm")
+    private Timestamp beginTime;
     
     @JsonSerialize(using=DateHHmmJSONSerializer.class)
     @JsonDeserialize(using=DateHHmmJSONDeserializer.class)
-    private Date endtime;
+    @DateTimeFormat(pattern="HH:mm")
+    private Timestamp endTime;
 
+    @Null
     private Admin admin;
 
     public Integer getId() {
@@ -37,8 +44,8 @@ public class Periods {
         this.id = id;
     }
 
-    public Date getBegintime() {
-        return begintime;
+    public Timestamp getBeginTime() {
+        return beginTime;
     }
 
     public String getPeriod() {
@@ -49,16 +56,16 @@ public class Periods {
 		this.period = period;
 	}
 
-	public void setBegintime(Date begintime) {
-        this.begintime = begintime;
+	public void setBeginTime(Timestamp begintime) {
+        this.beginTime = begintime;
     }
 
-    public Date getEndtime() {
-        return endtime;
+    public Timestamp getEndTime() {
+        return endTime;
     }
 
-    public void setEndtime(Date endtime) {
-        this.endtime = endtime;
+    public void setEndTime(Timestamp endtime) {
+        this.endTime = endtime;
     }
 
 	public Admin getAdmin() {

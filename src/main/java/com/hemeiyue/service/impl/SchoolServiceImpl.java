@@ -108,7 +108,7 @@ public class SchoolServiceImpl implements SchoolService{
 		System.out.println("w");
 		return new ResultBean(true,"该学校可注册");
 	}
-	
+
 	@Override
 	public ResultBean selectSchool(String school) {
 		List<Schools> schools = schoolMapper.selectSchool(school);

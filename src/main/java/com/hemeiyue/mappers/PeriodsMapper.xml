@@ -5,17 +5,17 @@
     <resultMap id="BaseResultMap" type="com.hemeiyue.entity.Periods" >
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="period" property="period" jdbcType="VARCHAR" />
-        <result column="beginTime" property="begintime" jdbcType="TIMESTAMP" />
-        <result column="endTime" property="endtime" jdbcType="TIMESTAMP" />
+        <result column="beginTime" property="beginTime" jdbcType="TIMESTAMP" />
+        <result column="endTime" property="endTime" jdbcType="TIMESTAMP" />
     </resultMap>
-
+    
     <sql id="Base_Column_List" >
         id, period, beginTime, endTime, adminId
     </sql>
 
     <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
         select 
-        <include refid="Base_Column_List" />
+        beginTime, endTime
         from periods
         where id = #{id,jdbcType=INTEGER}
     </select>
@@ -24,7 +24,15 @@
         delete from periods
         where id = #{id,jdbcType=INTEGER}
     </delete>
-
+	
+	 <!-- 批量插入 -->
+    <insert id="insertList" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+    	insert into periods values
+    	<foreach collection="list" item="item" index="index" separator=",">
+    		(null, #{item.period},#{item.beginTime},#{item.endTime},#{item.admin.id})
+    	</foreach>
+    </insert>
+	
     <insert id="insert" parameterType="com.hemeiyue.entity.Periods" useGeneratedKeys="true" keyProperty="id">
         insert into periods
         <trim prefix="(" suffix=")" suffixOverrides="," >
@@ -34,10 +42,10 @@
             <if test="period != null" >
                 period,
             </if>
-            <if test="begintime != null" >
+            <if test="beginTime != null" >
                 beginTime,
             </if>
-            <if test="endtime != null" >
+            <if test="endTime != null" >
                 endTime,
             </if>
             <if test="admin != null" >
@@ -51,11 +59,11 @@
             <if test="period != null" >
                 #{period,jdbcType=VARCHAR},
             </if>
-            <if test="begintime != null" >
-                #{begintime,jdbcType=TIMESTAMP},
+            <if test="beginTime != null" >
+                #{beginTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="endtime != null" >
-                #{endtime,jdbcType=TIMESTAMP},
+            <if test="endTime != null" >
+                #{endTime,jdbcType=TIMESTAMP},
             </if>
             <if test="admin != null" >
                 #{admin.id,jdbcType=INTEGER},
@@ -69,11 +77,11 @@
             <if test="period != null" >
                 period = #{period,jdbcType=VARCHAR},
             </if>
-            <if test="begintime != null" >
-                beginTime = #{begintime,jdbcType=TIMESTAMP},
+            <if test="beginTime != null" >
+                beginTime = #{beginTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="endtime != null" >
-                endTime = #{endtime,jdbcType=TIMESTAMP},
+            <if test="endTime != null" >
+                endTime = #{endTime,jdbcType=TIMESTAMP},
             </if>
             <if test="adminid != null" >
                 adminId = #{adminid,jdbcType=INTEGER},
@@ -85,8 +93,8 @@
     <update id="updateByPrimaryKey" parameterType="com.hemeiyue.entity.Periods" >
         update periods
         set period = #{period,jdbcType=VARCHAR},
-            beginTime = #{begintime,jdbcType=TIMESTAMP},
-            endTime = #{endtime,jdbcType=TIMESTAMP},
+            beginTime = #{beginTime,jdbcType=TIMESTAMP},
+            endTime = #{endTime,jdbcType=TIMESTAMP},
             adminId = #{adminid,jdbcType=INTEGER}
         where id = #{id,jdbcType=INTEGER}
     </update>

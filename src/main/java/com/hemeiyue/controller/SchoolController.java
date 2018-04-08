@@ -40,6 +40,7 @@ public class SchoolController {
 	@Autowired
 	private AdminService adminService;
 	
+	
 	/**
 	 * 添加学校
 	 * @param school

@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.hemeiyue.annotion.AuthLoginAnnotation;
 import com.hemeiyue.common.ResultBean;
 import com.hemeiyue.entity.Bookings;
+import com.hemeiyue.entity.Schools;
 import com.hemeiyue.service.BookingService;
 
 @Controller
@@ -40,6 +42,7 @@ public class BookingController {
 	 */
 	@RequestMapping("/updateBook")
 	@ResponseBody
+	@AuthLoginAnnotation(checkLogin=true)
 	public ResultBean updateBook(@RequestBody Bookings book) {
 		return bookingService.updateBook(book);
 	}
@@ -52,6 +55,7 @@ public class BookingController {
 	 */
 	@RequestMapping("/deleteBook")
 	@ResponseBody
+	@AuthLoginAnnotation(checkLogin=true)
 	public ResultBean deleteBook(@RequestParam("bookingId") Integer bookingId) {
 		return bookingService.deleteBook(bookingId);
 	}
@@ -64,8 +68,9 @@ public class BookingController {
 	 */
 	@RequestMapping("/applyBook")
 	@ResponseBody
+	@AuthLoginAnnotation(checkLogin=true)
 	public ResultBean applyBook(@RequestParam("bookingId") Integer bookingId) {
-		return bookingService.applyBook(bookingId);
+		return bookingService. updateApplyBook(bookingId);
 	}
 	
 	/**
@@ -76,8 +81,9 @@ public class BookingController {
 	 */
 	@RequestMapping("/refuseBook")
 	@ResponseBody
+	@AuthLoginAnnotation(checkLogin=true)
 	public ResultBean refuseBook(@RequestParam("bookingId") Integer bookingId) {
-		return bookingService.refuseBook(bookingId);
+		return bookingService. updateRefuseBook(bookingId);
 	}
 	
 	/**
@@ -88,8 +94,9 @@ public class BookingController {
 	 */
 	@RequestMapping("/revokeBook")
 	@ResponseBody
+	@AuthLoginAnnotation(checkLogin=true)
 	public ResultBean revokeBook(@RequestParam("bookingId") Integer bookingId) {
-		return bookingService.revokeBook(bookingId);
+		return bookingService. updateRevokeBook(bookingId);
 	}
 	
 	/**
@@ -99,12 +106,16 @@ public class BookingController {
 	 */
 	@RequestMapping("/findAllBooks")
 	@ResponseBody
+	@AuthLoginAnnotation(checkLogin=true)
 	public ResultBean findAllBooks(HttpServletRequest request) {
-		return bookingService.findAllBooks(request);
+//		Schools school = (Schools) request.getSession().getAttribute("school");
+		Schools school = (Schools) request.getServletContext().getAttribute("school");
+		return bookingService.findAllBooks(school);
 	}
 	
 	@RequestMapping("/findMyBooks")
 	@ResponseBody
+	@AuthLoginAnnotation(checkLogin=true)
 	public ResultBean findMyBooks(HttpServletRequest request) {
 		return bookingService.findMyBooks(request);
 	}

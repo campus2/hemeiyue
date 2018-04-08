@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.hemeiyue.common.ResultBean;
 import com.hemeiyue.dao.UsersMapper;
@@ -16,6 +18,7 @@ import com.hemeiyue.entity.Activity;
 import com.hemeiyue.entity.Admin;
 import com.hemeiyue.entity.Schools;
 import com.hemeiyue.entity.Users;
+import com.hemeiyue.entity.WechatPicture;
 import com.hemeiyue.service.ActivityService;
 import com.hemeiyue.util.CodeUtil;
 import com.hemeiyue.util.JSONUtil;
@@ -31,6 +34,21 @@ public class ActivityController {
 	@Autowired
 	private UsersMapper usersMapper;
 	/**
+	 * 上传活动图片
+	 * @param file
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="/upload",method=RequestMethod.POST)
+	@ResponseBody
+	public ResultBean upload(MultipartFile file,HttpServletRequest request) {
+		System.out.println("test");
+		WechatPicture wechatPicture = new WechatPicture();
+		wechatPicture.setFile(file);
+		return null;
+	}
+	
+	/**
 	 * 用于添加活动
 	 * @param activity
 	 * @param request
@@ -41,13 +59,30 @@ public class ActivityController {
 	public ResultBean addActivity(@RequestBody Activity activity,
 			HttpServletRequest request) {
 		//当前管理员和学校
-		Admin admin = (Admin)request.getSession().getAttribute("currentAdmin");
-		Schools school = admin.getSchool();
-		activity.setOwner(admin);
-		activity.setSchool(school);
+//		Admin admin = (Admin)request.getSession().getAttribute("currentAdmin");
+		Admin admin = (Admin)request.getServletContext().getAttribute("currentAdmin");
+//		String imageUrl = (Admin)request.getSession().getAttribute("imageUrl");
+		String imageUrl = (String) request.getServletContext().getAttribute("imageUrl");
+
+		if(imageUrl != null) {
+			//更新活动
+//			activity = (Activity) request.getSession().getAttribute("activity");
+			activity = (Activity) request.getServletContext().getAttribute("activity");
+			activity.setImageUrl(imageUrl);
+			return activityService.updateActivity(activity);
+		}else {
+			Schools school = admin.getSchool();
+			activity.setOwner(admin);
+			activity.setSchool(school);
+			//添加
+			ResultBean result = activityService.insertActivity(activity);
+			//添加activity临时缓存，用于更新image
+//			request.getSession().setAttribute("activity",activity);
+			request.getServletContext().setAttribute("activity",activity);
+			
+			return result;
+		}
 		
-		//添加
-		return activityService.insertActivity(activity);
 	}
 	
 	/**
