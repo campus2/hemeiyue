@@ -10,5 +10,7 @@ public interface NotificationMapper {
 	
 	public int delete(Integer id);
 	
+//	public List<Notification> findAll();
+	
 	public List<Notification> findAll(Integer schoolId);
 }

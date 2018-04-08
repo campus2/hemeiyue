@@ -1,7 +1,6 @@
 package com.hemeiyue.entity;
 
 import java.sql.Timestamp;
-import java.util.Date;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -24,6 +23,10 @@ public class Activity {
 	@JsonSerialize(using=DateYYMMddJSONSerializer.class)
 	private Timestamp date;
 	
+	public Timestamp getDate() {
+		return date;
+	}
+
 	@JsonDeserialize(using=DateHHmmJSONDeserializer.class)
 	@JsonSerialize(using=DateHHmmJSONSerializer.class)
 	private Timestamp time;
@@ -93,9 +96,6 @@ public class Activity {
 		this.number = number;
 	}
 
-	public Date getDate() {
-		return date;
-	}
 
 	public Timestamp getTime() {
 		return time;

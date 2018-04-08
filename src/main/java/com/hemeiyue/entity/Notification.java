@@ -38,14 +38,6 @@ public class Notification {
 	}
 	
 
-	public Timestamp getTime() {
-		return time;
-	}
-
-	public void setTime(Timestamp time) {
-		this.time = time;
-	}
-
 	public String getTitle() {
 		return title;
 	}
@@ -62,13 +54,19 @@ public class Notification {
 		this.content = content;
 	}
 
-
 	public Timestamp getDate() {
 		return date;
 	}
 
 	public void setDate(Timestamp date) {
 		this.date = date;
+	}
+	public Timestamp getTime() {
+		return time;
+	}
+
+	public void setTime(Timestamp time) {
+		this.time = time;
 	}
 
 	public Integer getStatus() {

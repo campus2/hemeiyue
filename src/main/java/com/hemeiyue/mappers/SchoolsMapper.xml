@@ -110,4 +110,12 @@
     <select	id="findSchool" parameterType="String" resultType="Integer">
     	select count(*) from schools where school = #{school,jdbcType=VARCHAR}
     </select>
+    
+    <select id="selectSchool" parameterType="String" resultMap="BaseResultMap">
+    	select * from schools where school like "%"#{school,jdbcType=VARCHAR}"%"
+    </select>
+    
+    <select id="querySchool" parameterType="String" resultMap="BaseResultMap">
+    	select * from schools where school = #{school,jdbcType=VARCHAR}
+    </select>
 </mapper>

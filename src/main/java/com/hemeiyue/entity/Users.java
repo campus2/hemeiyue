@@ -37,6 +37,16 @@ public class Users {
 		this.classRoom = classRoom;
 	}
 
+    public String getClassroom() {
+		return classroom;
+	}
+
+	public void setClassroom(String classroom) {
+		this.classroom = classroom;
+	}
+
+	private String classroom;
+    
 	public Integer getId() {
         return id;
     }

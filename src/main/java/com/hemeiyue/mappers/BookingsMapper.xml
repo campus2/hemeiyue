@@ -13,6 +13,7 @@
         <association property="school" column="schoolId" select="com.hemeiyue.dao.SchoolsMapper.selectById" />
     </resultMap>
     
+    
     <select id="getApplyCount" parameterType="Schools" resultType="Long">
     	select count(*) from bookings 
     	<where>
@@ -151,5 +152,25 @@
     
     <select id="findSamePeriodBooks" resultMap="BaseResultMap" parameterType="Integer">
     	select * from bookings where roomPeriodId = #{roomPeriodId} and status = 0
+    </select>
+    
+    <select id="findMyBooksWithoutTimeOut" resultMap="BaseResultMap" parameterType="com.hemeiyue.entity.Bookings">
+    	select id, roomPeriodId, userId, CDT, status, remark,schoolId,bookingDate
+    	 from bookings where 
+    	 <if test="user != null" >
+         	userId = #{user.id} and
+         </if>
+         <if test="bookingDate != null" >
+        	 bookingDate >  #{bookingDate} and
+         </if>
+         <if test="id != null">
+         	id = #{id} and
+         </if>
+    	 status != -1 order by CDT desc
+    </select>
+    
+    <select id="findBooksByRoomPeriod" resultMap="BaseResultMap" parameterType="Integer">
+    	select id, roomPeriodId, userId, CDT, status, remark,schoolId,bookingDate
+    	 from bookings where roomPeriodId = #{roomPeriodId}
     </select>
 </mapper>

@@ -2,9 +2,11 @@ package com.hemeiyue.service;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.hemeiyue.common.Application;
 import com.hemeiyue.common.ResultBean;
 import com.hemeiyue.entity.Bookings;
 import com.hemeiyue.entity.Schools;
+import com.hemeiyue.entity.Users;
 
 public interface BookingService {
 	
@@ -69,4 +71,18 @@ public interface BookingService {
 	 * @return
 	 */
 	public ResultBean findMyBooks(HttpServletRequest request);
+	
+	/**
+	 * 根据预定的id取消该预定，校验该id的预定是否已经过期
+	 * @param id
+	 * @return
+	 */
+	public String updateCancelReserve(int id);
+	
+	/**
+	 * 提交用户申请表（课室申请）
+	 * @param application
+	 * @return
+	 */
+	public ResultBean insertRoomApply(Application application,Users user,Schools school);
 }

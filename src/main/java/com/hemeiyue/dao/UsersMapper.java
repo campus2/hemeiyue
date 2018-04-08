@@ -1,5 +1,6 @@
 package com.hemeiyue.dao;
 
+import com.hemeiyue.common.UsersModel;
 import com.hemeiyue.entity.Users;
 
 public interface UsersMapper {
@@ -16,4 +17,8 @@ public interface UsersMapper {
     int updateByPrimaryKey(Users record);
     
     Users selectByOpenId(String openid);
+    
+    UsersModel selectPersonalInfo(Integer id);
+    
+    int updatePersonalInfo(UsersModel user);
 }

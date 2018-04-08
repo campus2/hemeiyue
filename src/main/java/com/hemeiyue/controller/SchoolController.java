@@ -23,6 +23,7 @@ import com.hemeiyue.common.PageBean;
 import com.hemeiyue.common.ResultBean;
 import com.hemeiyue.entity.Admin;
 import com.hemeiyue.entity.Schools;
+import com.hemeiyue.entity.Users;
 import com.hemeiyue.eumn.Auth;
 import com.hemeiyue.service.AdminService;
 import com.hemeiyue.service.SchoolService;
@@ -39,13 +40,6 @@ public class SchoolController {
 	@Autowired
 	private AdminService adminService;
 	
-	
-	@RequestMapping("/selectSchool")
-	@ResponseBody
-	public ResultBean selectSchool(@RequestParam("school")String school) {
-		
-		return schoolService.selectSchool(school);
-	}
 	
 	/**
 	 * 添加学校
@@ -120,6 +114,7 @@ public class SchoolController {
 		String localPath= request.getSession().getServletContext().getRealPath("/");
 		list.add(new ResultBean(true,localPath));
 		list.add(new ResultBean(true,"添加成功"));
+		list.add(new ResultBean(true, null));
 		return list;
 	}
 	
@@ -139,5 +134,32 @@ public class SchoolController {
 	@ResponseBody
 	public ResultBean validSchool(@RequestBody Schools school) {
 		return schoolService.findSchool(school.getSchool());
+	}
+	
+	/**
+	 * 模糊查找学校
+	 * @param school	学校名
+	 * @return
+	 */
+	@RequestMapping("/selectSchool")
+	@ResponseBody
+	public ResultBean selectSchool(@RequestParam("school")String school) {
+		return schoolService.selectSchool(school);
+	}
+	
+	/**
+	 * 通过学校名查询改学校是否存在（该学校已注册），如果存在，把openid，学校等信息放进数据库，并把学校名返回。
+	 * @param school	学校名
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/handleSchool")
+	@ResponseBody
+	public ResultBean handleSchool(@RequestParam("school")String school,HttpServletRequest request) {
+		Users user = (Users) request.getSession().getAttribute("user");
+		if(user == null) {
+			return new ResultBean(false);
+		}
+		return schoolService.insertHandleSchool(school, user);
 	}
 }

@@ -3,8 +3,8 @@ package com.hemeiyue.service;
 import java.util.Map;
 
 import com.hemeiyue.common.ResultBean;
-import com.hemeiyue.common.ResultList;
 import com.hemeiyue.entity.Schools;
+import com.hemeiyue.entity.Users;
 
 public interface SchoolService {
 	
@@ -51,12 +51,20 @@ public interface SchoolService {
 	 * @return
 	 */
 	public ResultBean findSchool(String school);
-
-
+	
 	/**
-	 * 模糊查询学校
+	 * 模糊查询学校  结果集最多五条
 	 * @param school
 	 * @return
 	 */
-	public ResultList selectSchool(String school);
+	public ResultBean selectSchool(String school);
+	
+	/**
+	 * 通过学校名查询改学校是否存在（该学校已注册），如果存在，把openid，学校等信息放进数据库，并把学校名返回
+	 * @param school
+	 * @param user
+	 * @return
+	 */
+	public ResultBean insertHandleSchool(String school,Users user);
+	
 }

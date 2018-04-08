@@ -1,6 +1,7 @@
 package com.hemeiyue.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,9 +13,12 @@ import com.hemeiyue.common.ResultBean;
 import com.hemeiyue.common.ResultMap;
 import com.hemeiyue.dao.RoomperiodsMapper;
 import com.hemeiyue.dao.RoomsMapper;
+import com.hemeiyue.entity.Periods;
 import com.hemeiyue.entity.RoomPeriods;
 import com.hemeiyue.entity.Rooms;
 import com.hemeiyue.service.RoomPeriodsService;
+import com.hemeiyue.util.DateUtil;
+import com.hemeiyue.util.JSONUtil;
 
 @Service("roomPeriodService")
 public class RoomPeriodsServiceImpl implements RoomPeriodsService {
@@ -96,5 +100,15 @@ public class RoomPeriodsServiceImpl implements RoomPeriodsService {
 			return new ResultBean(true, "删除成功");
 		}
 		return new ResultBean(false, "删除失败");
+	}
+
+	@Override
+	public String getPeriod(Date date) {
+		if(date == null) {
+			return JSONUtil.transform(new ResultBean(false));
+		}
+		String week = DateUtil.dateToWeek(date.toString());
+		List<Periods> plist = roomPeriodsMapper.getPeriod(week);
+		return JSONUtil.transform(plist);
 	}
 }

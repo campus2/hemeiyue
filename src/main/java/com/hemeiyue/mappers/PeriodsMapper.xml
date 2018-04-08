@@ -15,7 +15,7 @@
 
     <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
         select 
-        beginTime, endTime
+        id,beginTime, endTime
         from periods
         where id = #{id,jdbcType=INTEGER}
     </select>

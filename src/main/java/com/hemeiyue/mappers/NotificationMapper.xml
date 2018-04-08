@@ -8,8 +8,14 @@
         <result column="content" property="content" jdbcType="VARCHAR" />
         <result column="date" property="date" jdbcType="TIMESTAMP"/>
          <result column="time" property="time" jdbcType="TIMESTAMP"/>
+        <result column="time" property="time" jdbcType="TIMESTAMP" />
         <result column="status" property="status" jdbcType="INTEGER" />
         <association property="school" column="schoolId" select="com.hemeiyue.dao.SchoolsMapper.selectById" />
+    </resultMap>
+    
+    <resultMap type="com.hemeiyue.entity.Notification" id="tcResultMap">
+    	<result column="title" property="title" jdbcType="VARCHAR" />
+        <result column="content" property="content" jdbcType="VARCHAR" />
     </resultMap>
     
 	<insert id="insert" parameterType="com.hemeiyue.entity.Notification">

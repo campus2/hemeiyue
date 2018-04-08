@@ -3,6 +3,8 @@ package com.hemeiyue.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.hemeiyue.common.ActivityUserModel;
+import com.hemeiyue.common.ActivityUserShowModel;
 import com.hemeiyue.entity.ActivityUser;
 
 public interface ActivityUserMapper {
@@ -20,5 +22,25 @@ public interface ActivityUserMapper {
 	 * @return
 	 */
 	public int insert(ActivityUser activityUser);
-
+	
+	/**
+	 * 活动参加人数
+	 * @param id
+	 * @return
+	 */
+	public int findCountActivity(Integer id);
+	
+	/**
+	 * 插入签到时间
+	 * @param activityUser
+	 * @return
+	 */
+	public int updateSignTime(ActivityUser activityUser);
+	
+	/**
+	 * 插入用户参加活动信息
+	 * @param activityUserModel
+	 * @return
+	 */
+	public int insertByActivityUserShowModel(ActivityUserShowModel activityUserModel);
 }

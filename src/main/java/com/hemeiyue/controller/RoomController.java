@@ -158,4 +158,16 @@ public class RoomController {
 
 		return roomService.deleteByTypeAndName(roomtype, roomName);
 	}
+	
+	@RequestMapping("/getRoom")
+	@ResponseBody
+	/**
+	 * 根据课室类型名，返回所有的该课室类型所有的课室号
+	 * @param roomType
+	 * @return
+	 */
+	public String getRoom(String roomType,HttpServletRequest request) {
+		Schools school = (Schools) request.getSession().getAttribute("shool");
+		return roomService.getRoom(roomType, school);
+	}
 }

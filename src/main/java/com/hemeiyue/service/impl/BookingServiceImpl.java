@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.hemeiyue.common.Application;
 import com.hemeiyue.common.BookingModel;
 import com.hemeiyue.common.ResultBean;
 import com.hemeiyue.common.ResultList;
@@ -21,6 +22,7 @@ import com.hemeiyue.entity.Schools;
 import com.hemeiyue.entity.Users;
 import com.hemeiyue.service.BookingService;
 import com.hemeiyue.util.DateUtil;
+import com.hemeiyue.util.JSONUtil;
 
 @Service("bookingService")
 public class BookingServiceImpl implements BookingService{
@@ -173,5 +175,55 @@ public class BookingServiceImpl implements BookingService{
 			return result;
 		}
 		return new ResultBean(false, "返回列表失败");
+	}
+
+	@Override
+	public String updateCancelReserve(int id) {
+		Bookings booking = new Bookings();
+		booking.setId(id);
+		booking.setBookingDate(new Timestamp(System.currentTimeMillis()));
+		Bookings theBook = bookingsMapper.findMyBooksWithoutTimeOut(booking).get(0);
+		if(theBook == null) {
+			return JSONUtil.transform(new ResultBean(false));
+		}
+		theBook.setStatus(-1);
+		if(bookingsMapper.updateByPrimaryKeySelective(theBook) == 1) {
+			return JSONUtil.transform(new ResultBean(true));
+		}
+		return JSONUtil.transform(new ResultBean(false));
+	}
+
+	@Override
+	public ResultBean insertRoomApply(Application application,Users user,Schools school) {
+		Bookings booking = new Bookings();
+		
+		RoomPeriods roomPeriod = roomperiodsMapper.selectById(application.getRoomPeriodId());
+		if(roomPeriod == null) {
+			return new ResultBean(false, "找不到roomPeriod");
+		}
+		booking.setRoomPeriod(roomPeriod);
+		Timestamp timestamp = application.getBookingDate();
+		String week = roomperiodsMapper.selectById(roomPeriod.getId()).getWeeks();
+		if(week.indexOf(DateUtil.dateToWeek(timestamp.toString())) == -1) {		//插入日期与roomPeriod的week冲突
+			return new ResultBean(false,"日期错误");
+		}
+		
+		List<Bookings> blist = bookingsMapper.findBooksByRoomPeriod(roomPeriod.getId());
+		for (Bookings bookings : blist) {
+			if(DateUtil.dateToString(bookings.getBookingDate()) == DateUtil.dateToString(timestamp))	//同一个roomPeriod里同一天
+				return new ResultBean(false,"日期错误");
+		}
+		
+		booking.setBookingDate(timestamp);
+		booking.setUser(user);
+		booking.setStatus(0);
+		booking.setCDT(new Timestamp(System.currentTimeMillis()));
+		booking.setSchool(school);
+		booking.setRemark(application.getRemark());
+		
+		if(bookingsMapper.insertSelective(booking) == 1) {
+			return new ResultBean(true);
+		}
+		return new ResultBean(false);
 	}
 }

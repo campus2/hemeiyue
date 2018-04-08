@@ -27,7 +27,7 @@ public class NotificationServiceImpl implements NotificationService{
 		if(notificationMapper.insert(notification) == 1) return new ResultBean(true,"发布成功");
 		return new ResultBean(false,"发布失败");
 	}
-
+	
 	@Override
 	public ResultBean delete(Integer id) {
 		if(notificationMapper.delete(id) == 1) return new ResultBean(true,"删除成功");

@@ -48,4 +48,5 @@ public class NotificationController {
 		Schools school = (Schools) request.getServletContext().getAttribute("school");
 		return notificationService.findAll(school.getId());
 	}
+	
 }

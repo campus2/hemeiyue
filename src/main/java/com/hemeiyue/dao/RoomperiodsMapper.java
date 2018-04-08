@@ -57,4 +57,7 @@ public interface RoomperiodsMapper {
      * @return
      */
 	int insertList(@Param("list")List<RoomPeriods> list);
+	
+	public List<Periods> getPeriod(String weeks);
+	
 }

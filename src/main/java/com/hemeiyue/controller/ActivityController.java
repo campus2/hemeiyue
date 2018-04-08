@@ -25,15 +25,18 @@ import com.hemeiyue.common.ActivityModel;
 import com.hemeiyue.common.ActivityUserModel;
 import com.hemeiyue.common.ResultBean;
 import com.hemeiyue.common.ResultList;
+import com.hemeiyue.dao.UsersMapper;
 import com.hemeiyue.entity.Activity;
 import com.hemeiyue.entity.Admin;
 import com.hemeiyue.entity.Schools;
+import com.hemeiyue.entity.Users;
 import com.hemeiyue.service.ActivityService;
 import com.hemeiyue.util.CodeUtil;
 import com.hemeiyue.util.DateUtil;
 import com.hemeiyue.util.ExcelUtil;
 import com.hemeiyue.util.JSONUtil;
 import com.hemeiyue.util.PicUtil;
+import com.hemeiyue.util.WX_Util;
 
 @Controller
 @RequestMapping("/activity")
@@ -69,6 +72,8 @@ public class ActivityController {
 	    return entity;
 	}
 	
+	@Autowired
+	private UsersMapper usersMapper;
 	/**
 	 * 上传活动图片
 	 * @param file
@@ -174,5 +179,72 @@ public class ActivityController {
 	@ResponseBody
 	public ResultBean deleteActivity(@RequestParam("activityId")int activityId) {
 		return activityService.deleteById(activityId);
+	}
+	
+	/**
+	 * 返回指定活动的详细信息
+	 * @param id
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/getActivityDetail")
+	@ResponseBody
+	public ResultBean  getActivityDetail(int id,HttpServletRequest request) {
+		Users user = (Users) request.getSession().getAttribute("user");
+		if(user == null) {
+			return new ResultBean(false);
+		}
+		return activityService.findById(id,user);
+	}
+	
+	@RequestMapping("/getArtivityList")
+	@ResponseBody
+	public String getArtivityList(HttpServletRequest request) {
+		Schools school = (Schools) request.getSession().getAttribute("school");
+		return activityService.findArtivityList(school);
+	}
+	
+	/**
+	 * 扫描二维码后台获取activityId，用于签到，
+	 * 如过得到该活动还没有举办，还用户是否已经报名等。能扫码签到，签到时要把用户得签到时间记录在数据库里，
+	 * 如果code为空，去session找是否为空。因为可以直接用微信扫二维码或者在小程序里面扫
+	 * @param code
+	 * @param activityId
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/weChatScan")
+	@ResponseBody
+	public String weChatScan(@RequestParam("code")String code,@RequestParam("activityId")int activityId,
+				HttpServletRequest request) {
+		Users user;
+		//如果code为空，从session获取userId
+		if(code == null || code.isEmpty()) {
+			user = (Users) request.getSession().getAttribute("user");
+			
+		}else {			//code不为空，从腾讯客户端获取openId
+			String openId = WX_Util.getOpenId(code).get("openId");
+			user = usersMapper.selectByOpenId(openId);
+		}
+		if(user == null || user.getId() == 0) {
+			return JSONUtil.transform(new ResultBean(false));
+		}
+		return activityService.updateWeChatScan(user, activityId);
+	}
+	
+	/**
+	 * 处理用户的活动申请
+	 * @param activityId	活动Id
+	 * @param request		
+	 * @return
+	 */
+	@RequestMapping("/handleActivityApply")
+	@ResponseBody
+	public String handleActivityApply(Integer activityId,HttpServletRequest request) {
+		Users user = (Users) request.getSession().getAttribute("user");
+		if(user == null || user.getId() == 0) {
+			return JSONUtil.transform(new ResultBean(false));
+		}
+		return activityService.insertActivityApply(activityId, user.getId());
 	}
 }

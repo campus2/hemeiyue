@@ -1,8 +1,5 @@
 package hemeiyue;
 
-import java.sql.Timestamp;
-import java.util.Date;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,14 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.hemeiyue.common.ResultBean;
 import com.hemeiyue.common.ResultList;
-import com.hemeiyue.entity.Activity;
-import com.hemeiyue.entity.Admin;
-import com.hemeiyue.entity.Notification;
-import com.hemeiyue.entity.Schools;
 import com.hemeiyue.service.NotificationService;
-import com.hemeiyue.util.DateUtil;
 import com.hemeiyue.util.JSONUtil;
 
 @RunWith(SpringJUnit4ClassRunner.class)

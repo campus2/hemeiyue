@@ -8,17 +8,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 public class ResultList extends ResultBean{
 	private List<?> list;
 
-	
-	public ResultList(boolean result,List<?> list) {
-		super(result);
-		this.list = list;
-	}
-
-	public ResultList() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
 	public ResultList(boolean result, String code, String message) {
 		super(result, code, message);
 		// TODO Auto-generated constructor stub
@@ -39,6 +28,15 @@ public class ResultList extends ResultBean{
 	}
 
 	public void setList(List<?> list) {
+		this.list = list;
+	}
+	
+	public ResultList() {
+		
+	}
+	
+	public ResultList(boolean result,List<?> list) {
+		super(result);
 		this.list = list;
 	}
 	

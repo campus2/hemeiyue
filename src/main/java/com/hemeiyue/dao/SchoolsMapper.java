@@ -32,4 +32,18 @@ public interface SchoolsMapper {
 	public Long getTotal(Map<String, Object> map);
 	
 	public int findSchool(String school);
+	
+	/**
+	 * 模糊查询学校
+	 * @param school
+	 * @return
+	 */
+	public List<Schools> selectSchool(String school);
+	
+	/**
+	 * 查找学校
+	 * @param school
+	 * @return
+	 */
+	public Schools querySchool(String school);
 }
