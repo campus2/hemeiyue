@@ -77,7 +77,7 @@ public class AdminServiceImpl implements AdminService{
 		
 		//检查该管理员的上级是否被封停
 		if(currentAdmin.getParentId() > 1 && 
-				adminMapper.selectById(currentAdmin.getParentId()).getStatus() == 1){
+				adminMapper.selectById(currentAdmin.getParentId()).getStatus() == 0){
 			return new ResultBean(false, "该管理员的上级不可用");
 		}
 		

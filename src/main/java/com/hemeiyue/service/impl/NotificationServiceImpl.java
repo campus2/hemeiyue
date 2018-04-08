@@ -1,9 +1,8 @@
 package com.hemeiyue.service.impl;
 
-import java.text.ParseException;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +13,6 @@ import com.hemeiyue.dao.NotificationMapper;
 import com.hemeiyue.entity.Notification;
 import com.hemeiyue.entity.Schools;
 import com.hemeiyue.service.NotificationService;
-import com.hemeiyue.util.DateUtil;
 
 @Service("notificationService")
 public class NotificationServiceImpl implements NotificationService{
@@ -23,23 +21,17 @@ public class NotificationServiceImpl implements NotificationService{
 	private NotificationMapper notificationMapper;
 
 	@Override
-	public ResultBean insert(Notification notification,HttpServletRequest request) {
-		try {
-			notification.setDate(DateUtil.date());
-			notification.setTime(DateUtil.time());
-			notification.setSchool((Schools) request.getSession().getAttribute("school"));
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		if(notificationMapper.insert(notification) == 1) return new ResultBean(true);
-		return new ResultBean(false);
+	public ResultBean insert(Notification notification, Schools school) {
+		notification.setDate(new Timestamp(new Date().getTime()));
+		notification.setSchool(school);
+		if(notificationMapper.insert(notification) == 1) return new ResultBean(true,"发布成功");
+		return new ResultBean(false,"发布失败");
 	}
 
 	@Override
 	public ResultBean delete(Integer id) {
-		if(notificationMapper.delete(id) == 1) return new ResultBean(true);
-		return new ResultBean(false);
+		if(notificationMapper.delete(id) == 1) return new ResultBean(true,"删除成功");
+		return new ResultBean(false,"删除失败");
 	}
 
 	@Override

@@ -8,13 +8,14 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.hemeiyue.common.ActivityUserModel;
 import com.hemeiyue.common.ResultBean;
+import com.hemeiyue.common.ResultList;
 import com.hemeiyue.dao.ActivityMapper;
 import com.hemeiyue.dao.ActivityUserMapper;
 import com.hemeiyue.entity.Activity;
 import com.hemeiyue.entity.ActivityUser;
 import com.hemeiyue.entity.Schools;
-import com.hemeiyue.entity.Users;
 import com.hemeiyue.service.ActivityService;
 import com.hemeiyue.util.JSONUtil;
 
@@ -39,8 +40,11 @@ public class ActivityServiceImpl implements ActivityService{
 	public String findActivity(Schools school) {
 		Map<String, Object> map = new HashMap<>();
 		map.put("school", school);
-		List<Activity> list = activityMapper.find(map);
-		return JSONUtil.transform(list);
+		List<Activity> list = activityMapper.findActivityDesc(map);
+		if(list!=null && list.size()>0) {
+			return JSONUtil.transform(new ResultList(true,list));
+		}
+		return JSONUtil.transform(new ResultList(false,"暂无活动"));
 	}
 
 	@Override
@@ -52,17 +56,21 @@ public class ActivityServiceImpl implements ActivityService{
 	}
 
 	@Override
-	public String getUsersByActivity(Activity activity) {
+	public ResultList getUsersByActivity(Activity activity) {
 		Map<String, Object> map = new HashMap<>();
 		map.put("activityId", activity.getId());
 		List<ActivityUser> list = activityUserMapper.find(map);
 		
-		//抽取报名用户
-		List<Users> userList = new ArrayList<>();
+		//抽取报名用户和签到信息
+		List<ActivityUserModel> userList = new ArrayList<>();
 		for (ActivityUser au : list) {
-			userList.add(au.getUser());
+			ActivityUserModel aum = new ActivityUserModel();
+			aum.setUserInfo(au.getUser());
+			aum.setStatus(au.getStatus());
+			userList.add(aum);
 		}
-		return JSONUtil.transform(userList);
+		System.out.println(JSONUtil.transform(userList));
+		return new ResultList(true, userList);
 	}
 	
 	@Override

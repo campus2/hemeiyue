@@ -46,8 +46,13 @@ public class Admin {
     	
     @Email(message="邮箱格式不正确",groups= {com.hemeiyue.entity.validation.AdminRegister.class,com.hemeiyue.entity.validation.AdminModify.class})
     private String email;
+    
     @Null
     private Integer parentId;
+    
+    /**
+     * 0：不可用，1：可用
+     */
     @Null
     private Integer status;
     @Null

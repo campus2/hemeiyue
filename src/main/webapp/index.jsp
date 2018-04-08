@@ -20,5 +20,7 @@
 		"password":"123456"
 		}));
 </script>
+<img alt="" src="http://localhost:8080/hemeiyue/activity/getQrCode?activityId=6" />
+<a href="http://localhost:8080/hemeiyue/activity/down?id=8">Excel</a>
 </body>
 </html>

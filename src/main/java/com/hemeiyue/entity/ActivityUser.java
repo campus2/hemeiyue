@@ -8,6 +8,9 @@ public class ActivityUser {
 	
 	private Users user;
 	
+	/**
+	 * 0:未签到，1：签到
+	 */
 	private Integer status;
 	
 	public Integer getId() {

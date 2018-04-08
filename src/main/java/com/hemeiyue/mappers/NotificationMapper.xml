@@ -6,8 +6,8 @@
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="title" property="title" jdbcType="VARCHAR" />
         <result column="content" property="content" jdbcType="VARCHAR" />
-        <result column="date" property="date" />
-        <result column="time" property="time" jdbcType="VARCHAR" />
+        <result column="date" property="date" jdbcType="TIMESTAMP"/>
+         <result column="time" property="time" jdbcType="TIMESTAMP"/>
         <result column="status" property="status" jdbcType="INTEGER" />
         <association property="school" column="schoolId" select="com.hemeiyue.dao.SchoolsMapper.selectById" />
     </resultMap>
@@ -48,10 +48,10 @@
                 #{content,jdbcType=VARCHAR},
             </if>
             <if test="date != null" >
-                #{date,jdbcType=DATE},
+                #{date,jdbcType=TIMESTAMP},
             </if>
             <if test="time != null" >
-                #{time,jdbcType=VARCHAR},
+                #{time,jdbcType=TIMESTAMP},
             </if>
             <if test="school != null" >
                 #{school.id,jdbcType=INTEGER},
@@ -69,9 +69,9 @@
 	</update>
 	
 	<select id="findAll" parameterType="Integer" resultMap="BaseResultMap">
-		select id, title, content, schoolId, date, time, status
+		select id, title, date, time
 		 from notification 
-		 where schoolId = #{schoolId}
+		 where schoolId = #{schoolId} and status > 0 order by time desc
 	</select>
 	
 </mapper>

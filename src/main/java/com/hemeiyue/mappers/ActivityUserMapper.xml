@@ -15,7 +15,6 @@
 		select *from activityuser
 		<where>
 			<if test="activityId!=null and activityId!=''">and activityId=#{activityId}</if>
-			and status > 0
 		</where>
 	</select>    
     

@@ -8,7 +8,7 @@
         <result column="content" property="content" jdbcType="VARCHAR" />
         <result column="date" property="date" jdbcType="TIMESTAMP" />
         <result column="time" property="time" jdbcType="TIMESTAMP" />
-        <result column="count" property="count" jdbcType="INTEGER" />
+        <result column="number" property="number" jdbcType="INTEGER" />
         <result column="status" property="status" jdbcType="INTEGER" />
         <result column="imageUrl" property="imageUrl" jdbcType="VARCHAR" />
         <result column="address" property="address" jdbcType="VARCHAR" />
@@ -18,6 +18,37 @@
     
     <select id="selectById" parameterType="Integer" resultType="Activity">
     	select *from activity where id=#{id}
+    </select>
+    
+    <select id="findActivityDesc" parameterType="Map" resultMap="BaseResultMap">
+    	select id, title, address, date,time,status from activity
+    	<where>
+    		<if test="title!=null and title!=''">
+    			and title = #{title}
+    		</if>
+    		<if test="date!=null">
+    			and date = #{date}
+    		</if>
+    		<if test="time!=null and time!=''">
+    			and time = #{time}
+    		</if>
+    		<if test="number!=null and number!=''">
+    			and number = #{number}
+    		</if>
+    		<if test="imageUrl!=null">
+    			imageUrl = #{imageUrl}
+    		</if>
+    		<if test="address!=null">
+    			and address = #{address}
+    		</if>
+    		<if test="school!=null">
+    			and schoolId = #{school.id}
+    		</if>
+    		<if test="owner!=null">
+    			and ownerId = #{owner.id}
+    		</if>
+    		
+    	</where>
     </select>
     
     <update id="deleteById" parameterType="Integer">
@@ -40,8 +71,8 @@
             <if test="time != null" >
                 time = #{time,jdbcType=TIMESTAMP},
             </if>
-            <if test="count != null" >
-                count = #{count,jdbcType=INTEGER},
+            <if test="number != null" >
+                number = #{number,jdbcType=INTEGER},
             </if>
             <if test="status != null" >
                 status = #{status,jdbcType=VARCHAR},
@@ -74,8 +105,8 @@
     		<if test="time!=null and time!=''">
     			and time = #{time}
     		</if>
-    		<if test="count!=null and count!=''">
-    			and count = #{count}
+    		<if test="number!=null and number!=''">
+    			and number = #{number}
     		</if>
     		<if test="imageUrl!=null">
     			imageUrl = #{imageUrl}
@@ -89,8 +120,6 @@
     		<if test="owner!=null">
     			and ownerId = #{owner.id}
     		</if>
-    		
-    		and status>0
     	</where>
     </select>
     
@@ -114,13 +143,10 @@
                 date,
             </if>
             <if test="time != null">
-            	time
+            	time,
             </if>
-            <if test="count != null" >
-                count,
-            </if>
-            <if test="status != null" >
-                status,
+            <if test="number != null" >
+                number,
             </if>
             <if test="address != null">
     			address,
@@ -131,6 +157,9 @@
     		<if test="owner != null">
     			ownerId,
     		</if>
+    		<if test="status != null" >
+                status,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides="," >
             <if test="id != null" >
@@ -143,7 +172,7 @@
                 #{content,jdbcType=VARCHAR},
             </if>
             <if test="imageUrl!=null">
-    			#{imageUrl}
+    			#{imageUrl,jdbcType=VARCHAR},
     		</if>
             <if test="date != null" >
                 #{date,jdbcType=TIMESTAMP},
@@ -151,8 +180,8 @@
              <if test="time != null" >
                 #{time,jdbcType=TIMESTAMP},
             </if>
-            <if test="count != null" >
-                #{count,jdbcType=VARCHAR},
+            <if test="number != null" >
+                #{number,jdbcType=VARCHAR},
             </if>
             <if test="address != null" >
                 #{address,jdbcType=VARCHAR},

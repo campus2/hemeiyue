@@ -42,4 +42,11 @@ public interface ActivityMapper {
 	 */
 	public int update(Activity activity);
 
+	/**
+	 * 查询活动简介
+	 * @param map
+	 * @return
+	 */
+	public List<Activity> findActivityDesc(Map<String, Object> map);
+
 }

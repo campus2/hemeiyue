@@ -6,7 +6,6 @@ import java.util.UUID;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.hemeiyue.common.PictureResult;
 import com.hemeiyue.common.ResultBean;
 
 /**
@@ -16,8 +15,8 @@ import com.hemeiyue.common.ResultBean;
  */
 public class PicUtil {
 
-	public ResultBean uploadPic(MultipartFile file) {
-		String localPath=this.getClass().getClassLoader().getResource("").getPath().replaceAll("/WEB-INF/classes/", "/assets/activityImage/");  
+	public ResultBean uploadPic(MultipartFile file, String location) {
+		String localPath=this.getClass().getClassLoader().getResource("").getPath().replaceAll("/WEB-INF/classes/", location==null?"/assets/activityImage/":location);  
 		System.out.println(localPath);
 		//若没有这个目录则新建一个
 		File dir = new File(localPath);
@@ -52,7 +51,7 @@ public class PicUtil {
 				System.out.println("exception");
 				return new ResultBean(false,"保存文件失败");
 			}
-	        String url = ("/assets/wechatImage/"+filename);
+	        String url = (location==null?"/assets/activityImage/":location+filename);
 	        return new ResultBean(true, url);
 		}
 		return new ResultBean(false,"文件为空");

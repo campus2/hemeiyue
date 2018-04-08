@@ -1,6 +1,7 @@
 package com.hemeiyue.service;
 
 import com.hemeiyue.common.ResultBean;
+import com.hemeiyue.common.ResultList;
 import com.hemeiyue.entity.Activity;
 import com.hemeiyue.entity.Schools;
 
@@ -32,7 +33,7 @@ public interface ActivityService {
 	 * @param activity
 	 * @return
 	 */
-	public String getUsersByActivity(Activity activity);
+	public ResultList getUsersByActivity(Activity activity);
 
 	/**
 	 * 根据id查询

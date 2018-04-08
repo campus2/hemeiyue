@@ -1,13 +1,12 @@
 package com.hemeiyue.service;
 
-import javax.servlet.http.HttpServletRequest;
-
 import com.hemeiyue.common.ResultBean;
 import com.hemeiyue.entity.Notification;
+import com.hemeiyue.entity.Schools;
 
 public interface NotificationService {
 	
-	public ResultBean insert(Notification notification,HttpServletRequest request);
+	public ResultBean insert(Notification notification,Schools school);
 	
 	public ResultBean delete(Integer id);
 	

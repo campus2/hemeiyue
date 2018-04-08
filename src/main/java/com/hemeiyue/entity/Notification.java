@@ -1,7 +1,15 @@
 package com.hemeiyue.entity;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.hemeiyue.util.DateHHmmJSONDeserializer;
+import com.hemeiyue.util.DateHHmmJSONSerializer;
+import com.hemeiyue.util.DateYYMMddJSONDeserializer;
+import com.hemeiyue.util.DateYYMMddJSONSerializer;
+
+@JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
 public class Notification {
 	private Integer id;
 	
@@ -9,9 +17,13 @@ public class Notification {
 	
 	private String content;
 	
-	private Date date;
+	@JsonDeserialize(using=DateYYMMddJSONDeserializer.class)
+	@JsonSerialize(using=DateYYMMddJSONSerializer.class)
+	private Timestamp date;
 	
-	private String time;
+	@JsonDeserialize(using=DateHHmmJSONDeserializer.class)
+	@JsonSerialize(using=DateHHmmJSONSerializer.class)
+	private Timestamp time;
 	
 	private Integer status;
 	
@@ -23,6 +35,15 @@ public class Notification {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+	
+
+	public Timestamp getTime() {
+		return time;
+	}
+
+	public void setTime(Timestamp time) {
+		this.time = time;
 	}
 
 	public String getTitle() {
@@ -41,20 +62,13 @@ public class Notification {
 		this.content = content;
 	}
 
-	public Date getDate() {
+
+	public Timestamp getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(Timestamp date) {
 		this.date = date;
-	}
-
-	public String getTime() {
-		return time;
-	}
-
-	public void setTime(String time) {
-		this.time = time;
 	}
 
 	public Integer getStatus() {

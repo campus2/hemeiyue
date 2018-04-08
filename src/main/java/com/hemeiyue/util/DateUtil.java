@@ -51,14 +51,24 @@ public class DateUtil {
 		if(w < 0) w = 0;
 		return weekdays[w];
 	}
+	
 	/**
-	 * 返回  yyyy-MM-dd HH:mm:ss 格式的时间
+	 * 当前时间戳yyyy-MM-dd
+	 * @return
+	 */
+	public static Timestamp currentDate() {
+		return date2stamp(dateToString(new Timestamp(new Date().getTime())));
+	}
+	
+	
+	/**
+	 * 返回  yyyy-MM-dd 格式的时间
 	 * @return
 	 * @throws ParseException
 	 */
 	public static  Date dateTime() throws ParseException {
 		Date date = new Date();//获得系统时间.
-        SimpleDateFormat sdf =   new SimpleDateFormat( " yyyy-MM-dd HH:mm:ss " );
+        SimpleDateFormat sdf =   new SimpleDateFormat( "yyyy-MM-dd" );
         String nowTime = sdf.format(date);
         Date time = sdf.parse( nowTime );
 		return time;
@@ -85,6 +95,24 @@ public class DateUtil {
 		SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
 	    try {
 			return new Timestamp(formatter.parse(time).getTime());
+		} catch (ParseException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	/**
+	 * 返回yyyy-MM-dd的时间戳
+	 * @param time
+	 * @return
+	 */
+	public static Timestamp date2stamp(String date) {
+		if(date==null || date.isEmpty()) {
+			throw new IllegalArgumentException("时间戳为空");
+		}
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+	    try {
+			return new Timestamp(formatter.parse(date).getTime());
 		} catch (ParseException e) {
 			e.printStackTrace();
 			return null;

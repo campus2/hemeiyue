@@ -201,4 +201,16 @@ public class AdminController {
 		admin.setPassword(password);
 		return adminService.findPassword(admin);
 	}
+	
+	@RequestMapping("/logout")
+	@ResponseBody
+	public ResultBean logout(HttpServletRequest request) {
+//		request.getSession().removeAttribute("currentAdmin");
+//		request.getSession().removeAttribute("school");
+		
+		request.getServletContext().removeAttribute("currentAdmin");
+		request.getServletContext().removeAttribute("school");
+		return new ResultBean(false, "退出成功");
+		
+	}
 }

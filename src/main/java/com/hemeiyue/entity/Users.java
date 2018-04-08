@@ -1,5 +1,7 @@
 package com.hemeiyue.entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 /**
  * 微信用户
  * 
@@ -7,6 +9,7 @@ package com.hemeiyue.entity;
  * 
  * @date 2018-03-14
  */
+@JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
 public class Users {
     private Integer id;
 
@@ -24,6 +27,16 @@ public class Users {
     
     private String studentNum;
     
+    private String classRoom;
+    
+	public String getClassRoom() {
+		return classRoom;
+	}
+
+	public void setClassRoom(String classRoom) {
+		this.classRoom = classRoom;
+	}
+
 	public Integer getId() {
         return id;
     }

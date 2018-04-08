@@ -18,7 +18,7 @@ public class Activity {
 	
 	private String content;
 	
-	private Integer count;
+	private Integer number;
 	
 	@JsonDeserialize(using=DateYYMMddJSONDeserializer.class)
 	@JsonSerialize(using=DateYYMMddJSONSerializer.class)
@@ -36,6 +36,9 @@ public class Activity {
 	
 	private Schools school;
 	
+	/**
+	 * 0待举办，1：已举办
+	 */
 	private Integer status;
 	
 	public Activity(Integer id) {
@@ -80,12 +83,14 @@ public class Activity {
 		this.content = content;
 	}
 
-	public Integer getCount() {
-		return count;
+	
+
+	public Integer getNumber() {
+		return number;
 	}
 
-	public void setCount(Integer count) {
-		this.count = count;
+	public void setNumber(Integer number) {
+		this.number = number;
 	}
 
 	public Date getDate() {
@@ -135,5 +140,13 @@ public class Activity {
 	public void setSchool(Schools school) {
 		this.school = school;
 	}
+
+	@Override
+	public String toString() {
+		return "Activity [id=" + id + ", title=" + title + ", content=" + content + ", count=" + number + ", date="
+				+ date + ", time=" + time + ", imageUrl=" + imageUrl + ", address=" + address + ", owner=" + owner
+				+ ", school=" + school + ", status=" + status + "]";
+	}
+	
 	
 }

@@ -49,7 +49,7 @@
     <insert id="insertList" parameterType="java.util.List" useGeneratedKeys="true">
     	insert into roomperiods values
     	<foreach collection="list" item="item" separator=",">
-    		(null, #{item.room.id},#{item.period.id},#{item.weeks},#{item.expirdate},#{item.requiredconfirm},#{item.deadline}fi,#{item.status})
+    		(null, #{item.room.id},#{item.period.id},#{item.weeks},#{item.expirdate},#{item.requiredconfirm},#{item.deadline},#{item.status})
     	</foreach>
     </insert>
 

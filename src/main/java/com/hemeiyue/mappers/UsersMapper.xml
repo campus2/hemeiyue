@@ -10,16 +10,17 @@
         <result column="phone" property="phone" jdbcType="VARCHAR" />
         <result column="address" property="address" jdbcType="VARCHAR" />
         <result column="studentNum" property="studentNum" jdbcType="VARCHAR" />
+         <result column="classRoom" property="classRoom" jdbcType="VARCHAR" />
         <association property="school" column="schoolId" select="com.hemeiyue.dao.SchoolsMapper.selectById" />
     </resultMap>
 
     <sql id="Base_Column_List" >
-        id, openId, userName, email, phone, address,studentNum
+        id, openId, userName, email, phone, address,studentNum,classRoom
     </sql>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
         select 
-        <include refid="Base_Column_List" />
+         userName, phone, address,studentNum,classRoom
         from users
         where id = #{id,jdbcType=INTEGER}
     </select>
@@ -31,10 +32,10 @@
 
     <insert id="insert" parameterType="com.hemeiyue.entity.Users" >
         insert into users (id, openId, schoolId, 
-            userName, email, phone, 
+            userName, email, phone, classRoom,
             address,studentNum)
         values (#{id,jdbcType=INTEGER}, #{openId,jdbcType=VARCHAR}, #{schoolId,jdbcType=INTEGER}, 
-            #{userName,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+            #{userName,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{classRoom,jdbcType=VARCHAR},
             #{address,jdbcType=VARCHAR},#{studentNum,jdbcType=VARCHAR})
     </insert>
 
@@ -62,6 +63,9 @@
             <if test="address != null" >
                 address,
             </if>
+            <if test="classRoom != null" >
+                classRoom,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides="," >
             <if test="id != null" >
@@ -84,6 +88,9 @@
             </if>
             <if test="studentNum != null" >
                 #{studentNum,jdbcType=VARCHAR},
+            </if>
+            <if test="classRoom != null" >
+                #{classRoom,jdbcType=VARCHAR},
             </if>
         </trim>
     </insert>
@@ -111,6 +118,9 @@
             </if>
             <if test="studentNum != null" >
                 studentNum = #{studentNum,jdbcType=VARCHAR},
+            </if>
+            <if test="classRoom != null" >
+               classRoom = #{classRoom,jdbcType=VARCHAR},
             </if>
         </set>
         where id = #{id,jdbcType=INTEGER}

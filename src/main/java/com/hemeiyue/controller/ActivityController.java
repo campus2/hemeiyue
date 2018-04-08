@@ -1,9 +1,17 @@
 package com.hemeiyue.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,14 +20,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.hemeiyue.annotion.AuthLoginAnnotation;
+import com.hemeiyue.common.ActivityModel;
+import com.hemeiyue.common.ActivityUserModel;
 import com.hemeiyue.common.ResultBean;
+import com.hemeiyue.common.ResultList;
 import com.hemeiyue.entity.Activity;
 import com.hemeiyue.entity.Admin;
 import com.hemeiyue.entity.Schools;
-import com.hemeiyue.entity.WechatPicture;
 import com.hemeiyue.service.ActivityService;
 import com.hemeiyue.util.CodeUtil;
+import com.hemeiyue.util.DateUtil;
+import com.hemeiyue.util.ExcelUtil;
 import com.hemeiyue.util.JSONUtil;
+import com.hemeiyue.util.PicUtil;
 
 @Controller
 @RequestMapping("/activity")
@@ -27,6 +41,33 @@ public class ActivityController {
 
 	@Autowired
 	private ActivityService activityService;
+	
+	@SuppressWarnings("unchecked")
+	@RequestMapping("/down")
+	public ResponseEntity<byte[]> downActivityExcel(Integer id) throws Exception {
+		//文件目录
+		String localPath = this.getClass().getClassLoader().getResource("")
+			.getPath().replaceAll("/WEB-INF/classes/", "/assets/excel/");  
+		//若没有这个目录则新建一个
+		File dir = new File(localPath);
+		if(!dir.exists()) {
+			dir.mkdirs();
+		}
+		//文件名字，文件内容
+		File excelFile = ExcelUtil.createActivityExcel(localPath+"hemeiyue.xls", 
+				(List<ActivityUserModel>) activityService.getUsersByActivity(new Activity(id)).getList());
+		byte[] body = null;
+	    InputStream is = new FileInputStream(excelFile);
+	    body = new byte[is.available()];
+	    is.read(body);
+		HttpHeaders headers = new HttpHeaders();
+	    headers.add("Content-Disposition", "attchement;filename=" + excelFile.getName());
+	    headers.add("Content-Type", "application/octet-stream");
+	    HttpStatus statusCode = HttpStatus.OK;
+	    ResponseEntity<byte[]> entity = new ResponseEntity<byte[]>(body, headers, statusCode);
+	    is.close();
+	    return entity;
+	}
 	
 	/**
 	 * 上传活动图片
@@ -36,10 +77,16 @@ public class ActivityController {
 	 */
 	@RequestMapping(value="/upload",method=RequestMethod.POST)
 	@ResponseBody
-	public ResultBean upload(MultipartFile file,HttpServletRequest request) {
-		System.out.println("test");
-		WechatPicture wechatPicture = new WechatPicture();
-		wechatPicture.setFile(file);
+	@AuthLoginAnnotation(checkLogin=true)
+	public String upload(MultipartFile file,HttpServletRequest request) {
+		System.out.println("pic upload test");
+		ResultBean result = new PicUtil().uploadPic(file,"/assets/activityImage/");
+		if(result.isResult()) {
+//			request.getSession().setAttribute("imageUrl",result.getMessage());
+			request.getServletContext().setAttribute("imageUrl",result.getMessage());
+			//返回图片URL
+			return result.getMessage();
+		}
 		return null;
 	}
 	
@@ -51,7 +98,8 @@ public class ActivityController {
 	 */
 	@RequestMapping("/addActivity")
 	@ResponseBody
-	public ResultBean addActivity(@RequestBody Activity activity,
+	@AuthLoginAnnotation(checkLogin=true)
+	public ResultBean addActivity(@RequestBody ActivityModel model,
 			HttpServletRequest request) {
 		//当前管理员和学校
 //		Admin admin = (Admin)request.getSession().getAttribute("currentAdmin");
@@ -59,24 +107,24 @@ public class ActivityController {
 //		String imageUrl = (Admin)request.getSession().getAttribute("imageUrl");
 		String imageUrl = (String) request.getServletContext().getAttribute("imageUrl");
 
+		Activity activity = new Activity();
 		if(imageUrl != null) {
 			//更新活动
-//			activity = (Activity) request.getSession().getAttribute("activity");
-			activity = (Activity) request.getServletContext().getAttribute("activity");
 			activity.setImageUrl(imageUrl);
-			return activityService.updateActivity(activity);
-		}else {
-			Schools school = admin.getSchool();
-			activity.setOwner(admin);
-			activity.setSchool(school);
-			//添加
-			ResultBean result = activityService.insertActivity(activity);
-			//添加activity临时缓存，用于更新image
-//			request.getSession().setAttribute("activity",activity);
-			request.getServletContext().setAttribute("activity",activity);
-			
-			return result;
+//			request.getSession().removeAttribute("imageUrl");
+			request.getServletContext().removeAttribute("imageUrl");
 		}
+		activity.setOwner(admin);
+		activity.setSchool(admin.getSchool());
+		activity.setTitle(model.getTitle());
+		activity.setContent(model.getContent());
+		activity.setNumber(model.getNumber());
+		activity.setAddress(model.getAddress());
+		activity.setDate(DateUtil.date2stamp(model.getDate()));
+		activity.setTime(DateUtil.time2stamp(model.getTime()));
+		activity.setStatus(0);
+		//添加
+		return activityService.insertActivity(activity);
 		
 	}
 	
@@ -87,8 +135,10 @@ public class ActivityController {
 	 */
 	@RequestMapping("/activityList")
 	@ResponseBody
+	@AuthLoginAnnotation(checkLogin=true)
 	public String activityList(HttpServletRequest request) {
-		Schools school = (Schools) request.getSession().getAttribute("school");
+//		Schools school = (Schools) request.getSession().getAttribute("school");
+		Schools school = (Schools) request.getServletContext().getAttribute("school");
 		String list = activityService.findActivity(school);
 		if(list==null ||list.equals("")) return JSONUtil.transform(new ResultBean(false, "暂无活动信息"));
 		
@@ -115,7 +165,8 @@ public class ActivityController {
 	 */
 	@RequestMapping("/getAll")
 	@ResponseBody
-	public String getAll(@RequestParam("activityId")int activityId) {
+	@AuthLoginAnnotation(checkLogin=true)
+	public ResultList getAll(@RequestParam("activityId")int activityId) {
 		return activityService.getUsersByActivity(new Activity(activityId));
 	}
 	
