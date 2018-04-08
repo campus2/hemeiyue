@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.hemeiyue.common.ResultBean;
+import com.hemeiyue.common.UsersModel;
 import com.hemeiyue.entity.Users;
 import com.hemeiyue.service.UsersService;
+import com.hemeiyue.util.JSONUtil;
 import com.hemeiyue.util.ResponseUtil;
 
 @Controller
@@ -24,6 +26,12 @@ public class UsersController {
 	
 	@RequestMapping("/login")
 	@ResponseBody
+	/**
+	 * 小程序用户登录
+	 * @param code		小程序临时登录凭证
+	 * @param request
+	 * @return
+	 */
 	public ResultBean login(@RequestParam("code")String code,HttpServletRequest request) {
 		return userService.login(code,request);
 	} 
@@ -55,6 +63,42 @@ public class UsersController {
 	@ResponseBody
 	public String reserve(HttpServletRequest request){
 		Users user = (Users) request.getSession().getAttribute("user");
-		return null;
+		if(user != null) {
+			return userService.reserve(user.getId());
+		}
+		return JSONUtil.transform(new ResultBean(false));
+	}
+	
+	@RequestMapping("/reserveHistory")
+	@ResponseBody
+	public String reserveHistory(HttpServletRequest request) {
+		Users user = (Users) request.getSession().getAttribute("user");
+		if(user != null) {
+			return userService.reserveHistory(user.getId());
+		}
+		return JSONUtil.transform(new ResultBean(false));
+	}
+	
+	@RequestMapping("/personalInfo")
+	@ResponseBody
+	public String personalInfo(HttpServletRequest request) {
+		Users user = (Users) request.getSession().getAttribute("user");
+		if(user != null) {
+			return userService.selectPersonalInfo(user.getId());
+		}
+		return JSONUtil.transform(null);
+	}
+	
+	@RequestMapping("/modifyPersonalInfo")
+	@ResponseBody
+	public ResultBean modifyPersonalInfo(UsersModel user) {
+		return userService.updatePersonalInfo(user);
+	}
+	
+	@RequestMapping("/getApplyInfo")
+	@ResponseBody
+	public String getApplyInfo(HttpServletRequest request) {
+		Users user = (Users) request.getSession().getAttribute("user");
+		return userService.getApplyInfo(user);
 	}
 }

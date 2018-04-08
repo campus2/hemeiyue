@@ -73,5 +73,12 @@ public interface ActivityService {
 	 * @return
 	 */
 	public ResultBean updateActivity(Activity activity);
-
+	
+	/**
+	 * 用户参加活动
+	 * @param activityId
+	 * @param userId
+	 * @return
+	 */
+	public String insertActivityApply(Integer activityId,Integer userId);
 }

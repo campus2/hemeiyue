@@ -5,9 +5,7 @@
     <resultMap id="BaseResultMap" type="com.hemeiyue.entity.ActivityUser" >
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="status" property="status" jdbcType="INTEGER" />
-        <!-- 
         <association property="activity" column="activityId" select="com.hemeiyue.dao.ActivityMapper.selectById"/>
-         -->
         <association property="user" column="userId" select="com.hemeiyue.dao.UsersMapper.selectByPrimaryKey"/>
     </resultMap>
 	
@@ -58,6 +56,10 @@
     </select>
     
     <update id="updateSignTime" parameterType="com.hemeiyue.entity.ActivityUser">
-    	update activityuser set signTime = #{signTime} where id = #{id}
+    	update activityuser set signTime = #{signTime},status = 1 where id = #{id}
     </update>
+    
+    <insert id="insertByActivityUserModel"  parameterType="com.hemeiyue.common.ActivityUserModel">
+    	insert into activityUser (activityId,userId,status) values(#{activityId},#{userId},#{status})
+    </insert>
 </mapper>

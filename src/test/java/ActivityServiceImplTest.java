@@ -15,29 +15,34 @@ import com.hemeiyue.util.JSONUtil;
 public class ActivityServiceImplTest {
 	
 	@Autowired 
-	private ActivityService activityServiceImpl;
+	private ActivityService activityService;
 
 	@Test
 	public void testSelectById() {
 		Users user = new Users();
 		user.setId(2);
-		System.out.println(JSONUtil.transform(activityServiceImpl.findById(1,user)));
+		System.out.println(JSONUtil.transform(activityService.findById(1,user)));
 	}
 	
 	@Test
 	public void findActivity() {
 		Schools school = new Schools();
 		school.setId(21);
-		System.out.println(activityServiceImpl.findActivity(school));
+		System.out.println(activityService.findActivity(school));
 	}
 	
 	@Test
 	public void findArtivityList() {
 //		Schools school = new Schools();
 //		school.setId(21);
-//		System.out.println(activityServiceImpl.findArtivityList(school));
+//		System.out.println(activityService.findArtivityList(school));
 		Users user = new Users();
-		user.setId(2);
-		System.out.println(activityServiceImpl.updateWeChatScan(user,1));;
+		user.setId(1);
+		System.out.println(activityService.updateWeChatScan(user,1));
+	}
+	
+	@Test
+	public void findInsertActivityApply() {
+		System.out.println(activityService.insertActivityApply(1, 1));
 	}
 }

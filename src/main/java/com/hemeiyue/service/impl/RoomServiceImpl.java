@@ -27,6 +27,7 @@ import com.hemeiyue.entity.Rooms;
 import com.hemeiyue.entity.Schools;
 import com.hemeiyue.service.RoomService;
 import com.hemeiyue.util.DateUtil;
+import com.hemeiyue.util.JSONUtil;
 
 @Service("roomService")
 public class RoomServiceImpl implements RoomService {
@@ -246,5 +247,28 @@ public class RoomServiceImpl implements RoomService {
 		}else {
 			return new ResultBean(false, "修改失败");
 		}
+	}
+
+	@Override
+	public String getRoom(String roomType, Schools school) {
+		if(school == null || roomType.isEmpty() || school.getId() == 0) {
+			return JSONUtil.transform(new ResultAddPeriod(false));
+		}
+		
+		//获取对应roomType的实体
+		Map<String, Object> map = new HashMap<>();
+		map.put("roomType", roomType);
+		map.put("school", school);
+		List<RoomTypes> rtList = roomTypeMapper.find(map);
+		
+		Map<String,Object> hashMap = new HashMap<>();
+		hashMap.put("roomType", rtList.get(0));
+		hashMap.put("school", school);
+		List<Rooms> rList = roomMapper.find(hashMap);
+		List<String> roomList = new ArrayList<>();
+		for (Rooms rooms : rList) {
+			roomList.add(rooms.getRoom());
+		}
+		return JSONUtil.transform(roomList);
 	}
 }

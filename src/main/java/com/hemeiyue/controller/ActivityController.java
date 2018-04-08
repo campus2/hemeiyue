@@ -130,6 +130,12 @@ public class ActivityController {
 		return activityService.deleteById(activityId);
 	}
 	
+	/**
+	 * 返回指定活动的详细信息
+	 * @param id
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping("/getActivityDetail")
 	@ResponseBody
 	public ResultBean  getActivityDetail(int id,HttpServletRequest request) {
@@ -147,6 +153,15 @@ public class ActivityController {
 		return activityService.findArtivityList(school);
 	}
 	
+	/**
+	 * 扫描二维码后台获取activityId，用于签到，
+	 * 如过得到该活动还没有举办，还用户是否已经报名等。能扫码签到，签到时要把用户得签到时间记录在数据库里，
+	 * 如果code为空，去session找是否为空。因为可以直接用微信扫二维码或者在小程序里面扫
+	 * @param code
+	 * @param activityId
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping("/weChatScan")
 	@ResponseBody
 	public String weChatScan(@RequestParam("code")String code,@RequestParam("activityId")int activityId,
@@ -155,12 +170,30 @@ public class ActivityController {
 		//如果code为空，从session获取userId
 		if(code == null || code.isEmpty()) {
 			user = (Users) request.getSession().getAttribute("user");
-			if(user == null || user.getId() == 0)
-				return JSONUtil.transform(new ResultBean(false));
+			
 		}else {			//code不为空，从腾讯客户端获取openId
 			String openId = WX_Util.getOpenId(code).get("openId");
 			user = usersMapper.selectByOpenId(openId);
 		}
+		if(user == null || user.getId() == 0) {
+			return JSONUtil.transform(new ResultBean(false));
+		}
 		return activityService.updateWeChatScan(user, activityId);
+	}
+	
+	/**
+	 * 处理用户的活动申请
+	 * @param activityId	活动Id
+	 * @param request		
+	 * @return
+	 */
+	@RequestMapping("/handleActivityApply")
+	@ResponseBody
+	public String handleActivityApply(Integer activityId,HttpServletRequest request) {
+		Users user = (Users) request.getSession().getAttribute("user");
+		if(user == null || user.getId() == 0) {
+			return JSONUtil.transform(new ResultBean(false));
+		}
+		return activityService.insertActivityApply(activityId, user.getId());
 	}
 }

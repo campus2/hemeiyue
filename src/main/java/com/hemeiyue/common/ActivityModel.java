@@ -2,6 +2,13 @@ package com.hemeiyue.common;
 
 import java.sql.Timestamp;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.hemeiyue.util.DateHHmmJSONDeserializer;
+import com.hemeiyue.util.DateHHmmJSONSerializer;
+import com.hemeiyue.util.DateYYMMddJSONDeserializer;
+import com.hemeiyue.util.DateYYMMddJSONSerializer;
+
 public class ActivityModel {
 	private Integer id;
 	
@@ -9,6 +16,12 @@ public class ActivityModel {
 	
 	private String content;
 	
+	@JsonDeserialize(using=DateYYMMddJSONDeserializer.class)
+	@JsonSerialize(using=DateYYMMddJSONSerializer.class)
+	private Timestamp date;
+	
+	@JsonDeserialize(using=DateHHmmJSONDeserializer.class)
+	@JsonSerialize(using=DateHHmmJSONSerializer.class)
 	private Timestamp time;
 	
 	private Integer count;
@@ -18,6 +31,24 @@ public class ActivityModel {
 	private String imageUrl;
 	
 	private Integer status;
+	
+	private String address;
+	
+	public Timestamp getDate() {
+		return date;
+	}
+
+	public void setDate(Timestamp date) {
+		this.date = date;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
 
 	public Integer getId() {
 		return id;

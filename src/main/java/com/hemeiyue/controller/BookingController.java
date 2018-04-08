@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.hemeiyue.annotion.AuthLoginAnnotation;
+import com.hemeiyue.common.Application;
 import com.hemeiyue.common.ResultBean;
 import com.hemeiyue.entity.Bookings;
 import com.hemeiyue.entity.Schools;
+import com.hemeiyue.entity.Users;
 import com.hemeiyue.service.BookingService;
 
 @Controller
@@ -118,5 +120,38 @@ public class BookingController {
 	@AuthLoginAnnotation(checkLogin=true)
 	public ResultBean findMyBooks(HttpServletRequest request) {
 		return bookingService.findMyBooks(request);
+	}
+	
+	/**
+	 * 根据预定的id取消该预定，校验该id的预定是否已经过期
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping("/cancelReserve")
+	@ResponseBody
+	public String cancelReserve(int id) {
+		return bookingService.updateCancelReserve(id);
+	}
+	
+	/**
+	 * 提交用户申请表（课室申请）
+	 * @param application
+	 * @return
+	 */
+	@RequestMapping("/handleRoomApply")
+	@ResponseBody
+	public ResultBean handleRoomApply(Application application,HttpServletRequest request) {
+		Users user = (Users) request.getSession().getAttribute("user");
+		Schools school = (Schools) request.getSession().getAttribute("school");
+		if(user == null) {
+			return new ResultBean(false,"找不到user");
+		}
+		if(school == null) {
+			school = user.getSchool();
+			if(school == null) {
+				return new ResultBean(false,"找不到学校");
+			}
+		}
+		return bookingService.insertRoomApply(application, user, school);
 	}
 }

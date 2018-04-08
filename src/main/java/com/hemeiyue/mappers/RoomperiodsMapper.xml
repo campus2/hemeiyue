@@ -162,4 +162,8 @@
     <select id="findPeriodsByRoomId" resultMap="PeriodResult" parameterType="java.lang.Integer">
     	select roomId from roomperiods where status = 1 and roomId = #{roomId,jdbcType=INTEGER}
     </select>
+    
+    <select id="getPeriod" parameterType="java.lang.String" resultMap="BaseResultMap">
+    	select periodId from roomperiods where weeks like "%"#{weeks,jdbcType=VARCHAR}"%"
+    </select>
 </mapper>

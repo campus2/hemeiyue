@@ -115,7 +115,7 @@ public class SchoolServiceImpl implements SchoolService{
 		if(schools == null || schools.size() == 0) {
 			return new ResultBean(false);
 		}else{
-			if(schools.size() > 5) {
+			if(schools.size() > 5) {		//截取前5条
 				schools.subList(0, 4);
 			}
 			return new ResultList(true,schools);
@@ -125,12 +125,12 @@ public class SchoolServiceImpl implements SchoolService{
 	@Override
 	public ResultBean insertHandleSchool(String school,Users user) {
 		Schools schools = schoolMapper.querySchool(school);
-		if(schools == null) 
+		if(schools == null || user == null) 
 			return new ResultBean(false);
 		else {
 			user.setSchool(schools);
-			if(usersMapper.insertSelective(user) == 1) {
-				return new ResultSchool(true, school);
+			if(usersMapper.updateByPrimaryKeySelective(user) == 1) {
+				return new ResultSchool(true, schools.getSchool());
 			}
 			return new ResultBean(false);
 		}

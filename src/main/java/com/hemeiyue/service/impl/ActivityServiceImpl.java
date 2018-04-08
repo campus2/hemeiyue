@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.hemeiyue.common.ActivityModel;
+import com.hemeiyue.common.ActivityUserModel;
 import com.hemeiyue.common.ResultBean;
 import com.hemeiyue.common.ResultObeject;
 import com.hemeiyue.dao.ActivityMapper;
@@ -133,5 +134,21 @@ public class ActivityServiceImpl implements ActivityService{
 			return new ResultBean(true, "操作成功");
 		}
 		return new ResultBean(false, "操作失败");
+	}
+
+	@Override
+	public String insertActivityApply(Integer activityId, Integer userId) {
+		Integer sign = activityUserMapper.findCountActivity(activityId);
+		if(sign >= activityMapper.findById(activityId).getCount()) {
+			return JSONUtil.transform(new ResultBean(false,"报名人数已满"));
+		}
+		ActivityUserModel activityUser = new ActivityUserModel();
+		activityUser.setActivityId(activityId);
+		activityUser.setStatus(0);
+		activityUser.setUserId(userId);
+		if(activityUserMapper.insertByActivityUserModel(activityUser) == 1) {
+			return JSONUtil.transform(new ResultBean(true));
+		}
+		return JSONUtil.transform(new ResultBean(false));
 	}
 }

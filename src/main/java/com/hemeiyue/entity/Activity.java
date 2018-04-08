@@ -23,6 +23,10 @@ public class Activity {
 	@JsonSerialize(using=DateYYMMddJSONSerializer.class)
 	private Timestamp date;
 	
+	public Timestamp getDate() {
+		return date;
+	}
+
 	@JsonDeserialize(using=DateHHmmJSONDeserializer.class)
 	@JsonSerialize(using=DateHHmmJSONSerializer.class)
 	private Timestamp time;

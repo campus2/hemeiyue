@@ -43,4 +43,18 @@ public interface BookingsMapper {
 	public List<Bookings> findSamePeriodBooks(Integer roomPeriodId);
 	
 	public List<BookingModel> findBookingModels(Bookings booking);
+	
+	/**
+	 * 返回未过期的用户个人预定
+	 * @param booking
+	 * @return
+	 */
+	public List<Bookings> findMyBooksWithoutTimeOut(Bookings booking);
+	
+	/**
+	 * 返回roomPeridId下的申请
+	 * @param roomPeridId
+	 * @return
+	 */
+	public List<Bookings> findBooksByRoomPeriod(Integer roomPeridId);
 }

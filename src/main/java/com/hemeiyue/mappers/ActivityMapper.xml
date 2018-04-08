@@ -21,6 +21,7 @@
     	<id column="id" property="id" jdbcType="INTEGER" />
         <result column="title" property="activityTitle" jdbcType="VARCHAR" />
         <result column="content" property="content" jdbcType="VARCHAR" />
+        <result column="date" property="date" jdbcType="TIMESTAMP" />
         <result column="time" property="time" jdbcType="TIMESTAMP" />
         <result column="count" property="count" jdbcType="INTEGER" />
         <result column="imageUrl" property="imageUrl" jdbcType="VARCHAR" />
@@ -125,7 +126,6 @@
             <if test="time != null">
             	time
             </if>
->>>>>>> branch 'master' of https://995011833%40qq.com@github.com/campus2/hemeiyue.git
             <if test="count != null" >
                 count,
             </if>
@@ -193,14 +193,14 @@
     </select>
     
     <select id="findById" resultMap="activityModel" parameterType="java.lang.Integer">
-    	select id,title,content,count,time,addrId,status from activity where id=#{id}
+    	select id,title,content,count,time,address,status from activity where id=#{id}
     </select>
     
     <select id="findArtivityList" resultMap="activityModel" >
-    	select id,title,time,count,imageUrl from activity where schoolId = #{schoolId}
+    	select id,title,date,time,count,imageUrl from activity where schoolId = #{schoolId}
     </select>
     
     <select id="findActivityDetail" resultMap="activityModel" parameterType="com.hemeiyue.entity.Activity">
-    	select id,title,content,count,time,addrId,status from activity where id=#{id} and time > #{time}
+    	select id,title,content,count,time,address,status from activity where id=#{id} and time > #{time}
     </select>
 </mapper>
