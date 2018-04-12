@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.hemeiyue.annotion.AuthLoginAnnotation;
-import com.hemeiyue.common.Application;
+import com.hemeiyue.common.ApplyData;
 import com.hemeiyue.common.ResultBean;
 import com.hemeiyue.entity.Bookings;
 import com.hemeiyue.entity.Schools;
@@ -140,7 +140,7 @@ public class BookingController {
 	 */
 	@RequestMapping("/handleRoomApply")
 	@ResponseBody
-	public ResultBean handleRoomApply(Application application,HttpServletRequest request) {
+	public ResultBean handleRoomApply(ApplyData application,HttpServletRequest request) {
 		Users user = (Users) request.getSession().getAttribute("user");
 		Schools school = (Schools) request.getSession().getAttribute("school");
 		if(user == null) {

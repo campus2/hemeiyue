@@ -1,5 +1,3 @@
-import static org.junit.Assert.*;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +17,7 @@ public class RoomServiceImplTest {
 	@Test
 	public void testGetRoom() {
 		Schools school = new Schools();
-		school.setId(21);
+		school.setId(25);
 		System.out.println(roomService.getRoom("会议室", school));;
 	}
 

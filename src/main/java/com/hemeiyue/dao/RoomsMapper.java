@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.beust.jcommander.Parameter;
 import com.hemeiyue.entity.RoomTypes;
 import com.hemeiyue.entity.Rooms;
 
@@ -48,7 +47,7 @@ public interface RoomsMapper {
 	 * @param map
 	 * @return
 	 */
-	public RoomTypes select(Map<String, Object> map);
+	public Rooms select(Map<String, Object> map);
 
 	/**
 	 * 根据指定条件返回记录数

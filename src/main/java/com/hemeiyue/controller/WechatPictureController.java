@@ -15,7 +15,7 @@ import com.hemeiyue.entity.WechatPicture;
 import com.hemeiyue.service.WechatPictureService;
 
 @Controller
-@RequestMapping("/wechatPicture")
+@RequestMapping("/file")
 public class WechatPictureController {
 	
 	@Autowired

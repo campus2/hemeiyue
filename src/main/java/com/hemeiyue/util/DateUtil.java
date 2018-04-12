@@ -29,12 +29,22 @@ public class DateUtil {
 	}
 	
 	/**
+	 * 时间戳转小时分（HH:mm）
+	 * @param date
+	 * @return
+	 */
+	public static String timeToString(Timestamp time) {
+	    SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
+	    return formatter.format(time);
+	}
+	
+	/**
 	 * 日期转星期
 	 * @param dateTime
 	 * @return
 	 */
 	public static String dateToWeek(String dateTime) {
-		String[] weekdays = { "星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六" };
+		String[] weekdays = { "7", "1", "2", "3", "4", "5", "6" };
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		//获取日历
 		Calendar cal = Calendar.getInstance();

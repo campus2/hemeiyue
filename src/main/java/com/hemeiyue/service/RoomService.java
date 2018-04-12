@@ -2,8 +2,6 @@ package com.hemeiyue.service;
 
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
 import com.hemeiyue.common.PeriodAddModel;
 import com.hemeiyue.common.ResultBean;
 import com.hemeiyue.common.RoomModel;
@@ -80,6 +78,15 @@ public interface RoomService {
 	 * @param school
 	 * @return
 	 */
-	public String getRoom(String roomType,Schools school);
+	public ResultBean getRoom(String roomType,Schools school);
+
+	/**
+	 * 根据课室类型名、课室号，返回课室记录
+	 * @param roomName
+	 * @param roomType
+	 * @param school
+	 * @return
+	 */
+	public Rooms getRoom(String roomName, String roomType, Schools school);
 
 }

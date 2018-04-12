@@ -17,7 +17,7 @@
     <select id="getApplyCount" parameterType="Schools" resultType="Long">
     	select count(*) from bookings 
     	<where>
-    		<if test="school != null">and school=#{school.id}</if>
+    		<if test="id != null">and schoolId =#{id}</if>
     	</where>
     </select>
 
@@ -52,16 +52,16 @@
             <if test="id != null" >
                 id,
             </if>
-            <if test="roomperiodid != null" >
+            <if test="roomPeriod != null" >
                 roomPeriodId,
             </if>
-            <if test="userid != null" >
+            <if test="user != null" >
                 userId,
             </if>
             <if test="bookingDate != null">
             	bookingDate,
             </if>
-            <if test="cdt != null" >
+            <if test="CDT != null" >
                 CDT,
             </if>
             <if test="status != null" >
@@ -78,17 +78,17 @@
             <if test="id != null" >
                 #{id,jdbcType=INTEGER},
             </if>
-            <if test="roomperiodid != null" >
-                #{roomperiodid,jdbcType=INTEGER},
+            <if test="roomPeriod != null" >
+                #{roomPeriod.id,jdbcType=INTEGER},
             </if>
-            <if test="userid != null" >
-                #{userid,jdbcType=INTEGER},
+            <if test="user != null" >
+                #{user.id,jdbcType=INTEGER},
             </if>
             <if test="bookingDate != null">
             	#{bookingDate,jdbcType=TIMESTAMP},
             </if>
-            <if test="cdt != null" >
-                #{cdt,jdbcType=TIMESTAMP},
+            <if test="CDT != null" >
+                #{CDT,jdbcType=TIMESTAMP},
             </if>
             <if test="status != null" >
                 #{status,jdbcType=INTEGER},
@@ -139,6 +139,14 @@
             status = #{status,jdbcType=INTEGER},
             remark = #{remark,jdbcType=VARCHAR}
         where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <update id="updateByDelete" parameterType="List">
+     update bookings set status = 0
+     	where roomPeriodId in 
+		<foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
     </update>
     
     <select id="findAllBooks" resultMap="BaseResultMap" parameterType="Integer">

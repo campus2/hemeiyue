@@ -66,7 +66,7 @@ public interface ActivityService {
 	 * @param request
 	 * @return
 	 */
-	public String updateWeChatScan(Users user, int activityId);
+	public ResultBean updateWeChatScan(Users user, int activityId);
 
 	/**
 	 * 更新活动
@@ -82,4 +82,13 @@ public interface ActivityService {
 	 * @return
 	 */
 	public String insertActivityApply(Integer activityId,Integer userId);
+	
+	/**
+	 * 用户报名参加活动
+	 * @param activityId
+	 * @param school
+	 * @param user
+	 * @return
+	 */
+	public ResultBean insertSignUpActivity(Integer activityId,Schools school,Users user);
 }

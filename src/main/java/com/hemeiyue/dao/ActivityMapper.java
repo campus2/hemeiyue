@@ -41,7 +41,7 @@ public interface ActivityMapper {
 	 * 返回所有活动
 	 * @return
 	 */
-	public List<ActivityModel> findAll();
+	public List<ActivityShowModel> findAll();
 	
 	/**
 	 * 根据Id返回model
@@ -55,7 +55,7 @@ public interface ActivityMapper {
 	 * @param schoolId
 	 * @return
 	 */
-	public List<ActivityModel> findArtivityList(Integer schoolId);
+	public List<ActivityModel> findArtivityList(Activity activity);
 	
 	/**
 	 * 返回未过期的活动信息

@@ -10,5 +10,10 @@ public interface NotificationService {
 	
 	public ResultBean delete(Integer id);
 	
+	/**
+	 * 返回学校的全部公告
+	 * @param schoolId
+	 * @return
+	 */
 	public ResultBean findAll(Integer schoolId);
 }

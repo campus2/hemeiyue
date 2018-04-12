@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.hemeiyue.annotion.AuthLoginAnnotation;
 import com.hemeiyue.common.ResultBean;
 import com.hemeiyue.entity.RoomTypes;
 import com.hemeiyue.entity.Schools;
@@ -30,6 +31,7 @@ public class RoomTypeController {
 	 * @return
 	 */
 	@RequestMapping("/addRoomType")
+	@AuthLoginAnnotation(checkLogin=true)
 	public String addRoomType(@RequestParam("roomType")String roomType,
 			HttpServletRequest request, HttpServletResponse response) {
 //		Schools school = (Schools)request.getSession().getAttribute("school");
@@ -49,6 +51,7 @@ public class RoomTypeController {
 	 */
 	@RequestMapping("/modifyRoomType")
 	@ResponseBody
+	@AuthLoginAnnotation(checkLogin=true)
 	public ResultBean modifyRoomType(@RequestParam("oldRoomType")String oldRoomType,
 			@RequestParam("newRoomType")String newRoomType, HttpServletRequest request) {
 //		Schools school = (Schools)request.getSession().getAttribute("school");
@@ -66,6 +69,7 @@ public class RoomTypeController {
 	 */
 	@RequestMapping("/deleteRoomType")
 	@ResponseBody
+	@AuthLoginAnnotation(checkLogin=true)
 	public ResultBean deleteRoomType(@RequestParam("roomType")String roomType,
 			HttpServletRequest request) {
 //		Schools school = (Schools)request.getSession().getAttribute("school");

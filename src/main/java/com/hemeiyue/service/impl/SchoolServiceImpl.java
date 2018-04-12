@@ -111,6 +111,10 @@ public class SchoolServiceImpl implements SchoolService{
 
 	@Override
 	public ResultBean selectSchool(String school) {
+		if(school.isEmpty()) {
+			return  new ResultBean(false);
+		}
+		
 		List<Schools> schools = schoolMapper.selectSchool(school);
 		if(schools == null || schools.size() == 0) {
 			return new ResultBean(false);
@@ -123,17 +127,23 @@ public class SchoolServiceImpl implements SchoolService{
 	}
 
 	@Override
-	public ResultBean insertHandleSchool(String school,Users user) {
+	public ResultBean insertHandleSchool(String school,String openId) {
+		if(openId == null || openId.isEmpty()) {		//检查openId
+			return new ResultBean(false, "没有openId");
+		}
 		Schools schools = schoolMapper.querySchool(school);
-		if(schools == null || user == null) 
+		if(schools == null) 							//检查学校
 			return new ResultBean(false);
-		else {
+		else {											//数据库插入User
+			Users user = new Users();
+			user.setOpenId(openId);
 			user.setSchool(schools);
-			if(usersMapper.updateByPrimaryKeySelective(user) == 1) {
+			if(usersMapper.insertSelective(user) == 1) {
 				return new ResultSchool(true, schools.getSchool());
 			}
 			return new ResultBean(false);
 		}
 	}
+
 	
 }

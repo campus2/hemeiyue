@@ -2,7 +2,7 @@ package com.hemeiyue.common;
 
 import java.util.List;
 
-public class ResultBookAndActList{
+public class ResultBookAndActList extends ResultBean{
 	private List<BookingModel> bookingList;
 	
 	private List<ActivityShowModel> activityList;
@@ -26,5 +26,11 @@ public class ResultBookAndActList{
 	public ResultBookAndActList(List<BookingModel> bookingList,List<ActivityShowModel> activityList) {
 		this.bookingList = bookingList;
 		this.activityList = activityList;
+	}
+
+	public ResultBookAndActList(boolean b, List<BookingModel> bmList, List<ActivityShowModel> amList) {
+		super(b);
+		this.activityList = amList;
+		this.bookingList = bmList;
 	}
 }

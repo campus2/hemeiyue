@@ -1,5 +1,7 @@
 package com.hemeiyue.common;
 
+import com.hemeiyue.entity.Users;
+
 public class UsersModel {
 	private Integer id;
 	
@@ -19,7 +21,7 @@ public class UsersModel {
 	
 	private String studentId;
 	
-	private String classroom;
+	private String classRoom;
 
 	public String getName() {
 		return name;
@@ -45,20 +47,31 @@ public class UsersModel {
 		this.phone = phone;
 	}
 
-	public String gettudentId() {
+	public String getStudentId() {
 		return studentId;
 	}
 
-	public void setstudentId(String studentId) {
+	public void setStudentId(String studentId) {
 		this.studentId = studentId;
 	}
 
-	public String getClassroom() {
-		return classroom;
+	
+	public String getClassRoom() {
+		return classRoom;
 	}
 
-	public void setClassroom(String classroom) {
-		this.classroom = classroom;
+	public void setClassRoom(String classRoom) {
+		this.classRoom = classRoom;
+	}
+
+	public Users setUserInfo() {
+		Users u = new Users();
+		u.setEmail(this.email);
+		u.setPhone(this.phone);
+		u.setUserName(name);
+		u.setStudentNum(studentId);
+		u.setClassRoom(this.classRoom);
+		return u;
 	}
 	
 }

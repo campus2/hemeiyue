@@ -1,4 +1,4 @@
-package com.hemeiyue.controller;
+package com.hemeiyue.controller.WXcontroller;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.hemeiyue.annotion.AuthLoginAnnotation;
 import com.hemeiyue.common.ResultBean;
 import com.hemeiyue.entity.Rooms;
 import com.hemeiyue.entity.Schools;
@@ -16,25 +15,26 @@ import com.hemeiyue.service.RoomPeriodsService;
 import com.hemeiyue.service.RoomService;
 
 @Controller
-@RequestMapping("/roomPeriod")
-public class RoomPeriodController {
-
+@RequestMapping("/WXroom")
+public class WX_RoomController {
+	
 	@Autowired
 	private RoomService roomService;
 	
 	@Autowired
 	private RoomPeriodsService roomPeriodsService;
 	
+	@RequestMapping("/getRoom")
+	@ResponseBody
 	/**
-	 * 根据id删除
-	 * @param id
+	 * 根据课室类型名，返回所有的该课室类型所有的课室号
+	 * @param roomType
 	 * @return
 	 */
-	@RequestMapping("/deleteRoomPeriod")
-	@ResponseBody
-	@AuthLoginAnnotation(checkLogin=true)
-	public ResultBean delete(@RequestParam("id")Integer id) {
-		return roomPeriodsService.delete(id);
+	public ResultBean getRoom(@RequestParam("roomType")String roomType,HttpServletRequest request) {
+		Schools school = (Schools) request.getSession().getAttribute("school");
+		System.out.println(school.getId());
+		return roomService.getRoom(roomType, school);
 	}
 	
 	/**

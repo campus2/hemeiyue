@@ -50,7 +50,7 @@ public class RoomTypeServiceImpl implements RoomTypeService {
 	public ResultBean updateRoomType(RoomTypes oldRoomType, String newRoomType) {
 		//查询待修改的课室类型
 		Map<String, Object> map = new HashMap<>();
-		map.put("roomType", oldRoomType);
+		map.put("roomType", oldRoomType.getRoomType());
 		map.put("school", oldRoomType.getSchool());
 		List<RoomTypes> list = roomTypeMapper.find(map);
 		
@@ -73,7 +73,7 @@ public class RoomTypeServiceImpl implements RoomTypeService {
 	public ResultBean delete(RoomTypes roomType) {
 		//查询待删除课室类型是否存在
 		Map<String, Object> map = new HashMap<>();
-		map.put("roomType", roomType);
+		map.put("roomType", roomType.getRoomType());
 		map.put("school", roomType.getSchool());
 		
 		List<RoomTypes> roomTypeList = roomTypeMapper.find(map);
@@ -81,7 +81,7 @@ public class RoomTypeServiceImpl implements RoomTypeService {
 		
 		RoomTypes delRoomType = roomTypeList.get(0);
 		//删除其关联的所有课室，标志为改为-1
-		map.put("roomType", delRoomType);
+		map.put("roomType", delRoomType.getRoomType());
 		List<Rooms> roomsList = roomsMapper.find(map);
 		if(roomsList!=null && roomsList.size()>0) {
 			for (Rooms rooms : roomsList) {

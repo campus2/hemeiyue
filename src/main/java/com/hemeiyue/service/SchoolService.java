@@ -65,6 +65,6 @@ public interface SchoolService {
 	 * @param user
 	 * @return
 	 */
-	public ResultBean insertHandleSchool(String school,Users user);
+	public ResultBean insertHandleSchool(String school,String openId);
 	
 }

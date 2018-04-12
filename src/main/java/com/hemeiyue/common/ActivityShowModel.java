@@ -9,6 +9,7 @@ import com.hemeiyue.util.DateHHmmJSONSerializer;
 import com.hemeiyue.util.DateYYMMddJSONDeserializer;
 import com.hemeiyue.util.DateYYMMddJSONSerializer;
 
+@JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
 public class ActivityShowModel {
 	private Integer id;
 	

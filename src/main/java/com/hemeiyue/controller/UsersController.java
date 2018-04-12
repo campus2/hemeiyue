@@ -11,10 +11,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.hemeiyue.common.ResultBean;
-import com.hemeiyue.common.UsersModel;
 import com.hemeiyue.entity.Users;
 import com.hemeiyue.service.UsersService;
-import com.hemeiyue.util.JSONUtil;
 import com.hemeiyue.util.ResponseUtil;
 
 @Controller
@@ -61,44 +59,44 @@ public class UsersController {
 	
 	@RequestMapping("/reserve")
 	@ResponseBody
-	public String reserve(HttpServletRequest request){
+	public ResultBean reserve(HttpServletRequest request){
 		Users user = (Users) request.getSession().getAttribute("user");
 		if(user != null) {
 			return userService.reserve(user.getId());
 		}
-		return JSONUtil.transform(new ResultBean(false));
+		return new ResultBean(false,"请先登录");
 	}
 	
 	@RequestMapping("/reserveHistory")
 	@ResponseBody
-	public String reserveHistory(HttpServletRequest request) {
+	public ResultBean reserveHistory(HttpServletRequest request) {
 		Users user = (Users) request.getSession().getAttribute("user");
 		if(user != null) {
 			return userService.reserveHistory(user.getId());
 		}
-		return JSONUtil.transform(new ResultBean(false));
+		return new ResultBean(false,"请先登录");
 	}
 	
-	@RequestMapping("/personalInfo")
-	@ResponseBody
-	public String personalInfo(HttpServletRequest request) {
-		Users user = (Users) request.getSession().getAttribute("user");
-		if(user != null) {
-			return userService.selectPersonalInfo(user.getId());
-		}
-		return JSONUtil.transform(null);
-	}
+//	@RequestMapping("/personalInfo")
+//	@ResponseBody
+//	public String personalInfo(HttpServletRequest request) {
+//		Users user = (Users) request.getSession().getAttribute("user");
+//		if(user != null) {
+//			return userService.selectPersonalInfo(user.getId());
+//		}
+//		return JSONUtil.transform(null);
+//	}
 	
-	@RequestMapping("/modifyPersonalInfo")
-	@ResponseBody
-	public ResultBean modifyPersonalInfo(UsersModel user) {
-		return userService.updatePersonalInfo(user);
-	}
+//	@RequestMapping("/modifyPersonalInfo")
+//	@ResponseBody
+//	public ResultBean modifyPersonalInfo(UsersModel user) {
+//		return userService.updatePersonalInfo(user);
+//	}
 	
-	@RequestMapping("/getApplyInfo")
-	@ResponseBody
-	public String getApplyInfo(HttpServletRequest request) {
-		Users user = (Users) request.getSession().getAttribute("user");
-		return userService.getApplyInfo(user);
-	}
+//	@RequestMapping("/getApplyInfo")
+//	@ResponseBody
+//	public String getApplyInfo(HttpServletRequest request) {
+//		Users user = (Users) request.getSession().getAttribute("user");
+//		return userService.getApplyInfo(user);
+//	}
 }

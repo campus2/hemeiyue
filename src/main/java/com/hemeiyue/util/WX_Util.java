@@ -105,7 +105,6 @@ public class WX_Util {
 	 * @return
 	 */
 	public static Map<String, String> getOpenId(String code) {
-
 		String APPID = null;        	//小程序AppId
 		String APPSecrect = null; 		//小程序APPSecrect
 		Map<String, String> map = new HashMap<>();
@@ -126,6 +125,7 @@ public class WX_Util {
 				       replace("SECRET", APPSecrect).replace("JSCODE", code);
 			JSONObject jsonObject = HttpUtil.httpRequest(realUrl, "GET", null);
 			
+			System.out.println(JSONUtil.transform(jsonObject));
 			map.put("openid", jsonObject.getString("openid"));
 			map.put("session_key", jsonObject.getString("session_key"));
 

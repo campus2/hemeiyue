@@ -107,6 +107,7 @@ public class CodeUtil {
 	 * @throws IOException
 	 * @throws NotFoundException
 	 */
+	@SuppressWarnings("unchecked")
 	public static String decode(File file) throws IOException, NotFoundException {
 		BufferedImage image;
 		image = ImageIO.read(file);
@@ -116,6 +117,7 @@ public class CodeUtil {
 		 LuminanceSource source = new BufferedImageLuminanceSource(image);
 		 BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
 		 Result result;
+		 @SuppressWarnings("rawtypes")
 		 Hashtable hints = new Hashtable();
 		 hints.put(DecodeHintType.CHARACTER_SET, "utf-8");
 		 result = new MultiFormatReader().decode(bitmap, hints);

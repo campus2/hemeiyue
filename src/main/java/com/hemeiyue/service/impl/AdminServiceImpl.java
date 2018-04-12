@@ -43,16 +43,6 @@ public class AdminServiceImpl implements AdminService{
 	@Autowired
 	private SchoolsMapper schoolMapper;
 	
-	public ResultBean login(Admin admin) {
-		String salt = adminMapper.checkAccount(admin.getAccount()).getSalt();
-		admin.setPassword(MD5.MD5encoder(admin.getPassword()+ salt));
-		Admin currentAdmin = adminMapper.login(admin);
-		System.out.println(" a"+admin.getAccount());
-		AdminResult result = new AdminResult();
-		result.setResult(true);
-		return result;
-	}
-	
 	/**
 	 * 登录
 	 */
@@ -298,8 +288,6 @@ public class AdminServiceImpl implements AdminService{
 	
 	@Override
 	public long getAllApply(Schools school) {
-		Map<String, Object> map = new HashMap<>();
-		map.put("school", school);
 		return bookingMaper.getApplyCount(school);
 	}
 	
@@ -341,16 +329,17 @@ public class AdminServiceImpl implements AdminService{
 	public ResultCount getCount(Admin admin) {
 		ResultCount result = new ResultCount();
 		Map<String, Long> map = new HashMap<>();
+		System.out.println(admin.getSchool().getId());
 		if(admin.getParentId() == 0) {
-			map.put("schoolCount", this.getAllRooms(admin.getSchool()));
+			map.put("count", this.getAllRooms(admin.getSchool()));
 			map.put("applyCount", this.getAllApply(admin.getSchool()));
 			map.put("userCount", this.getUserCount(admin.getSchool()));
 			map.put("adminCount", this.getAdminCount(admin.getSchool()));
 		}else if(admin.getParentId() == -1) {
-			map.put("schoolCount",this.getAllSchools());
+			map.put("count",this.getAllSchools());
 			map.put("applyCount", this.getAllApply(null));
 			map.put("userCount", this.getUserCount(null));
-			map.put("adminCount", this.getUserCount(null));
+			map.put("adminCount", this.getAdminCount(null));
 		}
 		result.setResult(true);
 		result.setCount(map);

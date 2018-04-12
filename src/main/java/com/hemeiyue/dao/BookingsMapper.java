@@ -57,4 +57,11 @@ public interface BookingsMapper {
 	 * @return
 	 */
 	public List<Bookings> findBooksByRoomPeriod(Integer roomPeridId);
+
+	/**
+	 * 删除课室后，拒绝申请
+	 * @param substring
+	 * @return
+	 */
+	int updateByDelete(List<Integer> list);
 }

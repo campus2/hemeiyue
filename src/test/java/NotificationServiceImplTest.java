@@ -12,12 +12,13 @@ import com.hemeiyue.service.NotificationService;
 @ContextConfiguration(locations="classpath*:applicationContext.xml")
 public class NotificationServiceImplTest {
 	
+	@SuppressWarnings("unused")
 	@Autowired
 	private NotificationService notificationService;
 	
 	@Test
 	public void testFindAll() {
-//		System.out.println(notificationService.findAll());
+		System.out.println(notificationService.findAll(25));
 	}
 
 }

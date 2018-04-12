@@ -1,6 +1,7 @@
 package com.hemeiyue.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -58,6 +59,10 @@ public interface RoomperiodsMapper {
      */
 	int insertList(@Param("list")List<RoomPeriods> list);
 	
-	public List<Periods> getPeriod(String weeks);
+	public List<RoomPeriods> getPeriod(@Param("roomId")Integer roomId,@Param("weeks")String weeks);
+
+	public List<RoomPeriods> select(Map<String,Object> map);
+
+	public List<RoomPeriods> findRooms(Map<String, Object> map);
 	
 }

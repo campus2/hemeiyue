@@ -16,12 +16,19 @@ public class ActivityServiceImplTest {
 	
 	@Autowired 
 	private ActivityService activityService;
+	
+	@Test
+	public void updateWeChatScanTest() {
+		Users user = new Users();
+		user.setId(2);
+		System.out.println(JSONUtil.transform(activityService.updateWeChatScan(user, 22)));
+	}
 
 	@Test
 	public void testSelectById() {
 		Users user = new Users();
 		user.setId(2);
-		System.out.println(JSONUtil.transform(activityService.findById(1,user)));
+		System.out.println(JSONUtil.transform(activityService.findById(10,user)));
 	}
 	
 	@Test
@@ -33,16 +40,16 @@ public class ActivityServiceImplTest {
 	
 	@Test
 	public void findArtivityList() {
-//		Schools school = new Schools();
-//		school.setId(21);
-//		System.out.println(activityService.findArtivityList(school));
-		Users user = new Users();
-		user.setId(1);
-		System.out.println(activityService.updateWeChatScan(user,1));
+		Schools school = new Schools();
+		school.setId(25);
+		System.out.println(activityService.findArtivityList(school));
+//		Users user = new Users();
+//		user.setId(1);
+//		System.out.println(activityService.updateWeChatScan(user,10));
 	}
 	
 	@Test
 	public void findInsertActivityApply() {
-		System.out.println(activityService.insertActivityApply(1, 1));
+		System.out.println(activityService.insertActivityApply(10, 1));
 	}
 }

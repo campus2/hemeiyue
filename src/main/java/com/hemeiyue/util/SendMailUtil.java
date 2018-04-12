@@ -4,7 +4,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.Date;
 import java.util.Properties;
 
@@ -174,8 +173,5 @@ public class SendMailUtil extends Thread{
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-	}
-	public static void main(String[] args) {
-		SendMailUtil s = new SendMailUtil("2338314741@qq.com", "test", "test");
 	}
 }

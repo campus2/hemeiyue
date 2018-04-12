@@ -13,9 +13,11 @@ import com.hemeiyue.common.ActivityModel;
 import com.hemeiyue.common.ActivityShowModel;
 import com.hemeiyue.common.ActivityUserModel;
 import com.hemeiyue.common.ActivityUserShowModel;
+import com.hemeiyue.common.ResultActivity;
 import com.hemeiyue.common.ResultBean;
 import com.hemeiyue.common.ResultList;
-import com.hemeiyue.common.ResultObeject;
+import com.hemeiyue.common.ResultUser;
+import com.hemeiyue.common.ResultUserInfoNull;
 import com.hemeiyue.dao.ActivityMapper;
 import com.hemeiyue.dao.ActivityUserMapper;
 import com.hemeiyue.dao.UsersMapper;
@@ -25,9 +27,12 @@ import com.hemeiyue.entity.Schools;
 import com.hemeiyue.entity.Users;
 import com.hemeiyue.service.ActivityService;
 import com.hemeiyue.util.JSONUtil;
+import com.hemeiyue.util.StringUtil;
 
 @Service("activityService")
 public class ActivityServiceImpl implements ActivityService{
+	
+	private static final String LOCALURL = "https://mcd.ngrok.xiaomiqiu.cn/hemeiyue" ;
 
 	@Autowired
 	private ActivityMapper activityMapper;
@@ -90,6 +95,9 @@ public class ActivityServiceImpl implements ActivityService{
 
 	@Override
 	public ResultBean findById(Integer id,Users user) {
+		if(id == null || id == 0 || user.getId() == 0) {
+			return new ResultBean(false,"user为空");
+		}
 		Activity activity = new Activity();
 		activity.setId(id);
 		activity.setTime(new Timestamp(System.currentTimeMillis()));
@@ -104,25 +112,36 @@ public class ActivityServiceImpl implements ActivityService{
 		}else {
 			act.setStatus(0);
 		}
-		return new ResultObeject(true, act);
+		if(act.getImageUrl() != null || !act.getImageUrl().isEmpty()) {
+			act.setImageUrl(LOCALURL + act.getImageUrl());
+		}
+		return new ResultActivity(true, act);
 	}
 
 	@Override
 	public String findArtivityList(Schools school) {
-		List<ActivityModel> list =  activityMapper.findArtivityList(school.getId());
+		Activity activity = new Activity();
+		activity.setDate(new Timestamp(System.currentTimeMillis()));
+		activity.setSchool(school);
+		List<ActivityModel> list =  activityMapper.findArtivityList(activity);
 		if(list == null || list.size() == 0) {
 			return JSONUtil.transform(new ResultBean(false));
+		}
+		for (ActivityModel activityModel : list) {
+			if(activityModel.getImageUrl() != null || !activityModel.getImageUrl().isEmpty()) {
+				activityModel.setImageUrl(LOCALURL+activityModel.getImageUrl());
+			}
 		}
 		return JSONUtil.transform(list);
 	}
 	
 	
 	@Override
-	public String updateWeChatScan(Users user, int activityId) {
+	public ResultBean updateWeChatScan(Users user, int activityId) {
 		Map<String,Object> map = new HashMap<>();
 		map.put("activityId", activityId);
 		map.put("userId", user.getId());
-		map.put("status", 1);
+		map.put("status", 0);
 		List<ActivityUser> list = activityUserMapper.find(map);
 		if(list.size() == 1) {				//用户参加了该活动
 			ActivityUser activityUser = new ActivityUser();
@@ -130,9 +149,9 @@ public class ActivityServiceImpl implements ActivityService{
 			activityUser.setSignTime(new Timestamp(System.currentTimeMillis()));	//插入签到时间
 			activityUserMapper.updateSignTime(activityUser);
 			user = usersMapper.selectByPrimaryKey(user.getId());
-			return JSONUtil.transform(new ResultObeject(true, user));
+			return new ResultUser(true, user);
 		}
-		return JSONUtil.transform(new ResultBean(false));
+		return new ResultBean(false,"扫码签到失败");
 	}
 	
 	public ResultBean updateActivity(Activity activity) {
@@ -156,5 +175,43 @@ public class ActivityServiceImpl implements ActivityService{
 			return JSONUtil.transform(new ResultBean(true));
 		}
 		return JSONUtil.transform(new ResultBean(false));
+	}
+
+	@Override
+	public ResultBean insertSignUpActivity(Integer activityId, Schools school, Users user) {
+		if(school == null || user == null ) {
+			return new ResultBean(false,"信息不完整");
+		}
+		if(StringUtil.StringIsNot(user.getClassRoom()) ||StringUtil.StringIsNot(user.getStudentNum())
+				|| StringUtil.StringIsNot(user.getUserName())) {
+			return new ResultUserInfoNull(false, true);
+		}
+		Map<String,Object> map = new HashMap<>();
+		map.put("activityId", activityId);
+		map.put("school", school);
+		if( activityMapper.find(map) == null || activityMapper.find(map).size() == 0) {			//判断活动是否存在
+			return new ResultBean(false,"学校没有该活动");
+		}
+		Activity activity = activityMapper.find(map).get(0);
+		
+		if(activityUserMapper.findCountActivity(activityId) >= activity.getNumber()) {		//活动人数已满
+			return new ResultBean(false, "人数已达上限");
+		}
+		if( activity.getSchool().getId() != school.getId()) {			//非本校学生不可参加
+			return new ResultBean(false, "非本校学生不可参加");
+		}
+		
+		map.put("userId", user.getId());
+		if(activityUserMapper .find(map).size() != 0) {
+			return new ResultBean(false, "不能重复报名");
+		}
+		ActivityUser activityUser = new ActivityUser();
+		activityUser.setStatus(0);
+		activityUser.setUser(user);
+		activityUser.setActivity(activity);
+		if(activityUserMapper.insert(activityUser) == 1) {
+			return new ResultBean(true,"报名成功");
+		}
+		return new ResultBean(false, "报名失败");
 	}
 }

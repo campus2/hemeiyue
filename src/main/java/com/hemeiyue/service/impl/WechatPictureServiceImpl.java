@@ -2,6 +2,8 @@ package com.hemeiyue.service.impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -10,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.hemeiyue.common.ActivityModel;
+import com.hemeiyue.common.ActivityShowModel;
 import com.hemeiyue.common.PictureResult;
 import com.hemeiyue.common.ResultBean;
 import com.hemeiyue.common.ResultImgAndAct;
@@ -19,9 +21,12 @@ import com.hemeiyue.dao.ActivityMapper;
 import com.hemeiyue.dao.WechatPictureMapper;
 import com.hemeiyue.entity.WechatPicture;
 import com.hemeiyue.service.WechatPictureService;
+import com.hemeiyue.util.StringUtil;
 
 @Service("wechatPictureService")
 public class WechatPictureServiceImpl implements WechatPictureService{
+	
+	private final static  String LOCALURL = "https://mcd.ngrok.xiaomiqiu.cn/hemeiyue";
 	
 	@Autowired
 	private WechatPictureMapper wechatPictureMapper;
@@ -104,7 +109,7 @@ public class WechatPictureServiceImpl implements WechatPictureService{
 	@Override
 	public ResultBean getIndex() {
 		List<WechatPicture> weChatPicture = wechatPictureMapper.findAll();
-		List<ActivityModel> activityList = activityMapper.findAll();
+		List<ActivityShowModel> activityList = activityMapper.findAll();
 		if(weChatPicture == null || weChatPicture.size() == 0 
 				|| activityList == null || activityList.size() == 0) {
 			return new ResultBean(false);
@@ -115,7 +120,22 @@ public class WechatPictureServiceImpl implements WechatPictureService{
 		if(activityList.size() > 6) {
 			activityList.subList(0, 5);
 		}
-		return new ResultImgAndAct(true, weChatPicture, activityList);
+		List<ActivityShowModel> resultList = new ArrayList<>();
+		for (ActivityShowModel activityModel : activityList) {
+			if(!StringUtil.StringIsNot(activityModel.getImageUrl()))
+				activityModel.setImageUrl(LOCALURL+activityModel.getImageUrl());
+			if(!activityModel.getDate().before(new Timestamp(System.currentTimeMillis())))		//判断是否过期
+				resultList.add(activityModel);
+		}
+		for (WechatPicture wePicture : weChatPicture) {
+			if(!StringUtil.StringIsNot(wePicture.getUrl()))
+					wePicture.setUrl(LOCALURL+ wePicture.getUrl());
+//			if(wePicture.getHrefUrl().isEmpty() || "".equals(wePicture.getHrefUrl())) {
+//				wePicture.setHrefUrl(null);
+//				System.out.println(wePicture.getUrl());
+//			}
+		}
+		return new ResultImgAndAct(true, weChatPicture, resultList);
 	}
 	
 }

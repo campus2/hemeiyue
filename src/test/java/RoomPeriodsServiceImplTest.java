@@ -1,5 +1,3 @@
-import static org.junit.Assert.*;
-
 import java.util.Date;
 
 import org.junit.Test;
@@ -19,7 +17,7 @@ public class RoomPeriodsServiceImplTest {
 	
 	@Test
 	public void testGetPeriod() {
-		System.out.println(roomPeriodsService.getPeriod(new Date()));
+//		System.out.println(roomPeriodsService.getPeriod(new Date()));
 	}
 
 }

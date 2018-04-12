@@ -80,4 +80,10 @@
 		 where schoolId = #{schoolId} and status > 0 order by time desc
 	</select>
 	
+	<select id="findAlltoWX" parameterType="Integer" resultMap="BaseResultMap">
+		select id, title, content
+		 from notification 
+		 where schoolId = #{schoolId} and status > 0 order by date desc
+	</select>
+	
 </mapper>

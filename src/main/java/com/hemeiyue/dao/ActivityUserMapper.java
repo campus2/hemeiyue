@@ -3,7 +3,6 @@ package com.hemeiyue.dao;
 import java.util.List;
 import java.util.Map;
 
-import com.hemeiyue.common.ActivityUserModel;
 import com.hemeiyue.common.ActivityUserShowModel;
 import com.hemeiyue.entity.ActivityUser;
 

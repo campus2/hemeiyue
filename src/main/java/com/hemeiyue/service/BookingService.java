@@ -2,7 +2,7 @@ package com.hemeiyue.service;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.hemeiyue.common.Application;
+import com.hemeiyue.common.ApplyData;
 import com.hemeiyue.common.ResultBean;
 import com.hemeiyue.entity.Bookings;
 import com.hemeiyue.entity.Schools;
@@ -84,5 +84,5 @@ public interface BookingService {
 	 * @param application
 	 * @return
 	 */
-	public ResultBean insertRoomApply(Application application,Users user,Schools school);
+	public ResultBean insertRoomApply(ApplyData application,Users user,Schools school);
 }

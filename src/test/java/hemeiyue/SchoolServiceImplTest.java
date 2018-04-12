@@ -29,7 +29,7 @@ public class SchoolServiceImplTest {
 		Users user = new Users();
 		user.setId(1);
 		user.setOpenId("123");
-		System.out.println(JSONUtil.transform(schoolService.insertHandleSchool(school, user)));
+		System.out.println(JSONUtil.transform(schoolService.insertHandleSchool(school, user.getOpenId())));
 	}
 
 }

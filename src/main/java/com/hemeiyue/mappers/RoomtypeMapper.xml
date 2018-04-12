@@ -33,7 +33,7 @@
 				and roomType = #{roomType,jdbcType=VARCHAR}
 			</if>
 			<if test="school!=null">
-				and schoolId = #{school.id}
+				and schoolId = #{school.id,jdbcType=INTEGER}
 			</if>
 			and status>0
 		</where>

@@ -1,7 +1,6 @@
 package com.hemeiyue.service.impl;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,10 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.hemeiyue.common.ResultBean;
+import com.hemeiyue.common.ResultList;
 import com.hemeiyue.common.ResultMap;
+import com.hemeiyue.common.WXPeriodModel;
 import com.hemeiyue.dao.RoomperiodsMapper;
-import com.hemeiyue.dao.RoomsMapper;
-import com.hemeiyue.entity.Periods;
 import com.hemeiyue.entity.RoomPeriods;
 import com.hemeiyue.entity.Rooms;
 import com.hemeiyue.service.RoomPeriodsService;
@@ -25,9 +24,6 @@ public class RoomPeriodsServiceImpl implements RoomPeriodsService {
 
 	@Autowired
 	private RoomperiodsMapper roomPeriodsMapper;
-	
-	@Autowired
-	private RoomsMapper roomsMapper;
 	
 	@Override
 	public ResultMap findRoomDetail(Rooms room) {
@@ -103,12 +99,22 @@ public class RoomPeriodsServiceImpl implements RoomPeriodsService {
 	}
 
 	@Override
-	public String getPeriod(Date date) {
-		if(date == null) {
-			return JSONUtil.transform(new ResultBean(false));
+	public String getPeriod(Rooms room,String date) {
+		if(date == null || room.getRoomType()==null || room.getRoom()==null) {
+			return JSONUtil.transform(new ResultBean(false,"请选择课室"));
 		}
-		String week = DateUtil.dateToWeek(date.toString());
-		List<Periods> plist = roomPeriodsMapper.getPeriod(week);
-		return JSONUtil.transform(plist);
+		String week = DateUtil.dateToWeek(date);
+		List<RoomPeriods> plist = roomPeriodsMapper.getPeriod(room.getId(),week);
+		if(plist==null || plist.size()==0) return JSONUtil.transform(new ResultBean(false,"暂无可预订时段"));
+		List<WXPeriodModel> resultList = new ArrayList<>();
+		for (RoomPeriods p : plist) {
+			WXPeriodModel pm = new WXPeriodModel();
+			pm.setId(p.getPeriod().getId());
+			pm.setBeginTime(DateUtil.timeToString(p.getPeriod().getBeginTime()));
+			pm.setEndTime(DateUtil.timeToString(p.getPeriod().getEndTime()));
+			resultList.add(pm);
+		}
+		
+		return JSONUtil.transform(new ResultList(true, resultList));
 	}
 }

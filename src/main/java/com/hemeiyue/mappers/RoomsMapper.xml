@@ -121,4 +121,19 @@
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
+	
+	<select id="select" parameterType="Map" resultMap="BaseResultMap">
+		select * from rooms 
+		<where>
+			<if test="room!=null">
+				and room = #{room}
+			</if>
+			<if test="roomType!=null">
+				and roomTypeId = #{roomType.id}
+			</if>
+			<if test="school!=null">
+				and schoolId = #{school.id}
+			</if>
+		</where>
+	</select>
 </mapper>

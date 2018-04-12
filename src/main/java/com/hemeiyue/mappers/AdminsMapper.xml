@@ -24,14 +24,14 @@
 	<select id="getAdminCount" parameterType="Schools" resultType="Long">
 		select count(*) from admins
 		<where>
-			<if test="school != null">and schoolId = #{school.id}</if>
+			<if test="id != null">and schoolId = #{id}</if>
 		</where>
 	</select>
 	
 	<select id="getUserCount" parameterType="Schools" resultType="Long">
 		select count(*) from users
 		<where>
-			<if test="school != null">and schoolId = #{school.id}</if>
+			<if test="id != null">and schoolId = #{id}</if>
 		</where>
 	</select>
 	

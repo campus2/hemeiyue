@@ -66,6 +66,7 @@ public class RoomController {
 	 */
 	@RequestMapping("/modifyRoomName")
 	@ResponseBody
+	@AuthLoginAnnotation(checkLogin=true)
 	public ResultBean modifyRoomName(@RequestBody UpdateRoom updateRoom,
 			HttpServletRequest request) {
 //		Schools school = (Schools) request.getSession().getAttribute("school");
@@ -83,7 +84,6 @@ public class RoomController {
 	 */
 	@RequestMapping("/roomDetails")
 	@ResponseBody
-	@AuthLoginAnnotation(checkLogin=true)
 	public String roomDetails(@RequestParam("roomType")String roomType,
 				@RequestParam("roomName")String roomName, HttpServletRequest request) {
 		//当前学校
@@ -127,6 +127,7 @@ public class RoomController {
 	 */
 	@RequestMapping("/addPeriod")
 	@ResponseBody
+	@AuthLoginAnnotation(checkLogin=true)
 	public ResultBean addPeriod(@RequestBody PeriodAddModel model, HttpServletRequest request) {
 //		Admin admin = (Admin)request.getSession().getAttribute("currentAdmin");
 		Admin admin = (Admin) request.getServletContext().getAttribute("currentAdmin");
@@ -150,6 +151,7 @@ public class RoomController {
 	 */
 	@RequestMapping("/deleteRoom")
 	@ResponseBody
+	@AuthLoginAnnotation(checkLogin=true)
 	public ResultBean delete(@RequestParam("roomType")String roomType,
 			@RequestParam("roomName")String roomName, HttpServletRequest request) {
 //		Schools school = (Schools) request.getSession().getAttribute("school");
@@ -166,7 +168,7 @@ public class RoomController {
 	 * @param roomType
 	 * @return
 	 */
-	public String getRoom(String roomType,HttpServletRequest request) {
+	public ResultBean getRoom(String roomType,HttpServletRequest request) {
 		Schools school = (Schools) request.getSession().getAttribute("shool");
 		return roomService.getRoom(roomType, school);
 	}

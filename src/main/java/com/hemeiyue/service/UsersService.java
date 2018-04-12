@@ -36,32 +36,32 @@ public interface UsersService {
 	 * @param userId
 	 * @return
 	 */
-	public String reserve(Integer userId);
+	public ResultBean reserve(Integer userId);
 	
 	/**
 	 * 把用户预定信息返回来，包括课室预定和活动预定，过期的也要返回
 	 * @param userId
 	 * @return
 	 */
-	public String reserveHistory(Integer userId);
+	public ResultBean reserveHistory(Integer userId);
 	
 	/**
 	 * 返回个人信息
 	 * @param userId
 	 * @return
 	 */
-	public String selectPersonalInfo(Integer userId);
+	public ResultBean selectPersonalInfo(Integer userId);
 	
 	/**
 	 * 修改个人信息
 	 * @param user
 	 * @return
 	 */
-	public ResultBean updatePersonalInfo(UsersModel user);
+	public ResultBean updatePersonalInfo(UsersModel user,HttpServletRequest request);
 	
 	/**
 	 * 返回学校所有的教室及个人信息
 	 * @return
 	 */
-	public String getApplyInfo(Users user);
+	public ResultBean getApplyInfo(Users user);
 }

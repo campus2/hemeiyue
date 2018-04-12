@@ -9,8 +9,6 @@ import com.hemeiyue.entity.Schools;
 
 public interface AdminService {
 	
-	public ResultBean login(Admin admin);
-	
 	/**
 	 * 管理员登录
 	 * @param admin

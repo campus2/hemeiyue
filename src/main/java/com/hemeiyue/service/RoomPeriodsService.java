@@ -1,7 +1,5 @@
 package com.hemeiyue.service;
 
-import java.util.Date;
-
 import com.hemeiyue.common.ResultBean;
 import com.hemeiyue.common.ResultMap;
 import com.hemeiyue.entity.Rooms;
@@ -25,7 +23,8 @@ public interface RoomPeriodsService {
 	/**
 	 * 根据日期选择转换成星期几，然后去数据库查找该日期的可用时间段，把时间段全部发回来
 	 * @param date
+	 * @param room
 	 * @return
 	 */
-	public String getPeriod(Date date);
+	public String getPeriod(Rooms room,String date);
 }

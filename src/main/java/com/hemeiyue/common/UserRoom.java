@@ -1,11 +1,11 @@
 package com.hemeiyue.common;
 
-import java.util.Map;
+import java.util.List;
 
-public class UserRoom {
+public class UserRoom extends ResultBean{
 	private UsersModel userInfo;
 	
-	private Map<String,String> roomType;
+	private List<String> roomType;
 
 	public UsersModel getUserInfo() {
 		return userInfo;
@@ -15,16 +15,22 @@ public class UserRoom {
 		this.userInfo = userInfo;
 	}
 
-	public Map<String, String> getRoomType() {
+	public List<String> getRoomType() {
 		return roomType;
 	}
 
-	public void setRoomType(Map<String, String> roomType) {
+	public void setRoomType(List<String> roomType) {
 		this.roomType = roomType;
 	}
-	
-	public UserRoom(UsersModel userInfo,Map<String,String> roomType) {
+
+	public UserRoom(UsersModel userInfo,List<String> roomType) {
 		this.userInfo = userInfo;
 		this.roomType = roomType;
+	}
+
+	public UserRoom(boolean b, UsersModel usersModel, List<String> roomType2) {
+		super(b);
+		this.userInfo = usersModel;
+		this.roomType = roomType2;
 	}
 }

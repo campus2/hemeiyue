@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.hemeiyue.annotion.AuthLoginAnnotation;
 import com.hemeiyue.common.AdminModel;
 import com.hemeiyue.common.AdminModifyModel;
@@ -33,6 +32,7 @@ public class AdminManageController {
 	 */
 	@RequestMapping("/getCount")
 	@ResponseBody
+	@AuthLoginAnnotation(checkLogin=true)
 	public ResultBean getCount(HttpServletRequest request) {
 //		Admin currentAdmin = (Admin)request.getSession().getAttribute("currentAdmin");
 		Admin currentAdmin = (Admin)request.getServletContext().getAttribute("currentAdmin");
@@ -49,6 +49,7 @@ public class AdminManageController {
 	 * @return
 	 */
 	@RequestMapping("/getAllApply")
+	@AuthLoginAnnotation(checkLogin=true)
 	public String getAllApply(HttpServletRequest request) {
 //		Admin currentAdmin = (Admin)request.getSession().getAttribute("currentAdmin");
 //		if(currentAdmin.getStatus() == 1) {
@@ -65,6 +66,7 @@ public class AdminManageController {
 	 * @return
 	 */
 	@RequestMapping("/getUserCount")
+	@AuthLoginAnnotation(checkLogin=true)
 	public String getUserCount(HttpServletRequest request) {
 //		Admin currentAdmin = (Admin)request.getSession().getAttribute("currentAdmin");
 //		if(currentAdmin.getStatus() == 1) {
@@ -129,6 +131,7 @@ public class AdminManageController {
 	 */
 	@RequestMapping("/modifyAdmin")
 	@ResponseBody
+	@AuthLoginAnnotation(checkLogin=true)
 	public ResultBean modifyAdmin(@RequestBody AdminModifyModel am,HttpServletRequest request) {
 //		if(error.hasErrors()) {
 //			return ValidateHandler.validate(error);

@@ -13,6 +13,26 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  *
  */
 public class JSONUtil {
+
+	/**
+	 * Object转Json，不去掉null
+	 * @param obj
+	 * @return
+	 */
+	public static String transformWithNull(Object obj) {
+		ObjectMapper objectMapper = new ObjectMapper();
+		try {
+			String result = objectMapper.writeValueAsString(obj);
+			//设置时间解析
+			SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+			objectMapper.setDateFormat(fmt);
+			return result;
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+			System.out.println("转为JSON数据失败");
+			return null;
+		}
+	}
 	
 	/**
 	 * Object转Json，同时去掉null，日期格式化

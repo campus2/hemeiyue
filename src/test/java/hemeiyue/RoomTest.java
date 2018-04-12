@@ -1,5 +1,9 @@
 package hemeiyue;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,6 +15,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.hemeiyue.common.PeriodAddModel;
 import com.hemeiyue.common.ResultBean;
 import com.hemeiyue.common.ResultMap;
+import com.hemeiyue.dao.RoomtypeMapper;
 import com.hemeiyue.entity.Admin;
 import com.hemeiyue.entity.RoomTypes;
 import com.hemeiyue.entity.Rooms;
@@ -32,6 +37,9 @@ public class RoomTest {
 	
 	@Autowired
 	private RoomPeriodsService roomPeriodsService;
+	
+	@Autowired
+	private RoomtypeMapper roomTypeMapper;
 
 	@Before
 	public void setUp() throws Exception {
@@ -39,6 +47,16 @@ public class RoomTest {
 
 	@After
 	public void tearDown() throws Exception {
+	}
+	
+	@Test
+	public void roomTypeFind() {
+		Map<String, Object> map = new HashMap<>();
+		map.put("roomType", "课室");
+		map.put("school", new Schools(25));
+
+		List<RoomTypes> rtList = roomTypeMapper.find(map);
+		
 	}
 	
 	@Test

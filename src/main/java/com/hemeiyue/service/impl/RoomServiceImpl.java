@@ -12,8 +12,10 @@ import com.hemeiyue.common.PeriodAddModel;
 import com.hemeiyue.common.PeriodModel;
 import com.hemeiyue.common.ResultAddPeriod;
 import com.hemeiyue.common.ResultBean;
+import com.hemeiyue.common.ResultList;
 import com.hemeiyue.common.RoomModel;
 import com.hemeiyue.common.UpdateRoom;
+import com.hemeiyue.dao.BookingsMapper;
 import com.hemeiyue.dao.PeriodsMapper;
 import com.hemeiyue.dao.RoomperiodsMapper;
 import com.hemeiyue.dao.RoomsMapper;
@@ -27,7 +29,6 @@ import com.hemeiyue.entity.Rooms;
 import com.hemeiyue.entity.Schools;
 import com.hemeiyue.service.RoomService;
 import com.hemeiyue.util.DateUtil;
-import com.hemeiyue.util.JSONUtil;
 
 @Service("roomService")
 public class RoomServiceImpl implements RoomService {
@@ -37,6 +38,9 @@ public class RoomServiceImpl implements RoomService {
 	
 	@Autowired
 	private RoomtypeMapper roomTypeMapper;
+	
+	@Autowired
+	private BookingsMapper bookingsMapper;
 	
 	@Autowired
 	private SchoolsMapper schoolMapper;
@@ -138,33 +142,6 @@ public class RoomServiceImpl implements RoomService {
 		r.put("result", true);
 		r.put("data", map);
 		return r;
-		
-//		//将课室按照课室类型进行分类
-//		Map<String, Object> roomMap = new HashMap<>();
-//		//外层循环课室类型，内层循环所有课室
-//		for(int i=0; i<typeList.size(); i++) {
-//			List<Rooms> temp = new ArrayList<>();
-//			String roomTypeName = typeList.get(i).getRoomType();
-//			if(roomList!=null && roomList.size()>0)
-//				for(int j=0; j<roomList.size(); j++) {
-//					Rooms room = roomList.get(j);
-//					//找到对应类型的课室
-//					if(roomTypeName.equals(room.getRoomType().getRoomType())) {
-////						roomList.get(j).setRoomType(null);
-//						temp.add(roomList.get(j));
-//						System.out.println(roomList.get(j).getRoom());
-////						roomList.remove(roomList.get(j));
-//					}
-//				}
-////			roomMap.put(roomTypeName, temp);
-//			for (Rooms rooms : temp) {
-//				System.out.println(rooms.getRoom());
-//			}
-//			roomMap.put("type", roomTypeName);
-//			roomMap.put("class", temp);
-//			resultList.add(roomMap);
-//		}
-		
 	}
 
 	@Override
@@ -203,7 +180,7 @@ public class RoomServiceImpl implements RoomService {
 	public ResultBean deleteByTypeAndName(RoomTypes roomType, String roomName) {
 		//查询待删除课室的课室类型是否存在
 		Map<String, Object> map = new HashMap<>();
-		map.put("roomType", roomType);
+		map.put("roomType", roomType.getRoomType());
 		map.put("school", roomType.getSchool());
 
 		List<RoomTypes> rtList = roomTypeMapper.find(map);
@@ -213,9 +190,20 @@ public class RoomServiceImpl implements RoomService {
 		//待删除课室是否存在
 		map.put("room", roomName);
 		map.put("roomType", roomtype);
-		System.out.println(map.get("roomType"));
 		List<Rooms> roomList = roomMapper.find(map);
 		if(roomList==null | roomList.size()==0) return new ResultBean(false,"删除失败");
+		
+		//预订表是否已有改预订课室
+		map.clear();
+		map.put("roomId", roomList.get(0).getId());
+		List<RoomPeriods> rpList = roomperiodsMapper.findRooms(map);
+		List<Integer> ids = new ArrayList<>();
+		for (RoomPeriods rp : rpList) {
+			ids.add(rp.getId());
+		}
+		if(ids.size() > 0) {
+			bookingsMapper.updateByDelete(ids);
+		}
 		
 		if(roomMapper.updateById(roomList.get(0).getId()) > 0) {
 			return new ResultBean(true, "删除成功");
@@ -250,9 +238,9 @@ public class RoomServiceImpl implements RoomService {
 	}
 
 	@Override
-	public String getRoom(String roomType, Schools school) {
+	public ResultBean getRoom(String roomType, Schools school) {
 		if(school == null || roomType.isEmpty() || school.getId() == 0) {
-			return JSONUtil.transform(new ResultAddPeriod(false));
+			return new ResultAddPeriod(false, "请指定课室类型");
 		}
 		
 		//获取对应roomType的实体
@@ -260,15 +248,31 @@ public class RoomServiceImpl implements RoomService {
 		map.put("roomType", roomType);
 		map.put("school", school);
 		List<RoomTypes> rtList = roomTypeMapper.find(map);
-		
+		if(rtList.size() == 0 || rtList == null) {
+			return new ResultAddPeriod(false, "暂无可预订课室");
+		}
 		Map<String,Object> hashMap = new HashMap<>();
 		hashMap.put("roomType", rtList.get(0));
 		hashMap.put("school", school);
 		List<Rooms> rList = roomMapper.find(hashMap);
+		if(rList==null || rList.size()==0) return new ResultBean(false, "暂无课室类型");
 		List<String> roomList = new ArrayList<>();
 		for (Rooms rooms : rList) {
 			roomList.add(rooms.getRoom());
 		}
-		return JSONUtil.transform(roomList);
+		return new ResultList(true, roomList);
+	}
+	
+	@Override
+	public Rooms getRoom(String roomName, String roomType, Schools school) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("roomType", roomType);
+		map.put("school", school);
+		RoomTypes type = roomTypeMapper.find(map).get(0);
+		
+		map.put("room", roomName);
+		map.put("roomType", type);
+		
+		return roomMapper.select(map);
 	}
 }

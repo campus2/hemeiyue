@@ -21,6 +21,13 @@
     	<association property="period" column="periodId" select="com.hemeiyue.dao.PeriodsMapper.selectById"/>
     </resultMap>
     
+    <select id="findRooms" parameterType="Map" resultMap="BaseResultMap">
+    	select id from roomperiods
+    	<where>
+    		<if test="roomId != null">and roomId=#{roomId}</if>
+    	</where>
+    </select>
+    
     <select id="find" parameterType="Rooms" resultMap="BaseResultMap">
     	select rp.id, rp.periodId, rp.weeks,rp.status from roomperiods as rp
     	<where>
@@ -163,7 +170,23 @@
     	select roomId from roomperiods where status = 1 and roomId = #{roomId,jdbcType=INTEGER}
     </select>
     
-    <select id="getPeriod" parameterType="java.lang.String" resultMap="BaseResultMap">
+    <select id="getPeriod" resultMap="BaseResultMap">
     	select periodId from roomperiods where weeks like "%"#{weeks,jdbcType=VARCHAR}"%"
+    	and roomId = #{roomId,jdbcType=INTEGER}
+    </select>
+    
+    <select id="select" parameterType="Map" resultMap="BaseResultMap"> 
+    	select * from roomperiods
+		<where>
+			<if test="periodId != null">
+				and periodId = #{periodId}
+			</if>
+			<if test="room!=null">
+				and roomId = #{room.id}
+			</if>
+			<if test="weeks!=null">
+				and weeks = #{weeks}
+			</if>
+		</where>
     </select>
 </mapper>

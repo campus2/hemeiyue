@@ -19,7 +19,7 @@
 	</select>    
     
     <insert id="insert" parameterType="com.hemeiyue.entity.ActivityUser" useGeneratedKeys="true" keyProperty="id">
-        insert into activityUser
+        insert into activityuser
         <trim prefix="(" suffix=")" suffixOverrides="," >
             <if test="id != null" >
                 id,
@@ -58,7 +58,7 @@
     	update activityuser set signTime = #{signTime},status = 1 where id = #{id}
     </update>
     
-    <insert id="insertByActivityUserModel"  parameterType="com.hemeiyue.common.ActivityUserModel">
-    	insert into activityUser (activityId,userId,status) values(#{activityId},#{userId},#{status})
+    <insert id="insertByActivityUserShowModel"  parameterType="com.hemeiyue.common.ActivityUserShowModel">
+    	insert into activityuser (activityId,userId,status) values(#{activityId},#{userId},#{status})
     </insert>
 </mapper>

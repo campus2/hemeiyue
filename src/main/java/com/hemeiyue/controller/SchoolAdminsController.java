@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.hemeiyue.annotion.AuthLoginAnnotation;
 import com.hemeiyue.common.ResultBean;
 import com.hemeiyue.entity.SchoolAdmins;
 import com.hemeiyue.service.SchoolAdminsService;
@@ -22,6 +23,7 @@ public class SchoolAdminsController {
 	private SchoolAdminsService schoolAdminsService;
 	
 	@RequestMapping("/add")
+	@AuthLoginAnnotation(checkLogin=true)
 	public String add(SchoolAdmins schoolAdmin,HttpServletResponse response) {
 		ResultBean result = new ResultBean();
 		try {
@@ -42,6 +44,7 @@ public class SchoolAdminsController {
 	}
 	
 	@RequestMapping("/modify")
+	@AuthLoginAnnotation(checkLogin=true)
 	public String modify(SchoolAdmins schoolAdmin,HttpServletResponse response) {
 		ResultBean result = new ResultBean();
 		if(schoolAdminsService.modify(schoolAdmin)) {
@@ -56,6 +59,7 @@ public class SchoolAdminsController {
 	}
 	
 	@RequestMapping("/delete")
+	@AuthLoginAnnotation(checkLogin=true)
 	public String delete(SchoolAdmins schoolAdmin,HttpServletResponse response) {
 		ResultBean result = new ResultBean();
 		if(schoolAdminsService.delete(schoolAdmin)) {

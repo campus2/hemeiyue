@@ -47,6 +47,7 @@ public class ActivityController {
 	
 	@SuppressWarnings("unchecked")
 	@RequestMapping("/down")
+	@AuthLoginAnnotation(checkLogin=true)
 	public ResponseEntity<byte[]> downActivityExcel(Integer id) throws Exception {
 		//文件目录
 		String localPath = this.getClass().getClassLoader().getResource("")
@@ -156,6 +157,7 @@ public class ActivityController {
 	 * @return
 	 */
 	@RequestMapping("/getQrCode")
+	@AuthLoginAnnotation(checkLogin=true)
 	public String getQrCode(@RequestParam("activityId")int activityId,
 			HttpServletResponse response) {
 		Activity activity = activityService.selectById(activityId);
@@ -215,7 +217,7 @@ public class ActivityController {
 	 */
 	@RequestMapping("/weChatScan")
 	@ResponseBody
-	public String weChatScan(@RequestParam("code")String code,@RequestParam("activityId")int activityId,
+	public ResultBean weChatScan(@RequestParam("code")String code,@RequestParam("activityId")int activityId,
 				HttpServletRequest request) {
 		Users user;
 		//如果code为空，从session获取userId
@@ -227,7 +229,7 @@ public class ActivityController {
 			user = usersMapper.selectByOpenId(openId);
 		}
 		if(user == null || user.getId() == 0) {
-			return JSONUtil.transform(new ResultBean(false));
+			return new ResultBean(false);
 		}
 		return activityService.updateWeChatScan(user, activityId);
 	}

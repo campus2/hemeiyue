@@ -24,6 +24,7 @@ public class NotificationServiceImpl implements NotificationService{
 	public ResultBean insert(Notification notification, Schools school) {
 		notification.setDate(new Timestamp(new Date().getTime()));
 		notification.setSchool(school);
+		notification.setTime(new Timestamp(new Date().getTime()));
 		if(notificationMapper.insert(notification) == 1) return new ResultBean(true,"发布成功");
 		return new ResultBean(false,"发布失败");
 	}
@@ -37,7 +38,7 @@ public class NotificationServiceImpl implements NotificationService{
 	@Override
 	public ResultBean findAll(Integer schoolId) {
 		ResultList result = new ResultList();
-		List<Notification> list = notificationMapper.findAll(schoolId);
+		List<Notification> list = notificationMapper.findAlltoWX(schoolId);
 		if(list != null) {
 			result.setResult(true);
 			result.setList(list);

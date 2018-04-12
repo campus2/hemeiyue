@@ -48,7 +48,7 @@ public class SchoolController {
 	 * @return
 	 */
 	@RequestMapping("/save")
-	
+	@AuthLoginAnnotation(checkLogin=true)
 	public String save(@RequestBody(required=false) Schools school, 
 			HttpServletRequest request,HttpServletResponse response) {
 		ResultBean result;
@@ -156,10 +156,8 @@ public class SchoolController {
 	@RequestMapping("/handleSchool")
 	@ResponseBody
 	public ResultBean handleSchool(@RequestParam("school")String school,HttpServletRequest request) {
-		Users user = (Users) request.getSession().getAttribute("user");
-		if(user == null) {
-			return new ResultBean(false);
-		}
-		return schoolService.insertHandleSchool(school, user);
+		String openId = (String) request.getSession().getAttribute("openId");
+		return schoolService.insertHandleSchool(school,openId);
 	}
+
 }

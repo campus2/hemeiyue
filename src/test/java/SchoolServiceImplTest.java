@@ -28,7 +28,8 @@ public class SchoolServiceImplTest {
 	public void testHandleSchool() {
 		Users user = new Users();
 		user.setOpenId("123");
-		System.out.println(JSONObject.fromObject(schoolService.insertHandleSchool("广东工业大学", user)));
+		user.setId(1);
+		System.out.println(JSONObject.fromObject(schoolService.insertHandleSchool("广东技术师范学院", user.getOpenId())));
 	}
 
 }
